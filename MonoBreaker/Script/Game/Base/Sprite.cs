@@ -19,5 +19,15 @@ namespace MonoBreaker.Script.Game.Base
             this.image = image;
             this.position = position;
         }
+        
+        public Rectangle collisionBox
+        {
+
+            get
+            {
+                return new Rectangle((int)this.position.X, (int)this.position.Y, this.image.Width, this.image.Height);
+            }
+
+        }
     }
 }

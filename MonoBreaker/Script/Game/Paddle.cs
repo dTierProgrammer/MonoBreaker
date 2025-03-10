@@ -41,24 +41,9 @@ namespace MonoBreaker.Script.Game
             get { return score; }
         }
 
-        public Rectangle collisionBox
-        {
-
-            get
-            {
-                return new Rectangle((int)this.position.X, (int)this.position.Y, this.image.Width, this.image.Height);
-            }
-
-        }
-
         public Vector2 Velocity 
         {
             get { return velocity; }
-        }
-
-        public void Initialize() 
-        {
-            Debug.WriteLine("Useless Method!");
         }
 
         public void Update() 

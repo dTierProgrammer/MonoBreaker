@@ -9,22 +9,39 @@ using System.Threading.Tasks;
 
 namespace MonoBreaker.Script.Game
 {
-    public class Brick: Sprite
+    public class Brick
     {
         public bool isActive;
         public Rectangle Rect;
-        public Brick(Texture2D image, Vector2 position): base(image, position) 
+        private int strength;
+        private Texture2D image;
+        private Vector2 position;
+        public Brick(Texture2D image, Vector2 position, int toughness)
         {
             this.image = image;
             this.position = position;
             isActive = true;
             Rect = new Rectangle((int)this.position.X, (int)this.position.Y, this.image.Width, this.image.Height);
+            strength = toughness;
+        }
+
+        public void Weaken()
+        {
+            strength--;
         }
 
         public void Break() 
         {
             isActive = false;
             Rect = Rectangle.Empty;
+        }
+
+        public void Update()
+        {
+            if (strength <= 0)
+            {
+                Break();
+            }
         }
 
         public void Draw(SpriteBatch window) 

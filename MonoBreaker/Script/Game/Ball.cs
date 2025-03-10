@@ -37,19 +37,22 @@ namespace MonoBreaker.Script.Game
             direction.Y *= -1;
         }
 
-        public Rectangle collisionBox
+        public void BounceDownwards()
         {
-
-            get
-            {
-                return new Rectangle((int)this.position.X, (int)this.position.Y, this.image.Width, this.image.Height);
-            }
-
+            direction.Y = Math.Abs(direction.Y);
         }
+
+        public void BounceUpwards()
+        {
+            direction.Y = -Math.Abs(direction.Y);
+        }
+
+        
 
         public void Launch() 
         {
             isActive = true;
+            direction.X = paddle.Velocity.X;
         }
 
         public void Reset()
