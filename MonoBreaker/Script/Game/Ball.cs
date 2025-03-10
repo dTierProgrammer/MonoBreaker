@@ -63,23 +63,43 @@ namespace MonoBreaker.Script.Game
             if (isActive)
             {
                 position += direction;
-
-                if (collisionBox.Intersects(ballBoundaries[0]) || collisionBox.Intersects(ballBoundaries[1]))
-                {
-                    direction.X *= -1;
+                
+                // collision problem solved, you're welcome :)
+                if (collisionBox.Intersects(ballBoundaries[0]))// || collisionBox.Intersects(ballBoundaries[1]))
+                {//right bound
+                    direction.X = Math.Abs(direction.X);
                 }
+
+                if (collisionBox.Intersects(ballBoundaries[1]))
+                {// left bound
+                    direction.X = -Math.Abs(direction.X);
+                }
+
                 if (collisionBox.Intersects(ballBoundaries[2]))
-                {
-                    direction.Y *= -1;
+                {// upper bound
+                    direction.Y = Math.Abs(direction.Y);
                 }
                 if (collisionBox.Intersects(ballBoundaries[3]))
-                {
+                {// kill
                     Reset();
                 }
                 if (collisionBox.Intersects(paddle.collisionBox))
-                {
-                    if (paddle.Velocity.X != 0)
-                    {
+                {// add back 'or equal to' flag if somehow nonfucntional
+                    if (collisionBox.Left >= paddle.collisionBox.Right)
+                    {// leftside collision
+                        direction.X = Math.Abs(direction.X);
+                    }
+                    if (collisionBox.Right <= paddle.collisionBox.Left)
+                    {// rightside collision
+                        direction.X = -Math.Abs(direction.X);
+                    }
+
+                    if (collisionBox.Top > paddle.collisionBox.Bottom)
+                    {// if the ball somehow makes it behind the paddle
+                        direction.Y = Math.Abs(direction.Y);
+                    }
+                    if (paddle.Velocity.X != 0) // <TODO: add special collision checks for top of paddle, could prevent future issues>
+                    {// maintain ball movement if paddle isn't moving
                         direction.X = paddle.Velocity.X;
                         direction.Y *= -1;
                     }
