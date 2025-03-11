@@ -72,7 +72,7 @@ public class Game1 : Game
 
         playfield = GetContent.GetTexture("Game/playField");
 
-        player = new Paddle(GetContent.GetTexture("Game/paddle"), new Vector2(100, trueScreenHeight - 10), paddleSpeed, screenBounds);
+        player = new Paddle(GetContent.GetTexture("Game/paddle"), new Vector2(trueScreenWidth / 2 - 17, trueScreenHeight - 10), paddleSpeed, screenBounds);
         ball = new Ball(GetContent.GetTexture("Game/ball"), new Vector2(100, 100), ballSpeed, screenBounds, player);
         debug = GetContent.GetTexture("Game/ballSuper");
         leftoverTriesCounter = GetContent.GetTexture("Game/ball");
