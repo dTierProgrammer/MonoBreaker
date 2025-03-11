@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoBreaker.Script.Font;
 using MonoBreaker.Script.Game;
 using MonoBreaker.Script.Global;
 
@@ -21,11 +22,22 @@ public class Game1 : Game
     public Ball ball;
 
     private Texture2D debug;
+    private Texture2D leftoverTriesCounter;
 
     private static int offset = 1;
 
+    public static int score;
+    public static readonly int speedUpThreshold = BrickMap.GetRowLength();
+
+    public static float ballSpeed = 2;
+    public static float paddleSpeed = 2;
+
+    public static float speedIncrement = .1f;
+    public static float tries = 5;
+    public static float round = 1;
+
     public static int trueScreenWidth = 320; public static int trueScreenHeight = 240; // instance for all
-    //<TODO: SCORE, HORIZONTAL COLLISION CHECKS, SCENES>
+    //<TODO: SCENES>
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -56,12 +68,14 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+        // TODO: use this.Content to load your game content here
+
         playfield = GetContent.GetTexture("Game/playField");
 
-        player = new Paddle(GetContent.GetTexture("Game/paddle"), new Vector2(100, trueScreenHeight - 10), 2f, screenBounds);
-        ball = new Ball(GetContent.GetTexture("Game/ball"), new Vector2(100, 100), 2, screenBounds, player);
+        player = new Paddle(GetContent.GetTexture("Game/paddle"), new Vector2(100, trueScreenHeight - 10), paddleSpeed, screenBounds);
+        ball = new Ball(GetContent.GetTexture("Game/ball"), new Vector2(100, 100), ballSpeed, screenBounds, player);
         debug = GetContent.GetTexture("Game/ballSuper");
-        // TODO: use this.Content to load your game content here
+        leftoverTriesCounter = GetContent.GetTexture("Game/ball");
     }
 
     protected override void Update(GameTime gameTime)
@@ -96,27 +110,24 @@ public class Game1 : Game
 
         _spriteBatch.Begin();
         _spriteBatch.Draw(playfield, Vector2.Zero, Color.White);
-
         player.Draw(_spriteBatch);
         ball.Draw(_spriteBatch);
         BrickMap.Draw(_spriteBatch);
-        /*
-        foreach (Rectangle boundary in screenBounds) 
-        {
-            _spriteBatch.Draw(debug, boundary, Color.Red);
-        }
-        */
-
+        _spriteBatch.Draw(leftoverTriesCounter, new Vector2(6, 25), Color.White);
         _spriteBatch.End();
 
         GraphicsDevice.SetRenderTarget(null);
 
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-
         _spriteBatch.Draw(scaledDisp, new Rectangle(0, 0, GraphicsDevice.DisplayMode.Width, GraphicsDevice.DisplayMode.Height), Color.White);
-
         _spriteBatch.End();
 
+        _spriteBatch.Begin(samplerState: SamplerState.LinearWrap);
+        _spriteBatch.DrawString(Fonts.titleFont, $"Score: {score}\n" +
+                                                 $"Round {round}\n" +
+                                                 $"   x {tries}\n"
+                                                 , new Vector2(25, 24), Color.White);
+        _spriteBatch.End();
 
         base.Draw(gameTime);
     }

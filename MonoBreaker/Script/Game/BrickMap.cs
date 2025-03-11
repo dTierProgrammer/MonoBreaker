@@ -38,6 +38,12 @@ namespace MonoBreaker.Script.Game
         private static Game1 _game;
         private static List<Brick> listBricks = new List<Brick>();
 
+        public static int GetRowLength() 
+        {
+            int rowLength = map.GetLength(1);
+            return rowLength;
+        }
+
         public static void Initialize(Game1 game) 
         {
             _game = game;
@@ -53,15 +59,15 @@ namespace MonoBreaker.Script.Game
                 {
                     if (map[column, row] == 1) 
                     {
-                        listBricks.Add(new Brick(images[0], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 4));
+                        listBricks.Add(new Brick(images[0], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 2));
                     }
                     if (map[column, row] == 2)
                     {
-                        listBricks.Add(new Brick(images[1], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 3));
+                        listBricks.Add(new Brick(images[1], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 2));
                     }
                     if (map[column, row] == 3)
                     {
-                        listBricks.Add(new Brick(images[2], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 2));
+                        listBricks.Add(new Brick(images[2], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 1));
                     }
                     if (map[column, row] == 4)
                     {

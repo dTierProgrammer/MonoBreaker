@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace MonoBreaker.Script.Game
 {
@@ -15,9 +16,11 @@ namespace MonoBreaker.Script.Game
         private Rectangle[] ballBoundaries = new Rectangle[4];
         private Paddle paddle;
         private bool isActive = false;
-        int speed;
+        float speed;
+        int prevScore;
+        private Color color = Color.DarkGray;
 
-        public Ball(Texture2D image, Vector2 position, int speed, Rectangle[] ballBoundaries, Paddle paddle) : base(image, position) 
+        public Ball(Texture2D image, Vector2 position, float speed, Rectangle[] ballBoundaries, Paddle paddle) : base(image, position) 
         {
             this.image = image;
             this.position = position;
@@ -47,12 +50,11 @@ namespace MonoBreaker.Script.Game
             direction.Y = -Math.Abs(direction.Y);
         }
 
-        
-
         public void Launch() 
         {
             isActive = true;
             direction.X = paddle.Velocity.X;
+            color = Color.White;
         }
 
         public void Reset()
@@ -67,7 +69,7 @@ namespace MonoBreaker.Script.Game
             {
                 position += direction;
                 
-                // collision problem solved, you're welcome :)
+                // collision problem (somewhat?) solved
                 if (collisionBox.Intersects(ballBoundaries[0]))// || collisionBox.Intersects(ballBoundaries[1]))
                 {//right bound
                     direction.X = Math.Abs(direction.X);
@@ -84,6 +86,7 @@ namespace MonoBreaker.Script.Game
                 }
                 if (collisionBox.Intersects(ballBoundaries[3]))
                 {// kill
+                    Game1.tries--;
                     Reset();
                 }
                 if (collisionBox.Intersects(paddle.collisionBox))
@@ -116,13 +119,20 @@ namespace MonoBreaker.Script.Game
             {
                 position.X = paddle.position.X + 14;
                 position.Y = paddle.position.Y - 6;
+                color = Color.DarkGray;
             }
-            
-        }
 
+            if (Game1.score % Game1.speedUpThreshold == 0 && Game1.score != 0 && Game1.score != prevScore)
+            {
+                speed += Game1.speedIncrement;
+                direction.X = speed * Math.Sign(direction.X);
+                direction.Y = speed * Math.Sign(direction.Y);
+            }
+            prevScore = Game1.score;
+        }
         public void Draw(SpriteBatch window) 
         {
-            window.Draw(this.image, collisionBox, Color.White);
+            window.Draw(this.image, collisionBox, color);
         }
     }
 }

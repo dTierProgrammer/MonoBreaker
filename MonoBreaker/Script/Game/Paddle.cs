@@ -20,11 +20,13 @@ namespace MonoBreaker.Script.Game
 
         private Vector2 velocity = Vector2.Zero;
         public float maxVelocity;
-        private const float acceleration = .35f;
-        private const float friction = acceleration * .5f;
-        private const float tolerance = friction * .9f;
+        private static float acceleration = .35f;
+        private static float friction = acceleration * .5f;
+        private static float tolerance = friction * .9f;
 
         private Rectangle[] playerBoundaries = new Rectangle[4];
+        private bool speedLevelUp = false;
+        int prevScore;
 
         private int score;
         public Paddle(Texture2D image, Vector2 position, float moveSpeed, Rectangle[] playerBoundaries) : base(image, position) 
@@ -85,6 +87,12 @@ namespace MonoBreaker.Script.Game
                     position.X = playerBoundaries[1].Left - this.image.Width;
                 }
             }
+            if (Game1.score % Game1.speedUpThreshold == 0 && Game1.score != 0 && Game1.score != prevScore)
+            {
+                maxVelocity += Game1.speedIncrement;
+                acceleration += Game1.speedIncrement;
+            }
+            prevScore = Game1.score;
         }
 
         public void Draw(SpriteBatch window)

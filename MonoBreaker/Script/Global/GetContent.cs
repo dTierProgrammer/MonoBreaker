@@ -35,5 +35,11 @@ namespace MonoBreaker.Script.Global
             Song song = _game.Content.Load<Song>(path);
             return song;
         }
+
+        public static SpriteFont GetFont(string path)
+        {
+            SpriteFont font = _game.Content.Load<SpriteFont>($"Image/Font/{path}");
+            return font;
+        }
     }
 }

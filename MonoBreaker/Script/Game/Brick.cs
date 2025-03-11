@@ -34,12 +34,15 @@ namespace MonoBreaker.Script.Game
         {
             isActive = false;
             Rect = Rectangle.Empty;
+            
         }
 
         public void Update()
         {
             if (strength <= 0)
             {
+                if(isActive)
+                    Game1.score++;
                 Break();
             }
         }
