@@ -30,6 +30,16 @@ namespace MonoBreaker.Script.Game
             this.paddle = paddle;
         }
 
+        public bool isBallActive
+        {
+            get { return isActive; }
+        }
+
+        public void CheckCollision()
+        {
+            // DO SHIT IN THIS METHOD !!!
+        }
+
         public void ReverseDirectionX() 
         {
             direction.X *= -1;
@@ -125,7 +135,7 @@ namespace MonoBreaker.Script.Game
             if (Game1.score % Game1.speedUpThreshold == 0 && Game1.score != 0 && Game1.score != prevScore)
             {
                 speed += Game1.speedIncrement;
-                direction.X = speed * Math.Sign(direction.X);
+                //direction.X = speed * Math.Sign(direction.X);
                 direction.Y = speed * Math.Sign(direction.Y);
             }
             prevScore = Game1.score;

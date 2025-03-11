@@ -22,16 +22,12 @@ namespace MonoBreaker.Script.Game
         private static int[,] map =
         {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-            
             {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
             {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-           
             {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
             {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
-            
             {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4}
         };
         
@@ -47,12 +43,10 @@ namespace MonoBreaker.Script.Game
         public static void Initialize(Game1 game) 
         {
             _game = game;
-
             for (int index = 0; index < 4; index++) 
             {
                 images[index] = GetContent.GetTexture($"Game/brick_final_{index}");
             }
-
             for (int column = 0; column < map.GetLength(0); column++)
             {
                 for (int row = 0; row < map.GetLength(1); row++)
@@ -73,7 +67,6 @@ namespace MonoBreaker.Script.Game
                     {
                         listBricks.Add(new Brick(images[3], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 1));
                     }
-
                     numOfBricks++;
                 }
             }
@@ -81,16 +74,31 @@ namespace MonoBreaker.Script.Game
 
         public static void Update()
         {
-            
             foreach (Brick brick in listBricks)
             {
                 brick.Update();
                 if (_game.ball.collisionBox.Intersects(brick.Rect))
                 {
+                    // nigga how the fuck do i make it not phase through the damn brick if it bounces on the side ??????
+                    // and why will it immediately destroy them if it collides with 2 at a time ??????
+                    
+                    // <TODO: maybe make ball collisions with bricks a method within the ball class...???>
+                    // CONSIDERING COLLISIONS WITH shallow axis METHOD !!!!!!!!!!
+                    // research shallow axis
+                    
                     brick.Weaken();
                     _game.ball.ReverseDirectionY();
-                    numOfBricks--;
-                    Console.WriteLine(numOfBricks);
+                    
+                    /*
+                    if (_game.ball.collisionBox.Right > brick.Rect.Left)
+                    {
+                        _game.ball.ReverseDirectionX();
+                    }
+                    else if (_game.ball.collisionBox.Left < brick.Rect.Right)
+                    {
+                        _game.ball.ReverseDirectionX();
+                    }
+                    */
                 }
             }
         }

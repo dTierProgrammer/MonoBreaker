@@ -1,4 +1,15 @@
-﻿using Microsoft.Xna.Framework;
+﻿// <TODO: FIX ISSUES, ADD PROPER TILEMAP COLLISIONS, ADD SCENE MANAGEMENT, ADD SOUNDS>
+/* Issues:
+ * - Ball will phase through bricks and instantly destroy bricks if edge/side is hit, or if 2 are hit at the same time
+ *      - Ball still has bad collision detection. . .
+ * - Ball launch key can be held
+ * - If ball launch function is called, ball will bounce off of lower boundary instead of being reset
+ * - Ball will still get stuck in paddle if hit at specific angle
+ * - If ball is moving fast enough, it can phase through collision boxes (bad if I want to make speed increments endless)
+ * */
+ 
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoBreaker.Script.Font;
@@ -37,7 +48,7 @@ public class Game1 : Game
     public static float round = 1;
 
     public static int trueScreenWidth = 320; public static int trueScreenHeight = 240; // instance for all
-    //<TODO: SCENES>
+    
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -91,7 +102,7 @@ public class Game1 : Game
             player.isMoving[1] = true;
         else
             player.isMoving[1] = false;
-        if (Keyboard.GetState().IsKeyDown(Keys.Space))
+        if (Keyboard.GetState().IsKeyDown(Keys.Space) && ball.isBallActive == false)
             ball.Launch();
 
         // TODO: Add your update logic here
