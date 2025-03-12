@@ -17,7 +17,7 @@ namespace MonoBreaker.Script.Game
         private Texture2D image;
         private Vector2 position;
         private static int colorVal = 255;
-        Color color = new Color(colorVal, colorVal, colorVal);
+        private Color color = new Color(colorVal, colorVal, colorVal);
         public Brick(Texture2D image, Vector2 position, int toughness)
         {
             this.image = image;
@@ -30,7 +30,7 @@ namespace MonoBreaker.Script.Game
         public void Weaken()
         {
             strength--;
-            color = new Color(colorVal - 60, colorVal - 60, colorVal - 60);
+            color = Color.DarkGray; //new Color(colorVal - 60, colorVal - 60, colorVal - 60);
         }
 
         public void Break() 

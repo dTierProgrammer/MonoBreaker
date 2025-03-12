@@ -35,11 +35,6 @@ namespace MonoBreaker.Script.Game
             get { return isActive; }
         }
 
-        public void CheckCollision()
-        {
-            // DO SHIT IN THIS METHOD !!!
-        }
-
         public void ReverseDirectionX() 
         {
             direction.X *= -1;
@@ -48,16 +43,6 @@ namespace MonoBreaker.Script.Game
         public void ReverseDirectionY()
         {
             direction.Y *= -1;
-        }
-
-        public void BounceDownwards()
-        {
-            direction.Y = Math.Abs(direction.Y);
-        }
-
-        public void BounceUpwards()
-        {
-            direction.Y = -Math.Abs(direction.Y);
         }
 
         public void Launch() 
@@ -75,8 +60,8 @@ namespace MonoBreaker.Script.Game
 
         public void Update() 
         {
-            // collision problem (somewhat?) solved
-            if (collisionBox.Intersects(ballBoundaries[0]))// || collisionBox.Intersects(ballBoundaries[1]))
+            // no good
+            if (collisionBox.Intersects(ballBoundaries[0]))
             {//right bound
                 direction.X = Math.Abs(direction.X);
             }
@@ -96,7 +81,7 @@ namespace MonoBreaker.Script.Game
                 Reset();
             }
             if (collisionBox.Intersects(paddle.collisionBox))
-            {// add back 'or equal to' flag if somehow nonfucntional
+            {// add back 'or equal to' if somehow nonfucntional
                 if (collisionBox.Left >= paddle.collisionBox.Right)
                 {// leftside collision
                     direction.X = Math.Abs(direction.X);
@@ -106,11 +91,11 @@ namespace MonoBreaker.Script.Game
                     direction.X = -Math.Abs(direction.X);
                 }
 
-                if (collisionBox.Top > paddle.collisionBox.Bottom)
+                if (collisionBox.Top > paddle.collisionBox.Bottom) // doesn't do shit
                 {// if the ball somehow makes it behind the paddle
                     direction.Y = Math.Abs(direction.Y);
                 }
-                if (paddle.Velocity.X != 0) // <TODO: add special collision checks for top of paddle, could prevent future issues>
+                if (paddle.Velocity.X != 0)
                 {// maintain ball movement if paddle isn't moving
                     direction.X = paddle.Velocity.X;
                     direction.Y *= -1;
@@ -121,22 +106,20 @@ namespace MonoBreaker.Script.Game
                 }
             }
 
-            if (isActive)
+            if (isActive) // only move ball if active
             {
                 position += direction;
-
             }
-            else
+            else // darken ball if not active, and make it hover above paddle
             {
                 position.X = paddle.position.X + 14;
                 position.Y = paddle.position.Y - 6;
                 color = Color.DarkGray;
             }
 
-            if (Game1.score % Game1.speedUpThreshold == 0 && Game1.score != 0 && Game1.score != prevScore)
+            if (Game1.score % Game1.speedUpThreshold == 0 && Game1.score != 0 && Game1.score != prevScore) // speed up if score equals a certain value
             {
                 speed += Game1.speedIncrement;
-                //direction.X = speed * Math.Sign(direction.X);
                 direction.Y = speed * Math.Sign(direction.Y);
             }
             prevScore = Game1.score;

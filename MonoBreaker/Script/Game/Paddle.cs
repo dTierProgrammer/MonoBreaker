@@ -16,7 +16,7 @@ namespace MonoBreaker.Script.Game
 {
     public class Paddle:Sprite
     {
-        public Boolean[] isMoving = new bool[4]; // 0-Right, 1-Left, 2-Up, 3-Down
+        public bool[] isMoving = new bool[2]; // 0-Right, 1-Left
 
         private Vector2 velocity = Vector2.Zero;
         public float maxVelocity;
@@ -25,7 +25,6 @@ namespace MonoBreaker.Script.Game
         private static float tolerance = friction * .9f;
 
         private Rectangle[] playerBoundaries = new Rectangle[4];
-        private bool speedLevelUp = false;
         int prevScore;
 
         private int score;
@@ -37,12 +36,6 @@ namespace MonoBreaker.Script.Game
             this.playerBoundaries = playerBoundaries;
         }
 
-        public int Score
-        {
-            set { score = value; }
-            get { return score; }
-        }
-
         public Vector2 Velocity 
         {
             get { return velocity; }
@@ -52,15 +45,17 @@ namespace MonoBreaker.Script.Game
         {
             if (isMoving[0]) // Right
             {
+                isMoving[1] = false;
                 velocity.X = (velocity.X + acceleration);
                 velocity.X = MathHelper.Clamp(velocity.X, -maxVelocity, maxVelocity);
             }
             if (isMoving[1]) // Left
             {
+                isMoving[0] = false;
                 velocity.X = (velocity.X - acceleration);
                 velocity.X = MathHelper.Clamp(velocity.X, -maxVelocity, maxVelocity);
             }
-            if (!isMoving[0] || !isMoving[1]) 
+            if (!isMoving[0] || !isMoving[1]) // neither
             {
                 velocity.X += -Math.Sign(velocity.X) * friction;
                 if (Math.Abs(velocity.X) <= tolerance) 
@@ -70,7 +65,7 @@ namespace MonoBreaker.Script.Game
             }
             this.position.X += velocity.X;
 
-            if (collisionBox.Intersects(playerBoundaries[0])) 
+            if (collisionBox.Intersects(playerBoundaries[0])) // collide with left wall
             {
                 velocity.X = 0;
                 if (position.X <= playerBoundaries[0].Right) 
@@ -79,7 +74,7 @@ namespace MonoBreaker.Script.Game
                 }
             }
 
-            if (collisionBox.Intersects(playerBoundaries[1])) 
+            if (collisionBox.Intersects(playerBoundaries[1])) // colide with right wall
             {
                 velocity.X = 0;
                 if (position.X >= playerBoundaries[1].Left - this.image.Width) 
@@ -87,7 +82,7 @@ namespace MonoBreaker.Script.Game
                     position.X = playerBoundaries[1].Left - this.image.Width;
                 }
             }
-            if (Game1.score % Game1.speedUpThreshold == 0 && Game1.score != 0 && Game1.score != prevScore)
+            if (Game1.score % Game1.speedUpThreshold == 0 && Game1.score != 0 && Game1.score != prevScore) // speed up if score reaches specific value
             {
                 maxVelocity += Game1.speedIncrement;
                 acceleration += Game1.speedIncrement;

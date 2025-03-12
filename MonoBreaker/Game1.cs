@@ -1,9 +1,8 @@
-﻿// <TODO: FIX ISSUES, ADD PROPER TILEMAP COLLISIONS, ADD SCENE MANAGEMENT, ADD SOUNDS>
+﻿// TODO: FIX ISSUES, ADD SCENE MANAGEMENT, ADD SOUNDS
 /* Issues:
  * - Ball will phase through bricks and instantly destroy bricks if edge/side is hit, or if 2 are hit at the same time
- *      - Ball still has bad collision detection. . .
  * - Ball will still get stuck in paddle if hit at specific angle
- * - If ball is moving fast enough, it can phase through collision boxes (bad if I want to make speed increments endless)
+ * - If ball is moving fast enough, it can phase through collision boxes
  * */
  
 
@@ -37,12 +36,11 @@ public class Game1 : Game
     private static int offset = 1;
 
     public static int score;
-    public static readonly int speedUpThreshold = BrickMap.GetRowLength();
+    public static readonly int speedUpThreshold = BrickMap.RowLength;
 
-    public static float ballSpeed = 2;
-    public static float paddleSpeed = 2;
+    public static float startingGameSpeed = 1.5f;
 
-    public static float speedIncrement = .1f;
+    public static float speedIncrement = .25f;
     public static float tries = 5;
     public static float round = 1;
 
@@ -60,6 +58,7 @@ public class Game1 : Game
         _graphics.PreferredBackBufferHeight = 960;
         _graphics.ApplyChanges();
         scaledDisp = new RenderTarget2D(GraphicsDevice, GraphicsDevice.DisplayMode.Width / 4, GraphicsDevice.DisplayMode.Height / 4);
+
     }
 
     protected override void Initialize()
@@ -82,8 +81,8 @@ public class Game1 : Game
 
         playfield = GetContent.GetTexture("Game/playField");
 
-        player = new Paddle(GetContent.GetTexture("Game/paddle"), new Vector2(trueScreenWidth / 2 - 17, trueScreenHeight - 10), paddleSpeed, screenBounds);
-        ball = new Ball(GetContent.GetTexture("Game/ball"), new Vector2(100, 100), ballSpeed, screenBounds, player);
+        player = new Paddle(GetContent.GetTexture("Game/paddle"), new Vector2(trueScreenWidth / 2 - 17, trueScreenHeight - 10), startingGameSpeed, screenBounds);
+        ball = new Ball(GetContent.GetTexture("Game/ball"), new Vector2(100, 100), startingGameSpeed, screenBounds, player);
         debug = GetContent.GetTexture("Game/ballSuper");
         leftoverTriesCounter = GetContent.GetTexture("Game/ball");
     }
