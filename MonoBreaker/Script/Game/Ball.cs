@@ -30,7 +30,7 @@ namespace MonoBreaker.Script.Game
             this.paddle = paddle;
         }
 
-        public bool isBallActive
+        public bool IsActive
         {
             get { return isActive; }
         }

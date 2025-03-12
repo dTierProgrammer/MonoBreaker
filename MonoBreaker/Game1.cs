@@ -101,7 +101,7 @@ public class Game1 : Game
         else
             player.isMoving[1] = false;
 
-        if (Keyboard.GetState().IsKeyDown(Keys.Space) && !priorKBState.IsKeyDown(Keys.Space) && ball.isBallActive == false)
+        if (Keyboard.GetState().IsKeyDown(Keys.Space) && !priorKBState.IsKeyDown(Keys.Space) && ball.IsActive == false)
             ball.Launch();
         priorKBState = Keyboard.GetState();
 

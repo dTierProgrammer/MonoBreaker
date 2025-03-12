@@ -12,11 +12,8 @@ namespace MonoBreaker.Script.Game
 {
     public static class BrickMap
     {
-
-        private static int imageIndex;
         private static Texture2D[] images = new Texture2D[4];
         private static int numOfBricks;
-        private static int brokenBricks;
         
         private static int offset = 6;
         private static int[,] map = // map of bricks
