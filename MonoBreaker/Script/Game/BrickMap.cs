@@ -29,7 +29,7 @@ namespace MonoBreaker.Script.Game
         };
         
         private static Game1 _game;
-        private static List<Brick> listBricks = new List<Brick>(); // every brick instance
+        public static List<Brick> listBricks = new List<Brick>(); // every brick instance
 
         public static void Initialize(Game1 game) 
         {
@@ -79,6 +79,7 @@ namespace MonoBreaker.Script.Game
             foreach (Brick brick in listBricks)
             {
                 brick.Update();
+                /*
                 if (_game.ball.collisionBox.Intersects(brick.Rect))
                 {
                     // ball will immediately destroy brick if it hits its corner or side
@@ -88,7 +89,9 @@ namespace MonoBreaker.Script.Game
 
                     brick.Weaken();
                     _game.ball.ReverseDirectionY();
+                    break;
                 }
+                */
             }
         }
 

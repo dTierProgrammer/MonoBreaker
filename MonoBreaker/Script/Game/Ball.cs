@@ -115,6 +115,23 @@ namespace MonoBreaker.Script.Game
                 position.X = paddle.position.X + 14;
                 position.Y = paddle.position.Y - 6;
                 color = Color.DarkGray;
+            } // ts pmo pmo pmo cuzz
+            
+            foreach(Brick brick in BrickMap.listBricks)
+            {
+                if (collisionBox.Intersects(brick.Rect))
+                {
+                    if (collisionBox.Right <= brick.Rect.Left || collisionBox.Left >= brick.Rect.Right)
+                    {
+                        ReverseDirectionX();
+                    }
+                    if (collisionBox.Top <= brick.Rect.Bottom || collisionBox.Bottom >= brick.Rect.Top)
+                    {
+                        ReverseDirectionY();
+                    } 
+                    brick.Weaken();
+                    break; // better, but ball still phases through the sides of the bricks
+                }
             }
 
             if (Game1.score % Game1.speedUpThreshold == 0 && Game1.score != 0 && Game1.score != prevScore) // speed up if score equals a certain value
