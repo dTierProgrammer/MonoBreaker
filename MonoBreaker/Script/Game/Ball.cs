@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoBreaker.Script.Game.Base;
+using MonoBreaker.Script.Global;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Audio;
 using static System.Formats.Asn1.AsnWriter;
 
 namespace MonoBreaker.Script.Game
@@ -19,6 +21,10 @@ namespace MonoBreaker.Script.Game
         float speed;
         int prevScore;
         private Color color = Color.DarkGray;
+        private readonly SoundEffect bounceSound = GetContent.GetSound("bounce");
+        private readonly SoundEffect paddleBounceSound = GetContent.GetSound("paddleBounce");
+        private readonly SoundEffect ballLossSound = GetContent.GetSound("ballLoss");
+        private readonly SoundEffect ballLaunchSound = GetContent.GetSound("gameEnd");
 
         public Ball(Texture2D image, Vector2 position, float speed, Rectangle[] ballBoundaries, Paddle paddle) : base(image, position) 
         {
@@ -47,6 +53,8 @@ namespace MonoBreaker.Script.Game
 
         public void Launch() 
         {
+            if(!isActive)
+                ballLaunchSound.Play();
             isActive = true;
             direction.X = paddle.Velocity.X;
             color = Color.White;
@@ -64,19 +72,23 @@ namespace MonoBreaker.Script.Game
             if (collisionBox.Intersects(ballBoundaries[0]))
             {//right bound
                 direction.X = Math.Abs(direction.X);
+                bounceSound.Play();
             }
 
             if (collisionBox.Intersects(ballBoundaries[1]))
             {// left bound
                 direction.X = -Math.Abs(direction.X);
+                bounceSound.Play();
             }
 
             if (collisionBox.Intersects(ballBoundaries[2]))
             {// upper bound
                 direction.Y = Math.Abs(direction.Y);
+                bounceSound.Play();
             }
             if (collisionBox.Intersects(ballBoundaries[3]))
             {// kill
+                ballLossSound.Play();
                 Game1.tries--;
                 Reset();
             }
@@ -104,6 +116,8 @@ namespace MonoBreaker.Script.Game
                 {
                     direction.Y *= -1;
                 }
+
+                paddleBounceSound.Play();
             }
 
             if (isActive) // only move ball if active

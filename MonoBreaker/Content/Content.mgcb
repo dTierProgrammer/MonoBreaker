@@ -221,3 +221,45 @@
 /processorParam:TextureFormat=Color
 /build:Image/Test/test.png
 
+#begin Sound/ballLoss.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/ballLoss.wav
+
+#begin Sound/bounce.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/bounce.wav
+
+#begin Sound/gameEnd.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/gameEnd.wav
+
+#begin Sound/paddleBounce.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/paddleBounce.wav
+
+#begin Sound/paddleCollide.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/paddleCollide.wav
+
+#begin Sound/select.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/select.wav
+
+#begin Sound/selection.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/selection.wav
+
