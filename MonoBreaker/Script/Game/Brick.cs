@@ -16,6 +16,8 @@ namespace MonoBreaker.Script.Game
         private int strength;
         private Texture2D image;
         private Vector2 position;
+        private static int colorVal = 255;
+        Color color = new Color(colorVal, colorVal, colorVal);
         public Brick(Texture2D image, Vector2 position, int toughness)
         {
             this.image = image;
@@ -28,6 +30,7 @@ namespace MonoBreaker.Script.Game
         public void Weaken()
         {
             strength--;
+            color = new Color(colorVal - 60, colorVal - 60, colorVal - 60);
         }
 
         public void Break() 
@@ -50,7 +53,7 @@ namespace MonoBreaker.Script.Game
         public void Draw(SpriteBatch window) 
         {
             if(isActive)
-                window.Draw(this.image, Rect, Color.White);
+                window.Draw(this.image, Rect, color);
         }
     }
 }

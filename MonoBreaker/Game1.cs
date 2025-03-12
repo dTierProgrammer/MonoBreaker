@@ -2,8 +2,6 @@
 /* Issues:
  * - Ball will phase through bricks and instantly destroy bricks if edge/side is hit, or if 2 are hit at the same time
  *      - Ball still has bad collision detection. . .
- * - Ball launch key can be held
- * - If ball launch function is called, ball will bounce off of lower boundary instead of being reset
  * - Ball will still get stuck in paddle if hit at specific angle
  * - If ball is moving fast enough, it can phase through collision boxes (bad if I want to make speed increments endless)
  * */
@@ -26,6 +24,7 @@ public class Game1 : Game
     private Rectangle[] screenBounds = new Rectangle[4];
 
     private RenderTarget2D scaledDisp;
+    private KeyboardState priorKBState;
 
     private Texture2D playfield;
 
@@ -92,8 +91,8 @@ public class Game1 : Game
     protected override void Update(GameTime gameTime)
     {
         //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-           // Exit();
-
+        // Exit();
+            
         if (Keyboard.GetState().IsKeyDown(Keys.Right))
             player.isMoving[0] = true;
         else
@@ -102,8 +101,10 @@ public class Game1 : Game
             player.isMoving[1] = true;
         else
             player.isMoving[1] = false;
-        if (Keyboard.GetState().IsKeyDown(Keys.Space) && ball.isBallActive == false)
+
+        if (Keyboard.GetState().IsKeyDown(Keys.Space) && !priorKBState.IsKeyDown(Keys.Space) && ball.isBallActive == false)
             ball.Launch();
+        priorKBState = Keyboard.GetState();
 
         // TODO: Add your update logic here
         player.Update();

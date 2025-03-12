@@ -75,57 +75,58 @@ namespace MonoBreaker.Script.Game
 
         public void Update() 
         {
-            if (isActive)
-            {
-                position += direction;
-                
-                // collision problem (somewhat?) solved
-                if (collisionBox.Intersects(ballBoundaries[0]))// || collisionBox.Intersects(ballBoundaries[1]))
-                {//right bound
+            // collision problem (somewhat?) solved
+            if (collisionBox.Intersects(ballBoundaries[0]))// || collisionBox.Intersects(ballBoundaries[1]))
+            {//right bound
+                direction.X = Math.Abs(direction.X);
+            }
+
+            if (collisionBox.Intersects(ballBoundaries[1]))
+            {// left bound
+                direction.X = -Math.Abs(direction.X);
+            }
+
+            if (collisionBox.Intersects(ballBoundaries[2]))
+            {// upper bound
+                direction.Y = Math.Abs(direction.Y);
+            }
+            if (collisionBox.Intersects(ballBoundaries[3]))
+            {// kill
+                Game1.tries--;
+                Reset();
+            }
+            if (collisionBox.Intersects(paddle.collisionBox))
+            {// add back 'or equal to' flag if somehow nonfucntional
+                if (collisionBox.Left >= paddle.collisionBox.Right)
+                {// leftside collision
                     direction.X = Math.Abs(direction.X);
                 }
-
-                if (collisionBox.Intersects(ballBoundaries[1]))
-                {// left bound
+                if (collisionBox.Right <= paddle.collisionBox.Left)
+                {// rightside collision
                     direction.X = -Math.Abs(direction.X);
                 }
 
-                if (collisionBox.Intersects(ballBoundaries[2]))
-                {// upper bound
+                if (collisionBox.Top > paddle.collisionBox.Bottom)
+                {// if the ball somehow makes it behind the paddle
                     direction.Y = Math.Abs(direction.Y);
                 }
-                if (collisionBox.Intersects(ballBoundaries[3]))
-                {// kill
-                    Game1.tries--;
-                    Reset();
+                if (paddle.Velocity.X != 0) // <TODO: add special collision checks for top of paddle, could prevent future issues>
+                {// maintain ball movement if paddle isn't moving
+                    direction.X = paddle.Velocity.X;
+                    direction.Y *= -1;
                 }
-                if (collisionBox.Intersects(paddle.collisionBox))
-                {// add back 'or equal to' flag if somehow nonfucntional
-                    if (collisionBox.Left >= paddle.collisionBox.Right)
-                    {// leftside collision
-                        direction.X = Math.Abs(direction.X);
-                    }
-                    if (collisionBox.Right <= paddle.collisionBox.Left)
-                    {// rightside collision
-                        direction.X = -Math.Abs(direction.X);
-                    }
-
-                    if (collisionBox.Top > paddle.collisionBox.Bottom)
-                    {// if the ball somehow makes it behind the paddle
-                        direction.Y = Math.Abs(direction.Y);
-                    }
-                    if (paddle.Velocity.X != 0) // <TODO: add special collision checks for top of paddle, could prevent future issues>
-                    {// maintain ball movement if paddle isn't moving
-                        direction.X = paddle.Velocity.X;
-                        direction.Y *= -1;
-                    }
-                    else
-                    {
-                        direction.Y *= -1;
-                    }
+                else
+                {
+                    direction.Y *= -1;
                 }
             }
-            else 
+
+            if (isActive)
+            {
+                position += direction;
+
+            }
+            else
             {
                 position.X = paddle.position.X + 14;
                 position.Y = paddle.position.Y - 6;
