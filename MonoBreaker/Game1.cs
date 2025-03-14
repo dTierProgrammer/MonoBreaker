@@ -34,8 +34,6 @@ public class Game1 : Game
     private Texture2D debug;
     private Texture2D leftoverTriesCounter;
 
-    private static int offset = 1;
-
     public static int score;
     public static readonly int speedUpThreshold = BrickMap.RowLength;
 
@@ -45,7 +43,7 @@ public class Game1 : Game
     public static float tries = 5;
     public static float round = 1;
 
-    public static int trueScreenWidth = 320; public static int trueScreenHeight = 240; // instance for all
+    public readonly int trueScreenWidth = 320; public readonly int trueScreenHeight = 240; // instance for all
     
     public Game1()
     {
