@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Audio;
+using MonoBreaker.Script.Global;
 
 namespace MonoBreaker.Script.Game
 {
@@ -18,6 +20,8 @@ namespace MonoBreaker.Script.Game
         private Vector2 position;
         private static int colorVal = 255;
         private Color color = new Color(colorVal, colorVal, colorVal);
+        private SoundEffect brickWeaken = GetContent.GetSound("brickBreak");
+        private SoundEffect brickBreak = GetContent.GetSound("brickDestroy");
         public Brick(Texture2D image, Vector2 position, int toughness)
         {
             this.image = image;
@@ -31,13 +35,16 @@ namespace MonoBreaker.Script.Game
         {
             strength--;
             color = Color.DarkGray; //new Color(colorVal - 60, colorVal - 60, colorVal - 60);
+            brickWeaken.Play();
         }
 
         public void Break() 
         {
+            if(isActive)
+                brickBreak.Play();
             isActive = false;
             Rect = Rectangle.Empty;
-            
+           
         }
 
         public void Update()

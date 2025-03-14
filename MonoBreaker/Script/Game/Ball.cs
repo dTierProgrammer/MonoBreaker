@@ -25,6 +25,8 @@ namespace MonoBreaker.Script.Game
         private readonly SoundEffect paddleBounceSound = GetContent.GetSound("paddleBounce");
         private readonly SoundEffect ballLossSound = GetContent.GetSound("ballLoss");
         private readonly SoundEffect ballLaunchSound = GetContent.GetSound("gameEnd");
+        private Vector2 projectedMovement; // doin stuff
+        private Point collidePoint; // doin stuff
 
         public Ball(Texture2D image, Vector2 position, float speed, Rectangle[] ballBoundaries, Paddle paddle) : base(image, position) 
         {

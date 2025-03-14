@@ -3,10 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoBreaker.Script.Global;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace MonoBreaker.Script.Game
 {
@@ -79,19 +76,10 @@ namespace MonoBreaker.Script.Game
             foreach (Brick brick in listBricks)
             {
                 brick.Update();
-                /*
-                if (_game.ball.collisionBox.Intersects(brick.Rect))
-                {
-                    // ball will immediately destroy brick if it hits its corner or side
-                    // side collision checks obvs but any code I write for it does jack shit
-                    // how do I do tilemap collisions l;asd;asjkfopiasdjfiodwgjLKSDCVJoiflgrj
-                    // better idea: don't check for collisions in the fucken brickmap class
-
-                    brick.Weaken();
-                    _game.ball.ReverseDirectionY();
-                    break;
-                }
-                */
+                // ball will immediately destroy brick if it hits its corner or side
+                // side collision checks obvs but any code I write for it does jack shit
+                // how do I do tilemap collisions l;asd;asjkfopiasdjfiodwgjLKSDCVJoiflgrj
+                // better idea: don't check for collisions in the fucken brickmap class
             }
         }
 

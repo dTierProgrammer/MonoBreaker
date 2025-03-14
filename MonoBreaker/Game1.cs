@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoBreaker.Script.Font;
 using MonoBreaker.Script.Game;
 using MonoBreaker.Script.Global;
+using MonoBreaker.Script.Scene;
 
 namespace MonoBreaker;
 
@@ -40,7 +41,7 @@ public class Game1 : Game
 
     public static float startingGameSpeed = 1.5f;
 
-    public static float speedIncrement = .25f;
+    public static float speedIncrement = .1f;
     public static float tries = 5;
     public static float round = 1;
 
@@ -58,7 +59,7 @@ public class Game1 : Game
         _graphics.PreferredBackBufferHeight = 960;
         _graphics.ApplyChanges();
         scaledDisp = new RenderTarget2D(GraphicsDevice, GraphicsDevice.DisplayMode.Width / 4, GraphicsDevice.DisplayMode.Height / 4);
-
+        
     }
 
     protected override void Initialize()
@@ -110,6 +111,11 @@ public class Game1 : Game
         ball.Update();
         BrickMap.Update();
         base.Update(gameTime);
+
+        switch (SceneController.CurrentScene)
+        {
+            
+        }
     }
 
     protected override void Draw(GameTime gameTime)

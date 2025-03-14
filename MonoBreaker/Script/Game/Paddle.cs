@@ -6,9 +6,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Net.Mime;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Audio;
+using MonoBreaker.Script.Global;
 using Color = Microsoft.Xna.Framework.Color;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
@@ -23,6 +26,7 @@ namespace MonoBreaker.Script.Game
         private static float acceleration = .35f;
         private static float friction = acceleration * .5f;
         private static float tolerance = friction * .9f;
+        private SoundEffect speedUpSound = GetContent.GetSound("speedUp");
 
         private Rectangle[] playerBoundaries = new Rectangle[4];
         int prevScore;
@@ -86,6 +90,7 @@ namespace MonoBreaker.Script.Game
             {
                 maxVelocity += Game1.speedIncrement;
                 acceleration += Game1.speedIncrement;
+                speedUpSound.Play();
             }
             prevScore = Game1.score;
         }

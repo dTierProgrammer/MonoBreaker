@@ -233,6 +233,18 @@
 /processorParam:Quality=Best
 /build:Sound/bounce.wav
 
+#begin Sound/brickBreak.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/brickBreak.wav
+
+#begin Sound/brickDestroy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/brickDestroy.wav
+
 #begin Sound/gameEnd.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -262,4 +274,10 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sound/selection.wav
+
+#begin Sound/speedUp.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/speedUp.wav
 
