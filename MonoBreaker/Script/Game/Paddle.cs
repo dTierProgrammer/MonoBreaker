@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Audio;
 using MonoBreaker.Script.Global;
 using Color = Microsoft.Xna.Framework.Color;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using MonoBreaker.Script.Scene.GameScenes;
 
 namespace MonoBreaker.Script.Game
 {
@@ -86,13 +87,13 @@ namespace MonoBreaker.Script.Game
                     position.X = playerBoundaries[1].Left - this.image.Width;
                 }
             }
-            if (Game1.score % Game1.speedUpThreshold == 0 && Game1.score != 0 && Game1.score != prevScore) // speed up if score reaches specific value
+            if (Playing.score % Playing.speedUpThreshold == 0 && Playing.score != 0 && Playing.score != prevScore) // speed up if score reaches specific value
             {
-                maxVelocity += Game1.speedIncrement;
-                acceleration += Game1.speedIncrement;
+                maxVelocity += Playing.speedIncrement;
+                acceleration += Playing.speedIncrement;
                 speedUpSound.Play();
             }
-            prevScore = Game1.score;
+            prevScore = Playing.score;
         }
 
         public void Draw(SpriteBatch window)

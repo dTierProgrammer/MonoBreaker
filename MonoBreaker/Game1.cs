@@ -13,6 +13,7 @@ using MonoBreaker.Script.Font;
 using MonoBreaker.Script.Game;
 using MonoBreaker.Script.Global;
 using MonoBreaker.Script.Scene;
+using MonoBreaker.Script.Scene.GameScenes;
 
 namespace MonoBreaker;
 
@@ -21,29 +22,12 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
-    private Rectangle[] screenBounds = new Rectangle[4];
+    
 
     private RenderTarget2D scaledDisp;
-    private KeyboardState priorKBState;
-
-    private Texture2D playfield;
-
-    public Paddle player;
-    public Ball ball;
 
     private Texture2D debug;
-    private Texture2D leftoverTriesCounter;
-
-    private static int offset = 1;
-
-    public static int score;
-    public static readonly int speedUpThreshold = BrickMap.RowLength;
-
-    public static float startingGameSpeed = 1.5f;
-
-    public static float speedIncrement = .1f;
-    public static float tries = 5;
-    public static float round = 1;
+    
 
     public static int trueScreenWidth = 320; public static int trueScreenHeight = 240; // instance for all
     
@@ -66,11 +50,7 @@ public class Game1 : Game
     {
         // TODO: Add your initialization logic here
         GetContent.Initialize(this);
-        screenBounds[0] = new Rectangle(0, 0, 4, trueScreenHeight); // r
-        screenBounds[1] = new Rectangle(trueScreenWidth - 4, 0, 4, trueScreenHeight); // l
-        screenBounds[2] = new Rectangle(0, 0, trueScreenWidth, 4); // u
-        screenBounds[3] = new Rectangle(0 ,trueScreenHeight - 4, trueScreenWidth, 4); // d
-        BrickMap.Initialize(this);
+        Playing.Initialize(this);
         base.Initialize();
     }
 
@@ -80,12 +60,10 @@ public class Game1 : Game
 
         // TODO: use this.Content to load your game content here
 
-        playfield = GetContent.GetTexture("Game/playField");
-
-        player = new Paddle(GetContent.GetTexture("Game/paddle"), new Vector2(trueScreenWidth / 2 - 17, trueScreenHeight - 10), startingGameSpeed, screenBounds);
-        ball = new Ball(GetContent.GetTexture("Game/ball"), new Vector2(100, 100), startingGameSpeed, screenBounds, player);
         debug = GetContent.GetTexture("Game/ballSuper");
-        leftoverTriesCounter = GetContent.GetTexture("Game/ball");
+        
+
+        Playing.Load();
     }
 
     protected override void Update(GameTime gameTime)
@@ -93,29 +71,29 @@ public class Game1 : Game
         //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
         // Exit();
             
-        if (Keyboard.GetState().IsKeyDown(Keys.Right))
-            player.isMoving[0] = true;
-        else
-            player.isMoving[0] = false;
-        if (Keyboard.GetState().IsKeyDown(Keys.Left))
-            player.isMoving[1] = true;
-        else
-            player.isMoving[1] = false;
-
-        if (Keyboard.GetState().IsKeyDown(Keys.Space) && !priorKBState.IsKeyDown(Keys.Space) && ball.IsActive == false)
-            ball.Launch();
-        priorKBState = Keyboard.GetState();
+        
 
         // TODO: Add your update logic here
-        player.Update();
-        ball.Update();
-        BrickMap.Update();
         base.Update(gameTime);
 
+        
         switch (SceneController.CurrentScene)
         {
-            
+            case Scene.TITLE:
+                break;
+            case Scene.MENU:
+                break;
+            case Scene.PLAYING:
+                Playing.Update();
+                break;
+            case Scene.PAUSE:
+                break;
+            case Scene.NEXTROUND:
+                break;
+            case Scene.GAMEOVER:
+                break;
         }
+        
     }
 
     protected override void Draw(GameTime gameTime)
@@ -125,12 +103,27 @@ public class Game1 : Game
         // TODO: Add your drawing code here
         GraphicsDevice.SetRenderTarget(scaledDisp);
 
+        
+
         _spriteBatch.Begin();
-        _spriteBatch.Draw(playfield, Vector2.Zero, Color.White);
-        player.Draw(_spriteBatch);
-        ball.Draw(_spriteBatch);
-        BrickMap.Draw(_spriteBatch);
-        _spriteBatch.Draw(leftoverTriesCounter, new Vector2(6, 25), Color.White);
+
+        switch (SceneController.CurrentScene)
+        {
+            case Scene.TITLE:
+                break;
+            case Scene.MENU:
+                break;
+            case Scene.PLAYING:
+                break;
+            case Scene.PAUSE:
+                break;
+            case Scene.NEXTROUND:
+                break;
+            case Scene.GAMEOVER:
+                break;
+        }
+
+        
         _spriteBatch.End();
 
         GraphicsDevice.SetRenderTarget(null);
@@ -139,11 +132,23 @@ public class Game1 : Game
         _spriteBatch.Draw(scaledDisp, new Rectangle(0, 0, GraphicsDevice.DisplayMode.Width, GraphicsDevice.DisplayMode.Height), Color.White);
         _spriteBatch.End();
 
-        _spriteBatch.Begin(samplerState: SamplerState.LinearWrap);
-        _spriteBatch.DrawString(Fonts.titleFont, $"Score: {score}\n" +
-                                                 $"Round {round}\n" +
-                                                 $"   x {tries}\n"
-                                                 , new Vector2(25, 24), Color.White);
+        _spriteBatch.Begin(samplerState: SamplerState.LinearWrap); // text
+
+        switch (SceneController.CurrentScene)
+        {
+            case Scene.TITLE:
+                break;
+            case Scene.MENU:
+                break;
+            case Scene.PLAYING:
+                break;
+            case Scene.PAUSE:
+                break;
+            case Scene.NEXTROUND:
+                break;
+            case Scene.GAMEOVER:
+                break;
+        }
         _spriteBatch.End();
 
         base.Draw(gameTime);

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Audio;
 using static System.Formats.Asn1.AsnWriter;
+using MonoBreaker.Script.Scene.GameScenes;
 
 namespace MonoBreaker.Script.Game
 {
@@ -91,7 +92,7 @@ namespace MonoBreaker.Script.Game
             if (collisionBox.Intersects(ballBoundaries[3]))
             {// kill
                 ballLossSound.Play();
-                Game1.tries--;
+                Playing.tries--;
                 Reset();
             }
             if (collisionBox.Intersects(paddle.collisionBox))
@@ -150,12 +151,12 @@ namespace MonoBreaker.Script.Game
                 }
             }
 
-            if (Game1.score % Game1.speedUpThreshold == 0 && Game1.score != 0 && Game1.score != prevScore) // speed up if score equals a certain value
+            if (Playing.score % Playing.speedUpThreshold == 0 && Playing.score != 0 && Playing.score != prevScore) // speed up if score equals a certain value
             {
-                speed += Game1.speedIncrement;
+                speed += Playing.speedIncrement;
                 direction.Y = speed * Math.Sign(direction.Y);
             }
-            prevScore = Game1.score;
+            prevScore = Playing.score;
         }
         public void Draw(SpriteBatch window) 
         {

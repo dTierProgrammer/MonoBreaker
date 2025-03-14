@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Audio;
 using MonoBreaker.Script.Global;
+using MonoBreaker.Script.Scene.GameScenes;
 
 namespace MonoBreaker.Script.Game
 {
@@ -52,7 +53,7 @@ namespace MonoBreaker.Script.Game
             if (strength <= 0)
             {
                 if(isActive)
-                    Game1.score++;
+                    Playing.score++;
                 Break();
             }
         }
