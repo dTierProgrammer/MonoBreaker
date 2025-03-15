@@ -21,13 +21,7 @@ public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-
-    
-
     private RenderTarget2D scaledDisp;
-
-    private Texture2D debug;
-    
 
     public static int trueScreenWidth = 320; public static int trueScreenHeight = 240; // instance for all
     
@@ -37,7 +31,7 @@ public class Game1 : Game
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
 
-        Window.Title = "MonoBreaker Demo";
+        Window.Title = "MonoBreaker";
 
         _graphics.PreferredBackBufferWidth = 1280;
         _graphics.PreferredBackBufferHeight = 960;
@@ -59,10 +53,6 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         // TODO: use this.Content to load your game content here
-
-        debug = GetContent.GetTexture("Game/ballSuper");
-        
-
         Playing.Load();
     }
 
@@ -84,7 +74,7 @@ public class Game1 : Game
             case Scene.MENU:
                 break;
             case Scene.PLAYING:
-                Playing.Update();
+                Playing.Update(gameTime);
                 break;
             case Scene.PAUSE:
                 break;
@@ -103,8 +93,6 @@ public class Game1 : Game
         // TODO: Add your drawing code here
         GraphicsDevice.SetRenderTarget(scaledDisp);
 
-        
-
         _spriteBatch.Begin();
 
         switch (SceneController.CurrentScene)
@@ -114,6 +102,7 @@ public class Game1 : Game
             case Scene.MENU:
                 break;
             case Scene.PLAYING:
+                Playing.Draw(_spriteBatch);
                 break;
             case Scene.PAUSE:
                 break;
@@ -141,6 +130,7 @@ public class Game1 : Game
             case Scene.MENU:
                 break;
             case Scene.PLAYING:
+                Playing.DrawText(_spriteBatch);
                 break;
             case Scene.PAUSE:
                 break;

@@ -26,9 +26,10 @@ namespace MonoBreaker.Script.Game
         private readonly SoundEffect paddleBounceSound = GetContent.GetSound("paddleBounce");
         private readonly SoundEffect ballLossSound = GetContent.GetSound("ballLoss");
         private readonly SoundEffect ballLaunchSound = GetContent.GetSound("gameEnd");
-        private Vector2 projectedMovement; // doin stuff
-        private Point collidePoint; // doin stuff
 
+        private Vector2 projectedMovement; // doin stuff
+        private Point collidePoint = new Point(1, 1); // doin stuff
+        
         public Ball(Texture2D image, Vector2 position, float speed, Rectangle[] ballBoundaries, Paddle paddle) : base(image, position) 
         {
             this.image = image;
@@ -69,8 +70,13 @@ namespace MonoBreaker.Script.Game
             direction = new Vector2(0, -speed);
         }
 
-        public void Update() 
+        public void Update(GameTime gameTime) 
         {
+            // projected movement, I THINK
+            projectedMovement = new Vector2 (position.X += direction.X * (float)gameTime.ElapsedGameTime.TotalSeconds, position.Y += direction.Y * (float)gameTime.ElapsedGameTime.TotalSeconds); 
+
+
+
             // no good
             if (collisionBox.Intersects(ballBoundaries[0]))
             {//right bound
@@ -111,7 +117,7 @@ namespace MonoBreaker.Script.Game
                     direction.Y = Math.Abs(direction.Y);
                 }
                 if (paddle.Velocity.X != 0)
-                {// maintain ball movement if paddle isn't moving
+                {// only set X velocity to paddle X velocity if paddle is moving
                     direction.X = paddle.Velocity.X;
                     direction.Y *= -1;
                 }

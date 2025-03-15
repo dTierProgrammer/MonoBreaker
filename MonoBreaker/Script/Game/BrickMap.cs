@@ -11,7 +11,7 @@ namespace MonoBreaker.Script.Game
     {
         private static Texture2D[] images = new Texture2D[4];
         private static int numOfBricks;
-        
+
         private static int offset = 6;
         private static int[,] map = // map of bricks
         {
@@ -24,11 +24,11 @@ namespace MonoBreaker.Script.Game
             {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
             {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4}
         };
-        
+
         private static Game1 _game;
         public static List<Brick> listBricks = new List<Brick>(); // every brick instance
 
-        public static void Initialize(Game1 game) 
+        public static void Initialize(Game1 game)
         {
             _game = game;
             for (int index = 0; index < 4; index++) // load brick images (fake automation)
@@ -40,7 +40,7 @@ namespace MonoBreaker.Script.Game
             {
                 for (int row = 0; row < map.GetLength(1); row++)
                 {
-                    if (map[column, row] == 1) 
+                    if (map[column, row] == 1)
                     {
                         listBricks.Add(new Brick(images[0], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 2));
                     }
@@ -56,7 +56,6 @@ namespace MonoBreaker.Script.Game
                     {
                         listBricks.Add(new Brick(images[3], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 1));
                     }
-                    numOfBricks++;
                 }
             }
         }
@@ -68,7 +67,15 @@ namespace MonoBreaker.Script.Game
 
         public static int NumOfBricks
         {
-            get { return numOfBricks; }
+            set 
+            {
+                numOfBricks = 112; 
+            }
+
+            get 
+            {
+                return numOfBricks; 
+            }
         }
 
         public static void Update() // iterate through brick list and call each brick's update function
@@ -80,6 +87,14 @@ namespace MonoBreaker.Script.Game
                 // side collision checks obvs but any code I write for it does jack shit
                 // how do I do tilemap collisions l;asd;asjkfopiasdjfiodwgjLKSDCVJoiflgrj
                 // better idea: don't check for collisions in the fucken brickmap class
+            }
+        }
+
+        public static void ResetMap()
+        {
+            foreach (Brick brick in listBricks) 
+            {
+                brick.Reset();
             }
         }
 

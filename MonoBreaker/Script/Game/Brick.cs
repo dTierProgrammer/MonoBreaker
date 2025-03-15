@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Audio;
 using MonoBreaker.Script.Global;
 using MonoBreaker.Script.Scene.GameScenes;
+using System.Linq.Expressions;
 
 namespace MonoBreaker.Script.Game
 {
@@ -35,13 +36,13 @@ namespace MonoBreaker.Script.Game
         public void Weaken()
         {
             strength--;
-            color = Color.DarkGray; //new Color(colorVal - 60, colorVal - 60, colorVal - 60);
+            color = Color.DarkGray;
             brickWeaken.Play();
         }
 
         public void Break() 
         {
-            if(isActive)
+            if (isActive)
                 brickBreak.Play();
             isActive = false;
             Rect = Rectangle.Empty;
@@ -55,6 +56,15 @@ namespace MonoBreaker.Script.Game
                 if(isActive)
                     Playing.score++;
                 Break();
+            }
+        }
+
+        public void Reset() 
+        {
+            if (!isActive && Rect.IsEmpty) 
+            {
+                isActive = true;
+                Rect = new Rectangle((int)this.position.X, (int)this.position.Y, this.image.Width, this.image.Height);
             }
         }
 
