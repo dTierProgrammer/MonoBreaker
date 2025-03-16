@@ -208,8 +208,6 @@ namespace MonoBreaker.Script.Game
                     }
                     */
                     paddleBounceSound.Play();
-
-
                 }
 
                 foreach (Brick brick in BrickMap.listBricks)
@@ -239,7 +237,7 @@ namespace MonoBreaker.Script.Game
                     hasCollided = false;
                 }
                 // Y End
-
+                
                 prevPosition = position;
             }
             else // darken ball if not active, and make it hover above paddle

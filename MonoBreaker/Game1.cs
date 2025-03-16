@@ -22,6 +22,7 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private RenderTarget2D scaledDisp;
+    private Texture2D debug;
 
     public static int trueScreenWidth = 320; public static int trueScreenHeight = 240; // instance for all
     
@@ -53,6 +54,7 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         // TODO: use this.Content to load your game content here
+        debug = GetContent.GetTexture("Game/ballSuper");
         Playing.Load();
     }
 
@@ -94,6 +96,7 @@ public class Game1 : Game
         GraphicsDevice.SetRenderTarget(scaledDisp);
 
         _spriteBatch.Begin();
+        
 
         switch (SceneController.CurrentScene)
         {
@@ -111,7 +114,7 @@ public class Game1 : Game
             case Scene.GAMEOVER:
                 break;
         }
-
+        //_spriteBatch.Draw(debug, new Rectangle(1, 1, 16, 16), Color.Red);
         
         _spriteBatch.End();
 
