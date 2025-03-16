@@ -83,10 +83,6 @@ namespace MonoBreaker.Script.Game
             foreach (Brick brick in listBricks)
             {
                 brick.Update();
-                // ball will immediately destroy brick if it hits its corner or side
-                // side collision checks obvs but any code I write for it does jack shit
-                // how do I do tilemap collisions l;asd;asjkfopiasdjfiodwgjLKSDCVJoiflgrj
-                // better idea: don't check for collisions in the fucken brickmap class
             }
         }
 

@@ -85,7 +85,6 @@ public static class Playing
 
     public static void DrawText(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(leftoverTriesCounter, new Vector2(6, 25), Color.White);
         spriteBatch.DrawString(Fonts.titleFont, $"Score: {score}\n" +
                                                  $"Round {round}\n" +
                                                  $"   x {tries}\n"
