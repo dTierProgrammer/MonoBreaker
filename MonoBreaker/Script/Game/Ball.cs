@@ -146,11 +146,10 @@ namespace MonoBreaker.Script.Game
                     {
                         _brick = brick;
                         hasCollided = true;
-                        
                         break;
-
                     }
                 }
+
                 if (hasCollided && collisionBox.Intersects(_brick.Rect) ) 
                 {
                     if ((collisionBox.Right >= _brick.Rect.Left) && (prevPosition.X >= _brick.Rect.Right))
@@ -223,21 +222,20 @@ namespace MonoBreaker.Script.Game
                 if (hasCollided && collisionBox.Intersects(_brick.Rect))
                 {
                     if ((collisionBox.Top <= _brick.Rect.Bottom) && (prevPosition.Y <= _brick.Rect.Bottom))
-                    { // up
+                    { // above collision
                         BounceUp();
                         position.Y = _brick.Rect.Top;
                     }
                     if ((collisionBox.Bottom >= _brick.Rect.Top) && (prevPosition.Y >= _brick.Rect.Top))
-                    { // down
+                    { // under collision
                         BounceDown();
                         position.Y = _brick.Rect.Bottom;
                     }
                     _brick.Weaken();
                     hasCollided = false;
                 }
-
-
                 // Y End
+
                 prevPosition = position;
             }
             else // darken ball if not active, and make it hover above paddle
@@ -245,42 +243,7 @@ namespace MonoBreaker.Script.Game
                 position.X = paddle.position.X + 14;
                 position.Y = paddle.position.Y - 6;
                 color = Color.DarkGray;
-            } // ts pmo pmo pmo cuzz
-            
-            /*
-            foreach(Brick brick in BrickMap.listBricks)
-            {
-                if (collisionBox.Intersects(brick.Rect))
-                {
-                    
-                    if (collisionBox.Top <= brick.Rect.Bottom)
-                    {
-                        ReverseDirectionY();
-                        brick.Weaken();
-                    }
-                    else if (collisionBox.Bottom >= brick.Rect.Top) 
-                    {
-                        ReverseDirectionY();
-                        brick.Weaken();
-                    }
-                    
-
-                    if (collisionBox.Right <= brick.Rect.Left) 
-                    {
-                        ReverseDirectionX();
-                        brick.Weaken();
-                    }
-                    else if (collisionBox.Left >= brick.Rect.Right)
-                    {
-                        ReverseDirectionX();
-                        brick.Weaken();  
-                    }
-
-                    break;
-                }
             }
-            */
-            
 
             if (Playing.score % Playing.speedUpThreshold == 0 && Playing.score != 0 && Playing.score != prevScore) // speed up if score equals a certain value
             {
