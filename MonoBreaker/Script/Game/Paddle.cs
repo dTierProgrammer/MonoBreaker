@@ -28,6 +28,7 @@ namespace MonoBreaker.Script.Game
         private static float friction = acceleration * .5f;
         private static float tolerance = friction * .9f;
         private SoundEffect speedUpSound = GetContent.GetSound("speedUp");
+        public readonly int paddleCenterWidth;
 
         private Rectangle[] playerBoundaries = new Rectangle[4];
         int prevScore;
@@ -39,6 +40,7 @@ namespace MonoBreaker.Script.Game
             this.position = position;
             maxVelocity = moveSpeed;
             this.playerBoundaries = playerBoundaries;
+            paddleCenterWidth = this.image.Width / 2;
         }
 
         public Vector2 Velocity 

@@ -193,17 +193,20 @@ namespace MonoBreaker.Script.Game
                     { // up
                         BounceUp();
                         position.Y = paddle.collisionBox.Top - collisionBox.Height;
+                        direction.X = (collisionBox.Center.X - paddle.collisionBox.Center.X) / 10f;
+                        Math.Clamp(direction.X, -speed, speed);
                     }
                     if ((collisionBox.Bottom >= paddle.collisionBox.Top) && (prevPosition.Y >= paddle.collisionBox.Top))
                     { // down (if the ball gets below the paddle)
                         BounceDown();
                         position.Y = paddle.collisionBox.Bottom;
-                    }
-                    
+                    }  
+                    /*
                     if (paddle.Velocity.X != 0)
                     {// only set X velocity to paddle X velocity if paddle is moving
                         direction.X = paddle.Velocity.X;
                     }
+                    */
                     paddleBounceSound.Play();
 
 

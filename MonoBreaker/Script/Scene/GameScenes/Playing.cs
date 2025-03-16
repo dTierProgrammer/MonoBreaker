@@ -41,7 +41,7 @@ public static class Playing
         screenBounds[2] = new Rectangle(0, 0, Game1.trueScreenWidth, 4); // u
         screenBounds[3] = new Rectangle(0, Game1.trueScreenHeight - 4, Game1.trueScreenWidth, 4); // d
 
-        player = new Paddle(GetContent.GetTexture("Game/paddle"), new Vector2(Game1.trueScreenWidth / 2 - 17, Game1.trueScreenHeight - 10), startingGameSpeed, screenBounds);
+        player = new Paddle(GetContent.GetTexture("Game/paddle"), new Vector2(Game1.trueScreenWidth / 2 - 17, Game1.trueScreenHeight - 16), startingGameSpeed, screenBounds);
         ball = new Ball(GetContent.GetTexture("Game/ball"), new Vector2(100, 100), startingGameSpeed, screenBounds, player);
         leftoverTriesCounter = GetContent.GetTexture("Game/ball");
     }
