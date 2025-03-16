@@ -29,6 +29,7 @@ namespace MonoBreaker.Script.Game
 
         private Vector2 projectedMovement; // doin stuff
         private Point collidePoint = new Point(1, 1); // doin stuff
+        private Vector2 prevPosition;
         
         public Ball(Texture2D image, Vector2 position, float speed, Rectangle[] ballBoundaries, Paddle paddle) : base(image, position) 
         {
@@ -55,6 +56,26 @@ namespace MonoBreaker.Script.Game
             direction.Y *= -1;
         }
 
+        public void BounceLeft() 
+        {
+            direction.X = -Math.Abs(direction.X);
+        }
+
+        public void BounceRight() 
+        {
+            direction.X = Math.Abs(direction.X);
+        }
+
+        public void BounceUp() 
+        {
+            direction.Y = -Math.Abs(direction.Y);
+        }
+
+        public void BounceDown() 
+        {
+            direction.Y = Math.Abs(direction.Y);
+        }
+
         public void Launch() 
         {
             if(!isActive)
@@ -73,65 +94,87 @@ namespace MonoBreaker.Script.Game
         public void Update(GameTime gameTime) 
         {
             // projected movement, I THINK
-            projectedMovement = new Vector2 (position.X += direction.X * (float)gameTime.ElapsedGameTime.TotalSeconds, position.Y += direction.Y * (float)gameTime.ElapsedGameTime.TotalSeconds); 
-
-
-
-            // no good
-            if (collisionBox.Intersects(ballBoundaries[0]))
-            {//right bound
-                direction.X = Math.Abs(direction.X);
-                bounceSound.Play();
-            }
-
-            if (collisionBox.Intersects(ballBoundaries[1]))
-            {// left bound
-                direction.X = -Math.Abs(direction.X);
-                bounceSound.Play();
-            }
-
-            if (collisionBox.Intersects(ballBoundaries[2]))
-            {// upper bound
-                direction.Y = Math.Abs(direction.Y);
-                bounceSound.Play();
-            }
-            if (collisionBox.Intersects(ballBoundaries[3]))
-            {// kill
-                ballLossSound.Play();
-                Playing.tries--;
-                Reset();
-            }
-            if (collisionBox.Intersects(paddle.collisionBox))
-            {// add back 'or equal to' if somehow nonfucntional
-                if (collisionBox.Left >= paddle.collisionBox.Right)
-                {// leftside collision
-                    direction.X = Math.Abs(direction.X);
-                }
-                if (collisionBox.Right <= paddle.collisionBox.Left)
-                {// rightside collision
-                    direction.X = -Math.Abs(direction.X);
-                }
-
-                if (collisionBox.Top > paddle.collisionBox.Bottom) // doesn't do shit
-                {// if the ball somehow makes it behind the paddle
-                    direction.Y = Math.Abs(direction.Y);
-                }
-                if (paddle.Velocity.X != 0)
-                {// only set X velocity to paddle X velocity if paddle is moving
-                    direction.X = paddle.Velocity.X;
-                    direction.Y *= -1;
-                }
-                else
-                {
-                    direction.Y *= -1;
-                }
-
-                paddleBounceSound.Play();
-            }
+            projectedMovement = new Vector2 (position.X += direction.X * (float)gameTime.ElapsedGameTime.TotalSeconds, position.Y += direction.Y * (float)gameTime.ElapsedGameTime.TotalSeconds);
 
             if (isActive) // only move ball if active
             {
-                position += direction;
+                // X Start
+                position.X += direction.X;
+
+                if (collisionBox.Intersects(ballBoundaries[0])) // collision detections have to be done to the right
+                {//right bound
+                    if (prevPosition.X < ballBoundaries[0].Right) // appears to work
+                    {
+                        position.X = ballBoundaries[0].Right;
+                    }
+                    BounceRight();
+                    bounceSound.Play();
+                }
+
+                if (collisionBox.Intersects(ballBoundaries[1])) // collision detections have to be done to the left
+                {// left bound
+                    
+                    if (prevPosition.X > ballBoundaries[1].Left) // appears to work
+                    {
+                        position.X = ballBoundaries[1].Left - collisionBox.Width;
+                    }
+                    BounceLeft();  
+                    bounceSound.Play();
+                }
+
+                if (collisionBox.Intersects(paddle.collisionBox))
+                {// add back 'or equal to' if somehow nonfucntional
+                    if ((collisionBox.Right <= paddle.collisionBox.Left) && (prevPosition.X <= paddle.collisionBox.Right))
+                    {// right side collision
+                        position.X = paddle.collisionBox.Right;
+                        BounceRight();
+                    }
+                    if ((collisionBox.Left >= paddle.collisionBox.Right) && (prevPosition.X >= paddle.collisionBox.Left))
+                    {// left side collision
+                        position.X = paddle.collisionBox.Left - paddle.collisionBox.Width;
+                        BounceLeft();
+                    }
+                    
+                }
+                // X End
+
+                // Y Start 
+                position.Y += direction.Y;
+                if (collisionBox.Intersects(ballBoundaries[2]))
+                {// upper bound
+                    if (prevPosition.Y > ballBoundaries[2].Bottom) 
+                    {
+                        position.Y = ballBoundaries[2].Bottom;
+                    }
+                    BounceDown();
+                    bounceSound.Play();
+                }
+                if (collisionBox.Intersects(ballBoundaries[3]))
+                {// kill
+                    ballLossSound.Play();
+                    Playing.tries--;
+                    Reset();
+                }
+                if (collisionBox.Intersects(paddle.collisionBox)) 
+                {
+                    if ((collisionBox.Top <= paddle.collisionBox.Bottom) && (prevPosition.Y <= paddle.collisionBox.Bottom))
+                    { // up
+                        BounceUp();
+                        position.Y = paddle.collisionBox.Top - collisionBox.Height;
+                    }
+                    if ((collisionBox.Bottom >= paddle.collisionBox.Top) && (prevPosition.Y >= paddle.collisionBox.Top))
+                    { // down (if the ball gets below the paddle)
+                        BounceDown();
+                        position.Y = paddle.collisionBox.Bottom;
+                    }
+                    
+                    if (paddle.Velocity.X != 0)
+                    {// only set X velocity to paddle X velocity if paddle is moving
+                        direction.X = paddle.Velocity.X;
+                    }
+                    paddleBounceSound.Play();
+                }
+                prevPosition = position;
             }
             else // darken ball if not active, and make it hover above paddle
             {
@@ -140,22 +183,40 @@ namespace MonoBreaker.Script.Game
                 color = Color.DarkGray;
             } // ts pmo pmo pmo cuzz
             
+            /*
             foreach(Brick brick in BrickMap.listBricks)
             {
                 if (collisionBox.Intersects(brick.Rect))
                 {
-                    if (collisionBox.Right <= brick.Rect.Left || collisionBox.Left >= brick.Rect.Right)
-                    {
-                        ReverseDirectionX();
-                    }
-                    if (collisionBox.Top <= brick.Rect.Bottom || collisionBox.Bottom >= brick.Rect.Top)
+                    
+                    if (collisionBox.Top <= brick.Rect.Bottom)
                     {
                         ReverseDirectionY();
-                    } 
-                    brick.Weaken();
-                    break; // better, but ball still phases through the sides of the bricks
+                        brick.Weaken();
+                    }
+                    else if (collisionBox.Bottom >= brick.Rect.Top) 
+                    {
+                        ReverseDirectionY();
+                        brick.Weaken();
+                    }
+                    
+
+                    if (collisionBox.Right <= brick.Rect.Left) 
+                    {
+                        ReverseDirectionX();
+                        brick.Weaken();
+                    }
+                    else if (collisionBox.Left >= brick.Rect.Right)
+                    {
+                        ReverseDirectionX();
+                        brick.Weaken();  
+                    }
+
+                    break;
                 }
             }
+            */
+            
 
             if (Playing.score % Playing.speedUpThreshold == 0 && Playing.score != 0 && Playing.score != prevScore) // speed up if score equals a certain value
             {
