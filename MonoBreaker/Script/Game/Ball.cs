@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Audio;
 using static System.Formats.Asn1.AsnWriter;
 using MonoBreaker.Script.Scene.GameScenes;
+using System.Diagnostics;
 
 namespace MonoBreaker.Script.Game
 {
@@ -30,6 +31,8 @@ namespace MonoBreaker.Script.Game
         private Vector2 projectedMovement; // doin stuff
         private Point collidePoint = new Point(1, 1); // doin stuff
         private Vector2 prevPosition;
+        Brick _brick;
+        private bool hasCollided = false;
         
         public Ball(Texture2D image, Vector2 position, float speed, Rectangle[] ballBoundaries, Paddle paddle) : base(image, position) 
         {
@@ -136,6 +139,36 @@ namespace MonoBreaker.Script.Game
                     }
                     
                 }
+
+                foreach (Brick brick in BrickMap.listBricks) 
+                {
+                    if (collisionBox.Intersects(brick.Rect)) 
+                    {
+                        _brick = brick;
+                        hasCollided = true;
+                        
+                        break;
+
+                    }
+                }
+                if (hasCollided && collisionBox.Intersects(_brick.Rect) ) 
+                {
+                    if ((collisionBox.Right >= _brick.Rect.Left) && (prevPosition.X >= _brick.Rect.Right))
+                    {// right side collision
+                        
+                        position.X = prevPosition.X;
+                        BounceRight();
+                    }
+                    if ((collisionBox.Left <= _brick.Rect.Right) && (prevPosition.X <= _brick.Rect.Left))
+                    {// left side collision
+                        
+                        position.X = prevPosition.X;
+                        BounceLeft();
+                    }
+                    _brick.Weaken();
+                    hasCollided = false;
+                }
+                
                 // X End
 
                 // Y Start 
@@ -173,7 +206,38 @@ namespace MonoBreaker.Script.Game
                         direction.X = paddle.Velocity.X;
                     }
                     paddleBounceSound.Play();
+
+
                 }
+
+                foreach (Brick brick in BrickMap.listBricks)
+                {
+                    if (collisionBox.Intersects(brick.Rect))
+                    {
+                        _brick = brick;
+                        hasCollided = true;
+                        break;
+                    }
+                }
+
+                if (hasCollided && collisionBox.Intersects(_brick.Rect))
+                {
+                    if ((collisionBox.Top <= _brick.Rect.Bottom) && (prevPosition.Y <= _brick.Rect.Bottom))
+                    { // up
+                        BounceUp();
+                        position.Y = _brick.Rect.Top;
+                    }
+                    if ((collisionBox.Bottom >= _brick.Rect.Top) && (prevPosition.Y >= _brick.Rect.Top))
+                    { // down
+                        BounceDown();
+                        position.Y = _brick.Rect.Bottom;
+                    }
+                    _brick.Weaken();
+                    hasCollided = false;
+                }
+
+
+                // Y End
                 prevPosition = position;
             }
             else // darken ball if not active, and make it hover above paddle
