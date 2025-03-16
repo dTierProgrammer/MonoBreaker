@@ -224,7 +224,8 @@ namespace MonoBreaker.Script.Game
                     if ((collisionBox.Top <= _brick.Rect.Bottom) && (prevPosition.Y <= _brick.Rect.Bottom))
                     { // above collision
                         BounceUp();
-                        position.Y = _brick.Rect.Top;
+                        position.Y = _brick.Rect.Top - collisionBox.Height;
+
                     }
                     if ((collisionBox.Bottom >= _brick.Rect.Top) && (prevPosition.Y >= _brick.Rect.Top))
                     { // under collision
