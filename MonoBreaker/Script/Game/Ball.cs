@@ -30,6 +30,8 @@ namespace MonoBreaker.Script.Game
         private bool isLovely = false;
         
         public int ballStrength = 1;
+        private int ballHealth = 1;
+        
         float speed;
         int prevScore;
         private Color color = Color.DarkGray;
@@ -49,6 +51,7 @@ namespace MonoBreaker.Script.Game
             image = GetContent.GetTexture("Game/ball");
             this.position = position;
             this.speed = speed;
+            ballHealth = 1;
             
             this.isMainBall = isMainBall;
             if(!isMainBall)
@@ -59,6 +62,28 @@ namespace MonoBreaker.Script.Game
             }
         }
 
+        public Ball(Vector2 position, float speed, bool isMainBall, int ballHealth) : base(position)
+        {
+            image = GetContent.GetTexture("Game/ball");
+            this.position = position;
+            this.speed = speed;
+            this.ballHealth = ballHealth;
+            
+            this.isMainBall = isMainBall;
+            if(!isMainBall)
+                direction = new Vector2(Math.Clamp(rng.NextSingle(), -speed, speed), -speed);
+            else
+            {
+                direction = new Vector2(0, -speed);
+            }
+        }
+
+        private int BallHealth
+        {
+            set{ballHealth=value;}
+            get{return ballHealth;}
+        }
+        
         public int BallStrength
         {
             get { return ballStrength; }
@@ -223,19 +248,34 @@ namespace MonoBreaker.Script.Game
                 {// lower bound / kill
                     if (isMainBall)
                     {
-                        ballLossSound.Play();
-                        Playing.tries--;
-                        Reset();
+                        if (ballHealth > 1)
+                        {
+                            bounceSound.Play();
+                            BounceUp();
+                            ballHealth--;
+                        }
+                        else
+                        {
+                            ballLossSound.Play();
+                            Playing.tries--;
+                            Reset();
+                        }
                     }
                     else
-                    {
+                    {if (ballHealth > 1)
+                        {
+                            bounceSound.Play();
+                            BounceUp();
+                            ballHealth--;
+                        }
+                        else
+                        {
+                            if(isAnimated)
+                                ballDownSound.Play();
+                            Kill();
+                        }
                         position.Y = Playing.screenBounds[3].Top - collisionBox.Height;
-                        if(isAnimated)
-                            ballDownSound.Play();
-                        Kill();
                     }
-                        
-                    
                 }
                 if (collisionBox.Intersects(paddle.collisionBox)) 
                 {

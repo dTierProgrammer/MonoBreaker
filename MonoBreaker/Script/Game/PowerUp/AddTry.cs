@@ -23,9 +23,9 @@ public class AddTry
     public void Update()
     {
         if (isActive)
-            collisionBox.Y += 1;
+            collisionBox.Y += 2;
         
-        this.position.Y += 1.2f;
+        position.Y += 1.2f;
         if (collisionBox.Intersects(Playing.player.collisionBox))
         {
             Playing.tries++;

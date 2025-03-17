@@ -25,14 +25,17 @@ public static class Playing
 
     private static Texture2D leftoverTriesCounter;
 
-    public static int score;
+    public static int score = 0;
+    private static int prevScore;
     public static readonly int speedUpThreshold = BrickMap.RowLength;
+    private static readonly int addTryThreshold = 130;
 
     public static float startingGameSpeed = 1.5f;
 
     public static float speedIncrement = .1f;
     public static float tries = 5;
     public static float round = 1;
+    private static AddTry oneUp;
 
     public static Random rng = new Random();
 
@@ -50,14 +53,20 @@ public static class Playing
 
         player = new Paddle(new Vector2(Game1.trueScreenWidth / 2f - 17f, Game1.trueScreenHeight - 16), startingGameSpeed, screenBounds);
         ball = new Ball(new Vector2(100, 100), startingGameSpeed, true);
-        /* // test multiball
-        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(100, 320)), startingGameSpeed, false));
-        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(180, 320)), startingGameSpeed, false));
-        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(180, 320)), startingGameSpeed, false));
-        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(180, 320)), startingGameSpeed, false));
-        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(180, 320)), startingGameSpeed, false));
-        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(180, 320)), startingGameSpeed, false));
-        */
+        
+        // test multiball
+        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(100, 320)), startingGameSpeed, false, 5));
+        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(100, 320)), startingGameSpeed, false, 5));
+        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(100, 320)), startingGameSpeed, false, 5));
+        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(100, 320)), startingGameSpeed, false, 5));
+        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(100, 320)), startingGameSpeed, false, 5));
+        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(100, 320)), startingGameSpeed, false, 5));
+        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(100, 320)), startingGameSpeed, false, 5));
+        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(100, 320)), startingGameSpeed, false, 5));
+        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(100, 320)), startingGameSpeed, false, 5));
+        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(100, 320)), startingGameSpeed, false, 5));
+
+        oneUp = new AddTry(new Vector2(100, 0));
         leftoverTriesCounter = GetContent.GetTexture("Game/ball");
     }
 
@@ -81,6 +90,12 @@ public static class Playing
         if (Keyboard.GetState().IsKeyDown(Keys.Space) && !priorKBState.IsKeyDown(Keys.Space) && ball.IsActive == false)
             ball.Launch();
         priorKBState = Keyboard.GetState();
+        
+        if (score % addTryThreshold == 0 && score != 0 && score != prevScore) // 1up after a certain amount of points is added to score
+        {
+            tries++;
+        }
+        prevScore = score;
 
         player.Update();
         ball.Update(gameTime);
@@ -89,6 +104,7 @@ public static class Playing
             ball.Update(gameTime);
         }
         BrickMap.Update();
+        oneUp.Update();
     }
 
     public static void Draw(SpriteBatch spriteBatch)
@@ -102,6 +118,7 @@ public static class Playing
             ball.Draw(spriteBatch);
         }
         BrickMap.Draw(spriteBatch);
+        oneUp.Draw(spriteBatch);
     }
 
     public static void DrawText(SpriteBatch spriteBatch)
