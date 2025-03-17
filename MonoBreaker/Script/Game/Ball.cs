@@ -32,7 +32,7 @@ namespace MonoBreaker.Script.Game
         private int ballStrength = 1;
         private int ballHealth = 1;
         
-        float speed;
+        public float speed;
         int prevScore;
         private Color color = Color.DarkGray;
         private readonly SoundEffect bounceSound = GetContent.GetSound("bounce");
@@ -72,6 +72,21 @@ namespace MonoBreaker.Script.Game
             this.isMainBall = isMainBall;
             if(!isMainBall)
                 direction = new Vector2(Math.Clamp(rng.NextSingle(), -speed, speed), -speed);
+            else
+            {
+                direction = new Vector2(0, -speed);
+            }
+        }
+        public Ball(Vector2 position, float speed, Vector2 direction, bool isMainBall, int ballHealth) : base(position)
+        {
+            image = GetContent.GetTexture("Game/ball");
+            this.position = position;
+            this.speed = speed;
+            this.ballHealth = ballHealth;
+            
+            this.isMainBall = isMainBall;
+            if(!isMainBall)
+                this.direction = direction;
             else
             {
                 direction = new Vector2(0, -speed);

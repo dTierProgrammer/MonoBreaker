@@ -27,12 +27,10 @@ namespace MonoBreaker.Script.Game.Base
         
         public virtual Rectangle collisionBox
         {
-
             get
             {
                 return new Rectangle((int)this.position.X, (int)this.position.Y, this.image.Width, this.image.Height);
             }
-
         }
     }
 }

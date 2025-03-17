@@ -25,7 +25,7 @@ public class DeathBounce
         
         if (collisionBox.Intersects(Playing.player.collisionBox))
         {
-            Playing.ball.BallHealth = 2;
+            Playing.ball.BallHealth = 3;
             collisionBox = Rectangle.Empty;
             Playing.powerUpSound.Play();
             isActive = false;
