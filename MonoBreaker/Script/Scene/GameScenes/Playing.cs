@@ -6,6 +6,7 @@ using MonoBreaker.Script.Game;
 using MonoBreaker.Script.Global;
 using static System.Formats.Asn1.AsnWriter;
 using System.Text;
+using MonoBreaker.Script.Game.PowerUp;
 
 namespace MonoBreaker.Script.Scene.GameScenes;
 
@@ -17,7 +18,8 @@ public static class Playing
 
     public static Paddle player;
     public static  Ball ball;
-    private static Rectangle[] screenBounds = new Rectangle[4];
+    private static Ball ball2;
+    public readonly static Rectangle[] screenBounds = new Rectangle[4];
 
     private static Texture2D leftoverTriesCounter;
 
@@ -31,6 +33,7 @@ public static class Playing
     public static float round = 1;
 
     private static Game1 _game;
+    
     public static void Initialize(Game1 game)
     {
         _game = game;
@@ -42,7 +45,7 @@ public static class Playing
         screenBounds[3] = new Rectangle(0, Game1.trueScreenHeight - 4, Game1.trueScreenWidth, 4); // d
 
         player = new Paddle(GetContent.GetTexture("Game/paddle"), new Vector2(Game1.trueScreenWidth / 2 - 17, Game1.trueScreenHeight - 16), startingGameSpeed, screenBounds);
-        ball = new Ball(GetContent.GetTexture("Game/ball"), new Vector2(100, 100), startingGameSpeed, screenBounds, player);
+        ball = new Ball(GetContent.GetTexture("Game/ball"), new Vector2(100, 100), startingGameSpeed);
         leftoverTriesCounter = GetContent.GetTexture("Game/ball");
     }
 
@@ -70,8 +73,6 @@ public static class Playing
         player.Update();
         ball.Update(gameTime);
         BrickMap.Update();
-
-        
     }
 
     public static void Draw(SpriteBatch spriteBatch)

@@ -43,7 +43,11 @@ namespace MonoBreaker.Script.Game
         public void Break() 
         {
             if (isActive)
+            {
                 brickBreak.Play();
+                Playing.score++;
+            }
+            
             isActive = false;
             Rect = Rectangle.Empty;
            
@@ -53,8 +57,6 @@ namespace MonoBreaker.Script.Game
         {
             if (strength <= 0)
             {
-                if(isActive)
-                    Playing.score++;
                 Break();
             }
         }

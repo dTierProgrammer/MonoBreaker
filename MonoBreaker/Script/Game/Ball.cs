@@ -17,8 +17,7 @@ namespace MonoBreaker.Script.Game
     public class Ball: Sprite
     {
         private Vector2 direction =  Vector2.Zero;
-        private Rectangle[] ballBoundaries = new Rectangle[4];
-        private Paddle paddle;
+        private Paddle paddle = Playing.player;
         private bool isActive = false;
         float speed;
         int prevScore;
@@ -27,6 +26,7 @@ namespace MonoBreaker.Script.Game
         private readonly SoundEffect paddleBounceSound = GetContent.GetSound("paddleBounce");
         private readonly SoundEffect ballLossSound = GetContent.GetSound("ballLoss");
         private readonly SoundEffect ballLaunchSound = GetContent.GetSound("gameEnd");
+        private bool isMainBall;
 
         private Vector2 projectedMovement; // doin stuff
         private Point collidePoint = new Point(1, 1); // doin stuff
@@ -34,14 +34,12 @@ namespace MonoBreaker.Script.Game
         Brick _brick;
         private bool hasCollided = false;
         
-        public Ball(Texture2D image, Vector2 position, float speed, Rectangle[] ballBoundaries, Paddle paddle) : base(image, position) 
+        public Ball(Texture2D image, Vector2 position, float speed) : base(image, position) 
         {
             this.image = image;
             this.position = position;
-            this.ballBoundaries = ballBoundaries;
             this.speed = speed;
             direction = new Vector2(0, -speed);
-            this.paddle = paddle;
         }
 
         public bool IsActive
@@ -104,22 +102,22 @@ namespace MonoBreaker.Script.Game
                 // X Start
                 position.X += direction.X;
 
-                if (collisionBox.Intersects(ballBoundaries[0])) // collision detections have to be done to the right
+                if (collisionBox.Intersects(Playing.screenBounds[0])) // collision detections have to be done to the right
                 {//right bound
-                    if (prevPosition.X < ballBoundaries[0].Right) // appears to work
+                    if (prevPosition.X < Playing.screenBounds[0].Right) // appears to work
                     {
-                        position.X = ballBoundaries[0].Right;
+                        position.X = Playing.screenBounds[0].Right;
                     }
                     BounceRight();
                     bounceSound.Play();
                 }
 
-                if (collisionBox.Intersects(ballBoundaries[1])) // collision detections have to be done to the left
+                if (collisionBox.Intersects(Playing.screenBounds[1])) // collision detections have to be done to the left
                 {// left bound
                     
-                    if (prevPosition.X > ballBoundaries[1].Left) // appears to work
+                    if (prevPosition.X > Playing.screenBounds[1].Left) // appears to work
                     {
-                        position.X = ballBoundaries[1].Left - collisionBox.Width;
+                        position.X = Playing.screenBounds[1].Left - collisionBox.Width;
                     }
                     BounceLeft();  
                     bounceSound.Play();
@@ -172,16 +170,16 @@ namespace MonoBreaker.Script.Game
 
                 // Y Start 
                 position.Y += direction.Y;
-                if (collisionBox.Intersects(ballBoundaries[2]))
+                if (collisionBox.Intersects(Playing.screenBounds[2]))
                 {// upper bound
-                    if (prevPosition.Y > ballBoundaries[2].Bottom) 
+                    if (prevPosition.Y > Playing.screenBounds[2].Bottom) 
                     {
-                        position.Y = ballBoundaries[2].Bottom;
+                        position.Y = Playing.screenBounds[2].Bottom;
                     }
                     BounceDown();
                     bounceSound.Play();
                 }
-                if (collisionBox.Intersects(ballBoundaries[3]))
+                if (collisionBox.Intersects(Playing.screenBounds[3]))
                 {// kill
                     ballLossSound.Play();
                     Playing.tries--;
