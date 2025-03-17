@@ -11,35 +11,57 @@ using Microsoft.Xna.Framework.Audio;
 using static System.Formats.Asn1.AsnWriter;
 using MonoBreaker.Script.Scene.GameScenes;
 using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace MonoBreaker.Script.Game
 {
     public class Ball: Sprite
     {
+        private Random rng = new Random();
         private Vector2 direction =  Vector2.Zero;
         private Paddle paddle = Playing.player;
         private bool isActive = false;
+        private bool isAnimated = true;
+        private bool useOldHandling = false;
+        private bool isMainBall;
+        
+        private bool canPierce = false;
+        private bool isSuper = false;
+        private bool isLovely = false;
+        
+        public int ballStrength = 1;
         float speed;
         int prevScore;
         private Color color = Color.DarkGray;
         private readonly SoundEffect bounceSound = GetContent.GetSound("bounce");
         private readonly SoundEffect paddleBounceSound = GetContent.GetSound("paddleBounce");
         private readonly SoundEffect ballLossSound = GetContent.GetSound("ballLoss");
+        private readonly SoundEffect ballDownSound = GetContent.GetSound("down");
         private readonly SoundEffect ballLaunchSound = GetContent.GetSound("gameEnd");
-        private bool isMainBall;
-
-        private Vector2 projectedMovement; // doin stuff
-        private Point collidePoint = new Point(1, 1); // doin stuff
+        
+        
         private Vector2 prevPosition;
         Brick _brick;
         private bool hasCollided = false;
         
-        public Ball(Texture2D image, Vector2 position, float speed) : base(image, position) 
+        public Ball(Vector2 position, float speed, bool isMainBall) : base(position) 
         {
-            this.image = image;
+            image = GetContent.GetTexture("Game/ball");
             this.position = position;
             this.speed = speed;
-            direction = new Vector2(0, -speed);
+            
+            this.isMainBall = isMainBall;
+            if(!isMainBall)
+                direction = new Vector2(Math.Clamp(rng.NextSingle(), -speed, speed), -speed);
+            else
+            {
+                direction = new Vector2(0, -speed);
+            }
+        }
+
+        public int BallStrength
+        {
+            get { return ballStrength; }
         }
 
         public bool IsActive
@@ -79,7 +101,7 @@ namespace MonoBreaker.Script.Game
 
         public void Launch() 
         {
-            if(!isActive)
+            if(!isActive && isMainBall)
                 ballLaunchSound.Play();
             isActive = true;
             direction.X = paddle.Velocity.X;
@@ -92,12 +114,27 @@ namespace MonoBreaker.Script.Game
             direction = new Vector2(0, -speed);
         }
 
+        public void Kill()
+        {
+            isAnimated = false;
+        }
+
         public void Update(GameTime gameTime) 
         {
-            // projected movement, I THINK
-            projectedMovement = new Vector2 (position.X += direction.X * (float)gameTime.ElapsedGameTime.TotalSeconds, position.Y += direction.Y * (float)gameTime.ElapsedGameTime.TotalSeconds);
-
-            if (isActive) // only move ball if active
+            if (isSuper)
+            {
+                image = GetContent.GetTexture("Game/ballSuper");
+                ballStrength = 2;
+                
+            }
+            if(isLovely)
+                image = GetContent.GetTexture("Test/test");
+            
+            if (!isMainBall)
+            {
+                isActive = true;
+            }
+            if (isActive && isAnimated) // only move ball if active
             {
                 // X Start
                 position.X += direction.X;
@@ -139,7 +176,7 @@ namespace MonoBreaker.Script.Game
                 }
 
                 foreach (Brick brick in BrickMap.listBricks) 
-                {
+                { // ball will only do collision calculations with one brick
                     if (collisionBox.Intersects(brick.Rect)) 
                     {
                         _brick = brick;
@@ -150,19 +187,22 @@ namespace MonoBreaker.Script.Game
 
                 if (hasCollided && collisionBox.Intersects(_brick.Rect) ) 
                 {
-                    if ((collisionBox.Right >= _brick.Rect.Left) && (prevPosition.X >= _brick.Rect.Right))
+                    if ((collisionBox.Right >= _brick.Rect.Left) && (prevPosition.X >= _brick.Rect.Right) && !canPierce)
                     {// right side collision
                         
                         position.X = prevPosition.X;
                         BounceRight();
                     }
-                    if ((collisionBox.Left <= _brick.Rect.Right) && (prevPosition.X <= _brick.Rect.Left))
+                    if ((collisionBox.Left <= _brick.Rect.Right) && (prevPosition.X <= _brick.Rect.Left) && !canPierce)
                     {// left side collision
                         
                         position.X = prevPosition.X;
                         BounceLeft();
                     }
-                    _brick.Weaken();
+                    if (canPierce)
+                        _brick.Break();
+                    else
+                        _brick.Weaken();
                     hasCollided = false;
                 }
                 
@@ -180,38 +220,63 @@ namespace MonoBreaker.Script.Game
                     bounceSound.Play();
                 }
                 if (collisionBox.Intersects(Playing.screenBounds[3]))
-                {// kill
-                    ballLossSound.Play();
-                    Playing.tries--;
-                    Reset();
+                {// lower bound / kill
+                    if (isMainBall)
+                    {
+                        ballLossSound.Play();
+                        Playing.tries--;
+                        Reset();
+                    }
+                    else
+                    {
+                        position.Y = Playing.screenBounds[3].Top - collisionBox.Height;
+                        if(isAnimated)
+                            ballDownSound.Play();
+                        Kill();
+                    }
+                        
+                    
                 }
                 if (collisionBox.Intersects(paddle.collisionBox)) 
                 {
-                    if ((collisionBox.Top <= paddle.collisionBox.Bottom) && (prevPosition.Y <= paddle.collisionBox.Bottom))
-                    { // up
-                        BounceUp();
-                        position.Y = paddle.collisionBox.Top - collisionBox.Height;
-                        direction.X = (collisionBox.Center.X - paddle.collisionBox.Center.X) / 10f;
-                        Math.Clamp(direction.X, -speed, speed);
+                    if (!useOldHandling)
+                    {
+                        if ((collisionBox.Top <= paddle.collisionBox.Bottom) && (prevPosition.Y <= paddle.collisionBox.Bottom))
+                        { // up (new handling // ball angle is determined by where on the paddle it collides)
+                            BounceUp();
+                            position.Y = paddle.collisionBox.Top - collisionBox.Height;
+                            direction.X = (collisionBox.Center.X - paddle.collisionBox.Center.X) / 10f;
+                            Math.Clamp(direction.X, -speed, speed);
+                        }
                     }
+                    else
+                    {
+                        if ((collisionBox.Top <= paddle.collisionBox.Bottom) &&
+                            (prevPosition.Y <= paddle.collisionBox.Bottom))
+                        {
+                            BounceUp();
+                            position.Y = paddle.collisionBox.Top - collisionBox.Height;
+                        }
+                        if (paddle.Velocity.X != 0)
+                        {// up (old handling // ball angle is set to the direction the paddle is moving, and it remains the same if paddle is stationary)
+                            direction.X = paddle.Velocity.X;
+                        }
+                    }
+                    
                     if ((collisionBox.Bottom >= paddle.collisionBox.Top) && (prevPosition.Y >= paddle.collisionBox.Top))
                     { // down (if the ball gets below the paddle)
                         BounceDown();
                         position.Y = paddle.collisionBox.Bottom;
-                    }  
-                    /*
-                    if (paddle.Velocity.X != 0)
-                    {// only set X velocity to paddle X velocity if paddle is moving
-                        direction.X = paddle.Velocity.X;
                     }
-                    */
+                    
+                    
                     paddleBounceSound.Play();
                 }
 
                 foreach (Brick brick in BrickMap.listBricks)
                 {
                     if (collisionBox.Intersects(brick.Rect))
-                    {
+                    { // ball will only do collision calculations with one brick
                         _brick = brick;
                         hasCollided = true;
                         break;
@@ -220,28 +285,32 @@ namespace MonoBreaker.Script.Game
 
                 if (hasCollided && collisionBox.Intersects(_brick.Rect))
                 {
-                    if ((collisionBox.Top <= _brick.Rect.Bottom) && (prevPosition.Y <= _brick.Rect.Bottom))
+                    if ((collisionBox.Top <= _brick.Rect.Bottom) && (prevPosition.Y <= _brick.Rect.Bottom) && !canPierce)
                     { // above collision
                         BounceUp();
                         position.Y = _brick.Rect.Top - collisionBox.Height;
 
                     }
-                    if ((collisionBox.Bottom >= _brick.Rect.Top) && (prevPosition.Y >= _brick.Rect.Top))
+                    if ((collisionBox.Bottom >= _brick.Rect.Top) && (prevPosition.Y >= _brick.Rect.Top) && !canPierce)
                     { // under collision
                         BounceDown();
                         position.Y = _brick.Rect.Bottom;
                     }
-                    _brick.Weaken();
+
+                    if (canPierce)
+                        _brick.Break();
+                    else
+                        _brick.Weaken();
                     hasCollided = false;
                 }
                 // Y End
                 
                 prevPosition = position;
             }
-            else // darken ball if not active, and make it hover above paddle
+            else if(!isActive && isMainBall) // darken ball if not active, and make it hover above paddle
             {
-                position.X = paddle.position.X + 14;
-                position.Y = paddle.position.Y - 6;
+                position.X = paddle.collisionBox.Center.X - (collisionBox.Width / 2f);
+                position.Y = paddle.position.Y - collisionBox.Height - 2f;
                 color = Color.DarkGray;
             }
 
@@ -254,7 +323,8 @@ namespace MonoBreaker.Script.Game
         }
         public void Draw(SpriteBatch window) 
         {
-            window.Draw(this.image, collisionBox, color);
+            if(isAnimated)
+                window.Draw(this.image, collisionBox, color);
         }
     }
 }

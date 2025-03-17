@@ -35,7 +35,7 @@ namespace MonoBreaker.Script.Game
 
         public void Weaken()
         {
-            strength--;
+            strength -= Playing.ball.BallStrength;
             color = Color.DarkGray;
             brickWeaken.Play();
         }

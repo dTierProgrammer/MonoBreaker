@@ -28,19 +28,20 @@ namespace MonoBreaker.Script.Game
         private static float friction = acceleration * .5f;
         private static float tolerance = friction * .9f;
         private SoundEffect speedUpSound = GetContent.GetSound("speedUp");
-        public readonly int paddleCenterWidth;
 
+        private bool isSuper = false;
+        private bool canShoot = false;
+        
         private Rectangle[] playerBoundaries = new Rectangle[4];
         int prevScore;
 
         private int score;
-        public Paddle(Texture2D image, Vector2 position, float moveSpeed, Rectangle[] playerBoundaries) : base(image, position) 
+        public Paddle(Vector2 position, float moveSpeed, Rectangle[] playerBoundaries) : base(position) 
         {
-            this.image = image;
+            image = GetContent.GetTexture("Game/paddle");
             this.position = position;
             maxVelocity = moveSpeed;
             this.playerBoundaries = playerBoundaries;
-            paddleCenterWidth = this.image.Width / 2;
         }
 
         public Vector2 Velocity 
@@ -50,6 +51,8 @@ namespace MonoBreaker.Script.Game
 
         public void Update() 
         {
+            if (isSuper)
+                image = GetContent.GetTexture("Game/paddleSuper");
             if (isMoving[0]) // Right
             {
                 isMoving[1] = false;

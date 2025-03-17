@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoBreaker.Script.Font;
@@ -18,7 +20,7 @@ public static class Playing
 
     public static Paddle player;
     public static  Ball ball;
-    private static Ball ball2;
+    private static List<Ball>otherBalls = new List<Ball>();
     public readonly static Rectangle[] screenBounds = new Rectangle[4];
 
     private static Texture2D leftoverTriesCounter;
@@ -32,6 +34,8 @@ public static class Playing
     public static float tries = 5;
     public static float round = 1;
 
+    public static Random rng = new Random();
+
     private static Game1 _game;
     
     public static void Initialize(Game1 game)
@@ -44,8 +48,16 @@ public static class Playing
         screenBounds[2] = new Rectangle(0, 0, Game1.trueScreenWidth, 4); // u
         screenBounds[3] = new Rectangle(0, Game1.trueScreenHeight - 4, Game1.trueScreenWidth, 4); // d
 
-        player = new Paddle(GetContent.GetTexture("Game/paddle"), new Vector2(Game1.trueScreenWidth / 2 - 17, Game1.trueScreenHeight - 16), startingGameSpeed, screenBounds);
-        ball = new Ball(GetContent.GetTexture("Game/ball"), new Vector2(100, 100), startingGameSpeed);
+        player = new Paddle(new Vector2(Game1.trueScreenWidth / 2f - 17f, Game1.trueScreenHeight - 16), startingGameSpeed, screenBounds);
+        ball = new Ball(new Vector2(100, 100), startingGameSpeed, true);
+        /* // test multiball
+        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(100, 320)), startingGameSpeed, false));
+        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(180, 320)), startingGameSpeed, false));
+        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(180, 320)), startingGameSpeed, false));
+        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(180, 320)), startingGameSpeed, false));
+        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(180, 320)), startingGameSpeed, false));
+        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(180, 320)), startingGameSpeed, false));
+        */
         leftoverTriesCounter = GetContent.GetTexture("Game/ball");
     }
 
@@ -72,6 +84,10 @@ public static class Playing
 
         player.Update();
         ball.Update(gameTime);
+        foreach (Ball ball in otherBalls)
+        {
+            ball.Update(gameTime);
+        }
         BrickMap.Update();
     }
 
@@ -81,6 +97,10 @@ public static class Playing
         spriteBatch.Draw(leftoverTriesCounter, new Vector2(6, 25), Color.White);
         player.Draw(spriteBatch);
         ball.Draw(spriteBatch);
+        foreach (Ball ball in otherBalls)
+        {
+            ball.Draw(spriteBatch);
+        }
         BrickMap.Draw(spriteBatch);
     }
 
