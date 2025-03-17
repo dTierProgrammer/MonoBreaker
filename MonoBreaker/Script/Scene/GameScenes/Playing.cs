@@ -51,14 +51,14 @@ public static class Playing
         player = new Paddle(new Vector2(Game1.trueScreenWidth / 2f - 17f, Game1.trueScreenHeight - 16), startingGameSpeed);
         ball = new Ball(new Vector2(100, 100), startingGameSpeed, true);
          // test multiball
-        /*
+        
         otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(100, 320)), startingGameSpeed, false));
         otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(180, 320)), startingGameSpeed, false));
         otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(180, 320)), startingGameSpeed, false));
         otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(180, 320)), startingGameSpeed, false));
         otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(180, 320)), startingGameSpeed, false));
         otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(180, 320)), startingGameSpeed, false));
-         */
+        
         
         leftoverTriesCounter = GetContent.GetTexture("Game/ball");
     }
