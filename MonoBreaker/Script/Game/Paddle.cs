@@ -31,7 +31,7 @@ namespace MonoBreaker.Script.Game
         private SoundEffect bulletShootSound = GetContent.GetSound("bulletshoot");
 
         private bool isSuper = false;
-        private int ammo = 5;
+        private int ammo = 0;
         
         int prevScore;
 
@@ -45,6 +45,7 @@ namespace MonoBreaker.Script.Game
 
         public int Ammo 
         {
+            set { ammo = value; }
             get { return ammo; }
         }
 
@@ -53,9 +54,9 @@ namespace MonoBreaker.Script.Game
             if(ammo > 0) 
             {
                 bulletShootSound.Play();
-                //ammo -= 1;
-                Playing.bullets.Add(new Bullet(new Vector2(collisionBox.Left, collisionBox.Top - 10)));
-                Playing.bullets.Add(new Bullet(new Vector2(collisionBox.Right - 3, collisionBox.Top - 10)));
+                ammo -= 1;
+                Playing.bullets.Add(new Bullet(new Vector2(collisionBox.Left, collisionBox.Top - 3)));
+                Playing.bullets.Add(new Bullet(new Vector2(collisionBox.Right - 3, collisionBox.Top - 3)));
             } 
         }
 

@@ -45,6 +45,8 @@ public static class Playing
     private static AddTry oneUp;
     private static DeathBounce deathBounce;
     private static MultiBall multiBall;
+    private static Shooting shooting;
+    private static bool prevBallState;
 
     public static Random rng = new Random();
 
@@ -66,6 +68,7 @@ public static class Playing
         oneUp = new AddTry(new Vector2(100, 0));
         deathBounce = new DeathBounce(new Vector2(200, 0));
         multiBall = new MultiBall(GetContent.GetTexture("Game/powerup/multiball"), new Vector2(150, 0));
+        shooting = new Shooting(GetContent.GetTexture("Game/powerup/shooting"), new Vector2(250, 0));
         leftoverTriesCounter = GetContent.GetTexture("Game/ball");
     }
 
@@ -87,9 +90,9 @@ public static class Playing
         else
             player.isMoving[1] = false;
 
-        if (Keyboard.GetState().IsKeyDown(Keys.Space) && !priorKBState.IsKeyDown(Keys.Space) && ball.IsActive == false)
+        if (Keyboard.GetState().IsKeyDown(Keys.LeftShift) && !priorKBState.IsKeyDown(Keys.LeftShift) && ball.IsActive == false)
             ball.Launch();
-        if (Keyboard.GetState().IsKeyDown(Keys.Up) & !priorKBState.IsKeyDown(Keys.Up) && ball.IsActive == true)
+        if (Keyboard.GetState().IsKeyDown(Keys.Space) & !priorKBState.IsKeyDown(Keys.Space) && ball.IsActive == true)
             player.ShootBullet();
         priorKBState = Keyboard.GetState();
         
@@ -122,6 +125,7 @@ public static class Playing
         oneUp.Update();
         deathBounce.Update();
         multiBall.Update();
+        shooting.Update();
     }
 
     public static void Draw(SpriteBatch spriteBatch)
@@ -142,7 +146,7 @@ public static class Playing
         oneUp.Draw(spriteBatch);
         deathBounce.Draw(spriteBatch);
         multiBall.Draw(spriteBatch);
-        spriteBatch.Draw(testBullet, new Vector2(100, 100), Color.White);
+        shooting.Draw(spriteBatch);
     }
 
     public static void DrawText(SpriteBatch spriteBatch)

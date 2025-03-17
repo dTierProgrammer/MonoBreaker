@@ -12,6 +12,7 @@ public class Bullet
     private Rectangle collisionBox;
     private bool isActive = true;
     private Brick _brick;
+    private bool hasCollided;
     public Bullet(Vector2 position)
     {
         this.position = position;
@@ -28,7 +29,7 @@ public class Bullet
     {
         if (isActive) 
         {
-            collisionBox.Y -= 4;
+            collisionBox.Y -= 5;
 
             
             if (collisionBox.Intersects(Playing.screenBounds[2])) 
@@ -38,14 +39,22 @@ public class Bullet
             
             foreach(Brick brick in BrickMap.listBricks) 
             {
-                if (collisionBox.Intersects(brick.Rect))
-                    _brick = brick;
-
-                if (collisionBox.Intersects(_brick.Rect))
+                if (collisionBox.Intersects(brick.Rect)) 
                 {
-                    _brick.Weaken(1);
+                    _brick = brick;
+                    hasCollided = true;
+                    break;
                 }
-            }  
+                    
+
+              
+            }
+            if (hasCollided && collisionBox.Intersects(_brick.Rect) )
+            {
+                _brick.Weaken(1);
+                Kill();
+                hasCollided = false;
+            }
         }
     }
 
