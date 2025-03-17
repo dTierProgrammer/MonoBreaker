@@ -53,9 +53,9 @@ namespace MonoBreaker.Script.Game
             if(ammo > 0) 
             {
                 bulletShootSound.Play();
-                ammo -= 1;
-                Playing.bullets.Add(new Bullet(new Vector2(collisionBox.Top + 2, collisionBox.Left)));
-                Playing.bullets.Add(new Bullet(new Vector2(collisionBox.Top + 2, collisionBox.Right)));
+                //ammo -= 1;
+                Playing.bullets.Add(new Bullet(new Vector2(collisionBox.Left, collisionBox.Top - 10)));
+                Playing.bullets.Add(new Bullet(new Vector2(collisionBox.Right - 3, collisionBox.Top - 10)));
             } 
         }
 

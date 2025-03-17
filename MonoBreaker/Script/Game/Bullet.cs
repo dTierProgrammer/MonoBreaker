@@ -28,29 +28,24 @@ public class Bullet
     {
         if (isActive) 
         {
-            collisionBox.Y += 2;
+            collisionBox.Y -= 4;
 
-            /*
+            
             if (collisionBox.Intersects(Playing.screenBounds[2])) 
             {
                 Kill();
             }
-            */
-
-            /*
+            
             foreach(Brick brick in BrickMap.listBricks) 
             {
                 if (collisionBox.Intersects(brick.Rect))
                     _brick = brick;
-            }
-            */
 
-            /*
-            if (collisionBox.Intersects(_brick.Rect)) 
-            {
-                _brick.Weaken(1);
-            }
-            */
+                if (collisionBox.Intersects(_brick.Rect))
+                {
+                    _brick.Weaken(1);
+                }
+            }  
         }
     }
 
