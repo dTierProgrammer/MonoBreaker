@@ -8,6 +8,7 @@ using MonoBreaker.Script.Game;
 using MonoBreaker.Script.Global;
 using static System.Formats.Asn1.AsnWriter;
 using System.Text;
+using Microsoft.Xna.Framework.Audio;
 using MonoBreaker.Script.Game.PowerUp;
 
 namespace MonoBreaker.Script.Scene.GameScenes;
@@ -23,6 +24,8 @@ public static class Playing
     private static List<Ball>otherBalls = new List<Ball>();
     public readonly static Rectangle[] screenBounds = new Rectangle[4];
 
+    public static SoundEffect powerUpSound = GetContent.GetSound("powerUp");
+
     private static Texture2D leftoverTriesCounter;
 
     public static int score = 0;
@@ -36,6 +39,7 @@ public static class Playing
     public static float tries = 5;
     public static float round = 1;
     private static AddTry oneUp;
+    private static DeathBounce deathBounce;
 
     public static Random rng = new Random();
 
@@ -67,6 +71,7 @@ public static class Playing
         otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(100, 320)), startingGameSpeed, false, 5));
 
         oneUp = new AddTry(new Vector2(100, 0));
+        deathBounce = new DeathBounce(new Vector2(200, 0));
         leftoverTriesCounter = GetContent.GetTexture("Game/ball");
     }
 
@@ -105,6 +110,7 @@ public static class Playing
         }
         BrickMap.Update();
         oneUp.Update();
+        deathBounce.Update();
     }
 
     public static void Draw(SpriteBatch spriteBatch)
@@ -119,8 +125,9 @@ public static class Playing
         }
         BrickMap.Draw(spriteBatch);
         oneUp.Draw(spriteBatch);
+        deathBounce.Draw(spriteBatch);
     }
-
+    
     public static void DrawText(SpriteBatch spriteBatch)
     {
         spriteBatch.DrawString(Fonts.titleFont, $"Score: {score}\n" +

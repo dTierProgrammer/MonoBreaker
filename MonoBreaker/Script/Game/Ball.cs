@@ -29,7 +29,7 @@ namespace MonoBreaker.Script.Game
         private bool isSuper = false;
         private bool isLovely = false;
         
-        public int ballStrength = 1;
+        private int ballStrength = 1;
         private int ballHealth = 1;
         
         float speed;
@@ -78,7 +78,7 @@ namespace MonoBreaker.Script.Game
             }
         }
 
-        private int BallHealth
+        public int BallHealth
         {
             set{ballHealth=value;}
             get{return ballHealth;}
@@ -86,6 +86,7 @@ namespace MonoBreaker.Script.Game
         
         public int BallStrength
         {
+            set{ballStrength=value;}
             get { return ballStrength; }
         }
 
