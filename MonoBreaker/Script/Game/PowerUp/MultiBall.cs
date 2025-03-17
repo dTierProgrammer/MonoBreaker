@@ -34,6 +34,7 @@ public class MultiBall:Powerup
                 {
                     Playing.otherBalls.Add(new Ball(new Vector2(rng.NextInt64(10, 310), Playing.player.position.Y - 10), Playing.startingGameSpeed, false, 5));
                 }
+                Playing.powerUpSound.Play();
                 Kill();
             }
             if (collisionBox.Intersects(Playing.screenBounds[3]))

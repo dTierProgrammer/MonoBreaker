@@ -105,6 +105,14 @@ public static class Playing
             tries++;
         }
         prevScore = score;
+        
+        if(ball.collisionBox.Intersects(Playing.screenBounds[3]))
+        {
+            foreach (Ball ball in otherBalls)
+            {
+                ball.Kill();
+            }
+        }
 
         player.Update();
         ball.Update(gameTime);
