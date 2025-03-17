@@ -1,15 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoBreaker.Script.Game.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Audio;
 using MonoBreaker.Script.Global;
 using MonoBreaker.Script.Scene.GameScenes;
-using System.Linq.Expressions;
 
 namespace MonoBreaker.Script.Game
 {
@@ -33,9 +26,9 @@ namespace MonoBreaker.Script.Game
             strength = toughness;
         }
 
-        public void Weaken()
+        public void Weaken(int diminishingValue)
         {
-            strength -= Playing.ball.BallStrength;
+            strength -= diminishingValue;
             color = Color.DarkGray;
             brickWeaken.Play();
         }

@@ -8,7 +8,9 @@ using MonoBreaker.Script.Game;
 using MonoBreaker.Script.Global;
 using static System.Formats.Asn1.AsnWriter;
 using System.Text;
+using Microsoft.Xna.Framework.Audio;
 using MonoBreaker.Script.Game.PowerUp;
+using System.Diagnostics;
 
 namespace MonoBreaker.Script.Scene.GameScenes;
 
@@ -20,19 +22,28 @@ public static class Playing
 
     public static Paddle player;
     public static  Ball ball;
-    private static List<Ball>otherBalls = new List<Ball>();
+    public static List<Ball>otherBalls = new List<Ball>();
     public readonly static Rectangle[] screenBounds = new Rectangle[4];
 
-    private static Texture2D leftoverTriesCounter;
+    public static SoundEffect powerUpSound = GetContent.GetSound("powerUp");
+    public static SoundEffect addTrySound = GetContent.GetSound("1up");
 
-    public static int score;
+    private static Texture2D leftoverTriesCounter;
+    private static Texture2D testBullet;
+
+    public static int score = 0;
+    private static int prevScore;
     public static readonly int speedUpThreshold = BrickMap.RowLength;
+    private static readonly int addTryThreshold = 130;
 
     public static float startingGameSpeed = 1.5f;
 
     public static float speedIncrement = .1f;
     public static float tries = 5;
     public static float round = 1;
+    private static AddTry oneUp;
+    private static DeathBounce deathBounce;
+    private static MultiBall multiBall;
 
     public static Random rng = new Random();
 
@@ -50,16 +61,10 @@ public static class Playing
 
         player = new Paddle(new Vector2(Game1.trueScreenWidth / 2f - 17f, Game1.trueScreenHeight - 16), startingGameSpeed);
         ball = new Ball(new Vector2(100, 100), startingGameSpeed, true);
-         // test multiball
-        
-        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(100, 320)), startingGameSpeed, false));
-        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(180, 320)), startingGameSpeed, false));
-        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(180, 320)), startingGameSpeed, false));
-        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(180, 320)), startingGameSpeed, false));
-        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(180, 320)), startingGameSpeed, false));
-        otherBalls.Add(new Ball(new Vector2(rng.NextInt64(180, 320), rng.NextInt64(180, 320)), startingGameSpeed, false));
-        
-        
+
+        oneUp = new AddTry(new Vector2(100, 0));
+        deathBounce = new DeathBounce(new Vector2(200, 0));
+        multiBall = new MultiBall(GetContent.GetTexture("Game/powerup/multiball"), new Vector2(150, 0));
         leftoverTriesCounter = GetContent.GetTexture("Game/ball");
     }
 
@@ -67,6 +72,7 @@ public static class Playing
     {
         playfield = GetContent.GetTexture("Game/playField");
         leftoverTriesCounter = GetContent.GetTexture("Game/ball");
+        testBullet = GetContent.GetTexture("Game/bullet");
     }
 
     public static void Update(GameTime gameTime)
@@ -83,6 +89,21 @@ public static class Playing
         if (Keyboard.GetState().IsKeyDown(Keys.Space) && !priorKBState.IsKeyDown(Keys.Space) && ball.IsActive == false)
             ball.Launch();
         priorKBState = Keyboard.GetState();
+        
+        if (score % addTryThreshold == 0 && score != 0 && score != prevScore) // 1up after a certain amount of points is added to score
+        {
+            tries++;
+            addTrySound.Play();
+        }
+        prevScore = score;
+        
+        if(ball.collisionBox.Intersects(Playing.screenBounds[3]))
+        {
+            foreach (Ball ball in otherBalls)
+            {
+                ball.Kill();
+            }
+        }
 
         player.Update();
         ball.Update(gameTime);
@@ -91,6 +112,9 @@ public static class Playing
             ball.Update(gameTime);
         }
         BrickMap.Update();
+        oneUp.Update();
+        deathBounce.Update();
+        multiBall.Update();
     }
 
     public static void Draw(SpriteBatch spriteBatch)
@@ -104,6 +128,10 @@ public static class Playing
             ball.Draw(spriteBatch);
         }
         BrickMap.Draw(spriteBatch);
+        oneUp.Draw(spriteBatch);
+        deathBounce.Draw(spriteBatch);
+        multiBall.Draw(spriteBatch);
+        spriteBatch.Draw(testBullet, new Vector2(100, 100), Color.White);
     }
 
     public static void DrawText(SpriteBatch spriteBatch)

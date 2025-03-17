@@ -11,8 +11,7 @@ public class AddTry
     private Texture2D image = GetContent.GetTexture("Game/powerup/1up");
     private Vector2 position;
     private bool isActive = true;
-    public Rectangle collisionBox;
-    public SoundEffect addTrySound = GetContent.GetSound("1up");
+    private Rectangle collisionBox;
     
     public AddTry(Vector2 position)
     {
@@ -23,14 +22,13 @@ public class AddTry
     public void Update()
     {
         if (isActive)
-            collisionBox.Y += 1;
+            collisionBox.Y += 2;
         
-        this.position.Y += 1.2f;
         if (collisionBox.Intersects(Playing.player.collisionBox))
         {
             Playing.tries++;
             collisionBox = Rectangle.Empty;
-            addTrySound.Play();
+            Playing.addTrySound.Play();
             isActive = false;
         }
 
