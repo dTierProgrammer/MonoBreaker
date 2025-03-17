@@ -197,6 +197,18 @@
 /processorParam:TextureFormat=Color
 /build:Image/Game/paddleBreaker.png
 
+#begin Image/Game/paddleSuper.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Image/Game/paddleSuper.png
+
 #begin Image/Game/playField.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -209,6 +221,90 @@
 /processorParam:TextureFormat=Color
 /build:Image/Game/playField.png
 
+#begin Image/Game/powerup/1up.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Image/Game/powerup/1up.png
+
+#begin Image/Game/powerup/deathbounce.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Image/Game/powerup/deathbounce.png
+
+#begin Image/Game/powerup/multiball.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Image/Game/powerup/multiball.png
+
+#begin Image/Game/powerup/paddleextend.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Image/Game/powerup/paddleextend.png
+
+#begin Image/Game/powerup/piercing.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Image/Game/powerup/piercing.png
+
+#begin Image/Game/powerup/shooting.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Image/Game/powerup/shooting.png
+
+#begin Image/Game/powerup/superball.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Image/Game/powerup/superball.png
+
 #begin Image/Test/test.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -220,6 +316,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Image/Test/test.png
+
+#begin Sound/1up.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/1up.wav
 
 #begin Sound/ballLoss.wav
 /importer:WavImporter
@@ -245,6 +347,12 @@
 /processorParam:Quality=Best
 /build:Sound/brickDestroy.wav
 
+#begin Sound/down.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/down.wav
+
 #begin Sound/gameEnd.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -262,6 +370,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sound/paddleCollide.wav
+
+#begin Sound/powerUp.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/powerUp.wav
+
+#begin Sound/puyo.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/puyo.wav
 
 #begin Sound/select.wav
 /importer:WavImporter

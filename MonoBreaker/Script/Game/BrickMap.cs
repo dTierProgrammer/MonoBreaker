@@ -69,7 +69,7 @@ namespace MonoBreaker.Script.Game
         {
             set 
             {
-                numOfBricks = 112; 
+                numOfBricks = 112;
             }
 
             get 

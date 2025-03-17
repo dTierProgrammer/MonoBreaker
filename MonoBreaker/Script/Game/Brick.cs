@@ -35,7 +35,7 @@ namespace MonoBreaker.Script.Game
 
         public void Weaken()
         {
-            strength--;
+            strength -= Playing.ball.BallStrength;
             color = Color.DarkGray;
             brickWeaken.Play();
         }
@@ -43,7 +43,11 @@ namespace MonoBreaker.Script.Game
         public void Break() 
         {
             if (isActive)
+            {
                 brickBreak.Play();
+                Playing.score++;
+            }
+            
             isActive = false;
             Rect = Rectangle.Empty;
            
@@ -53,8 +57,6 @@ namespace MonoBreaker.Script.Game
         {
             if (strength <= 0)
             {
-                if(isActive)
-                    Playing.score++;
                 Break();
             }
         }

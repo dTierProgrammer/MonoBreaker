@@ -29,16 +29,17 @@ namespace MonoBreaker.Script.Game
         private static float tolerance = friction * .9f;
         private SoundEffect speedUpSound = GetContent.GetSound("speedUp");
 
-        private Rectangle[] playerBoundaries = new Rectangle[4];
+        private bool isSuper = false;
+        private bool canShoot = false;
+        
         int prevScore;
 
         private int score;
-        public Paddle(Texture2D image, Vector2 position, float moveSpeed, Rectangle[] playerBoundaries) : base(image, position) 
+        public Paddle(Vector2 position, float moveSpeed) : base(position) 
         {
-            this.image = image;
+            image = GetContent.GetTexture("Game/paddle");
             this.position = position;
             maxVelocity = moveSpeed;
-            this.playerBoundaries = playerBoundaries;
         }
 
         public Vector2 Velocity 
@@ -48,6 +49,8 @@ namespace MonoBreaker.Script.Game
 
         public void Update() 
         {
+            if (isSuper)
+                image = GetContent.GetTexture("Game/paddleSuper");
             if (isMoving[0]) // Right
             {
                 isMoving[1] = false;
@@ -70,21 +73,21 @@ namespace MonoBreaker.Script.Game
             }
             this.position.X += velocity.X;
 
-            if (collisionBox.Intersects(playerBoundaries[0])) // collide with left wall
+            if (collisionBox.Intersects(Playing.screenBounds[0])) // collide with left wall
             {
                 velocity.X = 0;
-                if (position.X <= playerBoundaries[0].Right) 
+                if (position.X <= Playing.screenBounds[0].Right) 
                 {
-                    position.X = playerBoundaries[0].Right;
+                    position.X = Playing.screenBounds[0].Right;
                 }
             }
 
-            if (collisionBox.Intersects(playerBoundaries[1])) // colide with right wall
+            if (collisionBox.Intersects(Playing.screenBounds[1])) // colide with right wall
             {
                 velocity.X = 0;
-                if (position.X >= playerBoundaries[1].Left - this.image.Width) 
+                if (position.X >= Playing.screenBounds[1].Left - this.image.Width) 
                 {
-                    position.X = playerBoundaries[1].Left - this.image.Width;
+                    position.X = Playing.screenBounds[1].Left - this.image.Width;
                 }
             }
             if (Playing.score % Playing.speedUpThreshold == 0 && Playing.score != 0 && Playing.score != prevScore) // speed up if score reaches specific value

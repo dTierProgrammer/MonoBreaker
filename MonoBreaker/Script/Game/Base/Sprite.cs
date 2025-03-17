@@ -19,8 +19,13 @@ namespace MonoBreaker.Script.Game.Base
             this.image = image;
             this.position = position;
         }
+
+        public Sprite(Vector2 position)
+        {
+            this.position = position;
+        }
         
-        public Rectangle collisionBox
+        public virtual Rectangle collisionBox
         {
 
             get
