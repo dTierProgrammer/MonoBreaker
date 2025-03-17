@@ -175,6 +175,8 @@ namespace MonoBreaker.Script.Game
             {
                 isActive = true;
             }
+            if (isMainBall && isActive)
+                Playing.player.canShoot = true;
             if (isActive && isAnimated) // only move ball if active
             {
                 // X Start

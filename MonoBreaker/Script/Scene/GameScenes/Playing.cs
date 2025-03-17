@@ -90,9 +90,9 @@ public static class Playing
         else
             player.isMoving[1] = false;
 
-        if (Keyboard.GetState().IsKeyDown(Keys.LeftShift) && !priorKBState.IsKeyDown(Keys.LeftShift) && ball.IsActive == false)
+        if (Keyboard.GetState().IsKeyDown(Keys.Space) && !priorKBState.IsKeyDown(Keys.Space) && ball.IsActive == false)
             ball.Launch();
-        if (Keyboard.GetState().IsKeyDown(Keys.Space) & !priorKBState.IsKeyDown(Keys.Space) && ball.IsActive == true)
+        if (Keyboard.GetState().IsKeyDown(Keys.Space) & !priorKBState.IsKeyDown(Keys.Space) && ball.IsActive == true && player.canShoot)
             player.ShootBullet();
         priorKBState = Keyboard.GetState();
         

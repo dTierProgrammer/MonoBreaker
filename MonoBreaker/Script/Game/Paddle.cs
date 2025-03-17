@@ -30,7 +30,8 @@ namespace MonoBreaker.Script.Game
         private SoundEffect speedUpSound = GetContent.GetSound("speedUp");
         private SoundEffect bulletShootSound = GetContent.GetSound("bulletshoot");
 
-        private bool isSuper = false;
+        public bool isSuper = false;
+        public bool canShoot = false;
         private int ammo = 0;
         
         int prevScore;
@@ -51,7 +52,7 @@ namespace MonoBreaker.Script.Game
 
         public void ShootBullet() 
         {
-            if(ammo > 0) 
+            if(ammo > 0 && canShoot) 
             {
                 bulletShootSound.Play();
                 ammo -= 1;
