@@ -71,7 +71,7 @@ public static class Playing
         ball.Update(gameTime);
         BrickMap.Update();
 
-        
+
     }
 
     public static void Draw(SpriteBatch spriteBatch)
