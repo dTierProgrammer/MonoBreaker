@@ -23,6 +23,7 @@ public static class Playing
     public static Paddle player;
     public static  Ball ball;
     public static List<Ball>otherBalls = new List<Ball>();
+    public static List<Bullet> bullets = new List<Bullet>();
     public readonly static Rectangle[] screenBounds = new Rectangle[4];
 
     public static SoundEffect powerUpSound = GetContent.GetSound("powerUp");
@@ -88,6 +89,8 @@ public static class Playing
 
         if (Keyboard.GetState().IsKeyDown(Keys.Space) && !priorKBState.IsKeyDown(Keys.Space) && ball.IsActive == false)
             ball.Launch();
+        if (Keyboard.GetState().IsKeyDown(Keys.Up) & !priorKBState.IsKeyDown(Keys.Up) && ball.IsActive == true)
+            player.ShootBullet();
         priorKBState = Keyboard.GetState();
         
         if (score % addTryThreshold == 0 && score != 0 && score != prevScore) // 1up after a certain amount of points is added to score
@@ -111,6 +114,10 @@ public static class Playing
         {
             ball.Update(gameTime);
         }
+        foreach (Bullet bullet in bullets)
+        {
+            bullet.Update();
+        }
         BrickMap.Update();
         oneUp.Update();
         deathBounce.Update();
@@ -126,6 +133,10 @@ public static class Playing
         foreach (Ball ball in otherBalls)
         {
             ball.Draw(spriteBatch);
+        }
+        foreach (Bullet bullet in bullets)
+        {
+            bullet.Draw(spriteBatch);
         }
         BrickMap.Draw(spriteBatch);
         oneUp.Draw(spriteBatch);

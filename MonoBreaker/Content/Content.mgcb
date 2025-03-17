@@ -359,6 +359,12 @@
 /processorParam:Quality=Best
 /build:Sound/brickDestroy.wav
 
+#begin Sound/bulletshoot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/bulletshoot.wav
+
 #begin Sound/down.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

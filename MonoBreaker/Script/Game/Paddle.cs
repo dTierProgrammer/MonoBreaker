@@ -28,9 +28,10 @@ namespace MonoBreaker.Script.Game
         private static float friction = acceleration * .5f;
         private static float tolerance = friction * .9f;
         private SoundEffect speedUpSound = GetContent.GetSound("speedUp");
+        private SoundEffect bulletShootSound = GetContent.GetSound("bulletshoot");
 
         private bool isSuper = false;
-        private bool canShoot = false;
+        private int ammo = 5;
         
         int prevScore;
 
@@ -40,6 +41,22 @@ namespace MonoBreaker.Script.Game
             image = GetContent.GetTexture("Game/paddle");
             this.position = position;
             maxVelocity = moveSpeed;
+        }
+
+        public int Ammo 
+        {
+            get { return ammo; }
+        }
+
+        public void ShootBullet() 
+        {
+            if(ammo > 0) 
+            {
+                bulletShootSound.Play();
+                ammo -= 1;
+                Playing.bullets.Add(new Bullet(new Vector2(collisionBox.Top + 2, collisionBox.Left)));
+                Playing.bullets.Add(new Bullet(new Vector2(collisionBox.Top + 2, collisionBox.Right)));
+            } 
         }
 
         public Vector2 Velocity 
