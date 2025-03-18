@@ -45,7 +45,10 @@ namespace MonoBreaker.Script.Game
         private Vector2 prevPosition;
         Brick _brick;
         private bool hasCollided = false;
-        
+
+        private const float delay = 10;
+        private float delayRemainder = delay;
+
         public Ball(Vector2 position, float speed, bool isMainBall) : base(position) 
         {
             image = GetContent.GetTexture("Game/ball");
@@ -110,6 +113,12 @@ namespace MonoBreaker.Script.Game
             get { return isActive; }
         }
 
+        public bool SuperBall 
+        {
+            set { isSuper = value; }
+            get { return isSuper; }
+        }
+
         public void ReverseDirectionX() 
         {
             direction.X *= -1;
@@ -166,10 +175,47 @@ namespace MonoBreaker.Script.Game
             {
                 image = GetContent.GetTexture("Game/ballSuper");
                 ballStrength = 2;
-                
+
+                var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                delayRemainder -= timer;
+
+                if (delayRemainder <= 0)
+                {
+                    ballDownSound.Play();
+                    image = GetContent.GetTexture("Game/ball");
+                    ballStrength = 1;
+                    isSuper = false;
+                }
+
             }
-            if(isLovely)
+            if (isLovely) 
+            {
                 image = GetContent.GetTexture("Test/test");
+                canPierce = true;
+
+                var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                delayRemainder -= timer;
+
+                if (delayRemainder <= 0)
+                {
+                    ballDownSound.Play();
+                    image = GetContent.GetTexture("Game/ball");
+                    ballStrength = 1;
+                    canPierce = false;
+                }
+            }
+
+            if (canPierce) 
+            {
+                var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                delayRemainder -= timer;
+
+                if (delayRemainder <= 0)
+                {
+                    ballDownSound.Play();
+                    canPierce = false;
+                }
+            }
             
             if (!isMainBall)
             {

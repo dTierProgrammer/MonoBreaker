@@ -30,9 +30,9 @@ public class MultiBall:Powerup
             
             if (collisionBox.Intersects(Playing.player.collisionBox))
             {
-                for (int iteration = 0; iteration < rng.NextInt64(10, 10); iteration++)
+                for (int iteration = 0; iteration < rng.NextInt64(5, 10); iteration++)
                 {
-                    Playing.otherBalls.Add(new Ball(new Vector2(rng.NextInt64(10, 310), Playing.player.position.Y - 10), Playing.startingGameSpeed, false, 5));
+                    Playing.otherBalls.Add(new Ball(new Vector2(rng.NextInt64(8, Game1.trueScreenWidth - 8), rng.NextInt64(200, (long)Playing.player.position.Y - 10)), Playing.startingGameSpeed, false, 5));
                 }
                 Playing.powerUpSound.Play();
                 Kill();
@@ -42,5 +42,6 @@ public class MultiBall:Powerup
                 Kill();
             }
         }
+        base.Update();
     }
 }

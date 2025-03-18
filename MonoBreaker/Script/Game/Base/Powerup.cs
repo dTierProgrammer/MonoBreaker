@@ -28,6 +28,10 @@ public class Powerup
     {
         // to override
     }
+    public virtual void Update(GameTime gameTime)
+    {
+        // to override
+    }
 
     public void Draw(SpriteBatch spriteBatch)
     {
