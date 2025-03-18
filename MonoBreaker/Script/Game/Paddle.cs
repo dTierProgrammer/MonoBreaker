@@ -29,12 +29,16 @@ namespace MonoBreaker.Script.Game
         private static float tolerance = friction * .9f;
         private SoundEffect speedUpSound = GetContent.GetSound("speedUp");
         private SoundEffect bulletShootSound = GetContent.GetSound("bulletshoot");
+        private SoundEffect powerDownSound = GetContent.GetSound("down");
 
         public bool isSuper = false;
         public bool canShoot = false;
         private int ammo = 0;
         
         int prevScore;
+
+        private const float delay = 10;
+        private float delayRemainder = delay;
 
         private int score;
         public Paddle(Vector2 position, float moveSpeed) : base(position) 
@@ -48,6 +52,12 @@ namespace MonoBreaker.Script.Game
         {
             set { ammo = value; }
             get { return ammo; }
+        }
+
+        public bool SuperPaddle 
+        {
+            set { isSuper = value; }
+            get { return isSuper; }
         }
 
         public void ShootBullet() 
@@ -66,10 +76,23 @@ namespace MonoBreaker.Script.Game
             get { return velocity; }
         }
 
-        public void Update() 
+        public void Update(GameTime gameTime) 
         {
-            if (isSuper)
+            if (isSuper) 
+            {
                 image = GetContent.GetTexture("Game/paddleSuper");
+
+                var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                delayRemainder -= timer;
+
+                if (delayRemainder <= 0)
+                {
+                    powerDownSound.Play();
+                    image = GetContent.GetTexture("Game/paddle");
+                    isSuper = false;
+                }
+            }
+
             if (isMoving[0]) // Right
             {
                 isMoving[1] = false;

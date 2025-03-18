@@ -1,9 +1,4 @@
-﻿// TODO: FIX ISSUES, ADD SCENE MANAGEMENT, ADD SOUNDS
-/* Issues:
- * - Ball will phase through bricks and instantly destroy bricks if edge/side is hit, or if 2 are hit at the same time
- * - Ball will still get stuck in paddle if hit at specific angle
- * - If ball is moving fast enough, it can phase through collision boxes
- * */
+﻿// TODO: ADD RANDOM POWERUP GENERATOR, FINISH SCENE MANAGEMENT
  
 
 using Microsoft.Xna.Framework;

@@ -42,12 +42,6 @@ public static class Playing
     public static float speedIncrement = .1f;
     public static float tries = 5;
     public static float round = 1;
-    private static AddTry oneUp;
-    private static DeathBounce deathBounce;
-    private static MultiBall multiBall;
-    private static Shooting shooting;
-    private static SuperBall superBall;
-    private static bool prevBallState;
 
     public static Random rng = new Random();
 
@@ -65,13 +59,6 @@ public static class Playing
 
         player = new Paddle(new Vector2(Game1.trueScreenWidth / 2f - 17f, Game1.trueScreenHeight - 16), startingGameSpeed);
         ball = new Ball(new Vector2(100, 100), startingGameSpeed, true);
-
-        //oneUp = new AddTry(new Vector2(100, 0));
-        deathBounce = new DeathBounce(new Vector2(200, 0));
-        multiBall = new MultiBall(GetContent.GetTexture("Game/powerup/multiball"), new Vector2(150, 0));
-        shooting = new Shooting(GetContent.GetTexture("Game/powerup/shooting"), new Vector2(250, 0));
-        superBall = new SuperBall(GetContent.GetTexture("Game/powerup/superball"), new Vector2(100, 0));
-        leftoverTriesCounter = GetContent.GetTexture("Game/ball");
     }
 
     public static void Load()
@@ -113,7 +100,7 @@ public static class Playing
             }
         }
 
-        player.Update();
+        player.Update(gameTime);
         ball.Update(gameTime);
         foreach (Ball ball in otherBalls)
         {
@@ -124,11 +111,6 @@ public static class Playing
             bullet.Update();
         }
         BrickMap.Update();
-        //oneUp.Update();
-        deathBounce.Update();
-        multiBall.Update();
-        shooting.Update();
-        superBall.Update(gameTime);
     }
 
     public static void Draw(SpriteBatch spriteBatch)
@@ -146,11 +128,6 @@ public static class Playing
             bullet.Draw(spriteBatch);
         }
         BrickMap.Draw(spriteBatch);
-        //oneUp.Draw(spriteBatch);
-        deathBounce.Draw(spriteBatch);
-        multiBall.Draw(spriteBatch);
-        shooting.Draw(spriteBatch);
-        superBall.Draw(spriteBatch);
     }
 
     public static void DrawText(SpriteBatch spriteBatch)

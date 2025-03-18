@@ -40,6 +40,7 @@ namespace MonoBreaker.Script.Game
         private readonly SoundEffect ballLossSound = GetContent.GetSound("ballLoss");
         private readonly SoundEffect ballDownSound = GetContent.GetSound("down");
         private readonly SoundEffect ballLaunchSound = GetContent.GetSound("gameEnd");
+        public readonly SoundEffect random = GetContent.GetSound("up");
         
         
         private Vector2 prevPosition;
@@ -117,6 +118,12 @@ namespace MonoBreaker.Script.Game
         {
             set { isSuper = value; }
             get { return isSuper; }
+        }
+
+        public bool Lovely
+        {
+            set { isLovely = value; }
+            get { return isLovely; }
         }
 
         public void ReverseDirectionX() 
@@ -198,7 +205,6 @@ namespace MonoBreaker.Script.Game
 
                 if (delayRemainder <= 0)
                 {
-                    ballDownSound.Play();
                     image = GetContent.GetTexture("Game/ball");
                     ballStrength = 1;
                     canPierce = false;

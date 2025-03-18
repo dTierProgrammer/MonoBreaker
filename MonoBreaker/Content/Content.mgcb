@@ -257,6 +257,18 @@
 /processorParam:TextureFormat=Color
 /build:Image/Game/powerup/deathbounce.png
 
+#begin Image/Game/powerup/love.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Image/Game/powerup/love.png
+
 #begin Image/Game/powerup/multiball.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -418,4 +430,10 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sound/speedUp.wav
+
+#begin Sound/up.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/up.wav
 
