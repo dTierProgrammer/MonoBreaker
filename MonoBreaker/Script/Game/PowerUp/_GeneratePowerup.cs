@@ -15,7 +15,6 @@ namespace MonoBreaker.Script.Game.PowerUp
     
     public static class _GeneratePowerup
     {
-        
         private static Array powerups = Enum.GetValues(typeof(_Powerups));
         private static Random rng = new Random();
         
@@ -56,6 +55,35 @@ namespace MonoBreaker.Script.Game.PowerUp
                     _ManagePowerups.listPaddleExtend.Add(new PaddleExtend(paddleextendImg, position));
                     break;
             }
+        }
+
+        public static void NewAddTry(Vector2 position)
+        {
+            _ManagePowerups.listAddTry.Add(new AddTry(position));
+        }
+        public static void NewLovely(Vector2 position)
+        {
+            _ManagePowerups.listLovely.Add(new Lovely(loveImg, position));
+        }
+        public static void NewPiercing(Vector2 position)
+        {
+            _ManagePowerups.listPiercing.Add(new Piercing(piercingImg, position));
+        }
+        public static void NewShooting(Vector2 position)
+        {
+            _ManagePowerups.listShooting.Add(new Shooting(shootingImg, position));
+        }
+        public static void NewSuperBall(Vector2 position)
+        {
+            _ManagePowerups.listSuperBall.Add(new SuperBall(superballImg, position));
+        }
+        public static void NewDeathBounce(Vector2 position)
+        {
+            _ManagePowerups.listDeathBounce.Add(new DeathBounce(position));
+        }
+        public static void NewPaddleExtend(Vector2 position)
+        {
+            _ManagePowerups.listPaddleExtend.Add(new PaddleExtend(paddleextendImg, position));
         }
     }
 }
