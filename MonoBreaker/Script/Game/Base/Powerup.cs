@@ -17,6 +17,12 @@ public class Powerup
         this.position = position;
         collisionBox = new Rectangle((int)this.position.X, (int)this.position.Y, image.Width, image.Height);
     }
+    
+    public Powerup(Vector2 position)
+    {
+        this.position = position;
+        collisionBox = new Rectangle((int)this.position.X, (int)this.position.Y, image.Width, image.Height); // lmao nigga idc
+    }
 
     public void Kill()
     {

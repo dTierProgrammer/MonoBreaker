@@ -1,12 +1,13 @@
 ﻿namespace MonoBreaker.Script.Game.PowerUp;
 
-public enum _Powerup
+public enum _Powerups
 {
     ADDTRY,
     DEATHBOUNCE,
+    LOVELY,
     MULTIBALL,
-    EXTENDPADDLE,
-    PIERCE,
-    SHOOTER,
+    PADDLEEXTEND,
+    PIERCING,
+    SHOOTING,
     SUPERBALL
 }
