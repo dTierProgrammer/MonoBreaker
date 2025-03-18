@@ -27,6 +27,7 @@ public class SuperBall:Powerup
 
             if (collisionBox.Intersects(Playing.player.collisionBox))
             {
+                Playing.score += 100;
                 Playing.ball.SuperBall = true;
                 Playing.powerUpSound.Play();
                 Kill();  

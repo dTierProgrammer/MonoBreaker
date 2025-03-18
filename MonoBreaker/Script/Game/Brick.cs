@@ -26,6 +26,11 @@ namespace MonoBreaker.Script.Game
             strength = toughness;
         }
 
+        public int BrickHealth
+        {
+            get{return strength;}
+        }
+
         public void Weaken(int diminishingValue)
         {
             strength -= diminishingValue;
@@ -38,7 +43,7 @@ namespace MonoBreaker.Script.Game
             if (isActive)
             {
                 brickBreak.Play();
-                Playing.score++;
+                Playing.brokenBricks++;
             }
             
             isActive = false;

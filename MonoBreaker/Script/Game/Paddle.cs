@@ -35,7 +35,7 @@ namespace MonoBreaker.Script.Game
         public bool canShoot = false;
         private int ammo = 0;
         
-        int prevScore;
+        int prevValue;
 
         private const float delay = 10;
         private float delayRemainder = delay;
@@ -132,13 +132,13 @@ namespace MonoBreaker.Script.Game
                     position.X = Playing.screenBounds[1].Left - this.image.Width;
                 }
             }
-            if (Playing.score % Playing.speedUpThreshold == 0 && Playing.score != 0 && Playing.score != prevScore) // speed up if score reaches specific value
+            if (Playing.brokenBricks % Playing.speedUpThreshold == 0 && Playing.brokenBricks != 0 && Playing.brokenBricks != prevValue) // speed up if score reaches specific value
             {
                 maxVelocity += Playing.speedIncrement;
                 acceleration += Playing.speedIncrement;
                 speedUpSound.Play();
             }
-            prevScore = Playing.score;
+            prevValue = Playing.brokenBricks;
         }
 
         public void Draw(SpriteBatch window)

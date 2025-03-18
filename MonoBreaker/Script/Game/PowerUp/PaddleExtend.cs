@@ -19,6 +19,7 @@ public class PaddleExtend:Powerup
         collisionBox.Y += 2;
         if (collisionBox.Intersects(Playing.player.collisionBox)) 
         {
+            Playing.score += 100;
             Playing.powerUpSound.Play();
             Playing.player.SuperPaddle = true;
             Kill();

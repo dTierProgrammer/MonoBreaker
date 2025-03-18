@@ -27,6 +27,7 @@ public class AddTry
         if (collisionBox.Intersects(Playing.player.collisionBox))
         {
             Playing.tries++;
+            Playing.score += 100;
             collisionBox = Rectangle.Empty;
             Playing.addTrySound.Play();
             isActive = false;

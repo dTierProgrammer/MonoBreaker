@@ -33,7 +33,7 @@ namespace MonoBreaker.Script.Game
         private int ballHealth = 1;
         
         public float speed;
-        int prevScore;
+        int prevValue;
         private Color color = Color.DarkGray;
         private readonly SoundEffect bounceSound = GetContent.GetSound("bounce");
         private readonly SoundEffect paddleBounceSound = GetContent.GetSound("paddleBounce");
@@ -118,6 +118,12 @@ namespace MonoBreaker.Script.Game
         {
             set { isSuper = value; }
             get { return isSuper; }
+        }
+
+        public bool Piercing
+        {
+            set{canPierce =value; }
+            get { return canPierce; }
         }
 
         public bool Lovely
@@ -294,6 +300,14 @@ namespace MonoBreaker.Script.Game
                         position.X = prevPosition.X;
                         BounceLeft();
                     }
+                    
+                    if (_brick.BrickHealth > 1)
+                    {
+                        Playing.score += 10;
+                    }else if (_brick.BrickHealth == 1)
+                    {
+                        Playing.score += 100;
+                    }
                     if (canPierce)
                         _brick.Break();
                     else
@@ -378,8 +392,6 @@ namespace MonoBreaker.Script.Game
                         BounceDown();
                         position.Y = paddle.collisionBox.Bottom;
                     }
-                    
-                    
                     paddleBounceSound.Play();
                 }
 
@@ -406,6 +418,13 @@ namespace MonoBreaker.Script.Game
                         BounceDown();
                         position.Y = _brick.Rect.Bottom;
                     }
+                    if (_brick.BrickHealth > 1)
+                    {
+                        Playing.score += 10;
+                    }else if (_brick.BrickHealth == 1)
+                    {
+                        Playing.score += 100;
+                    }
 
                     if (canPierce)
                         _brick.Break();
@@ -423,13 +442,14 @@ namespace MonoBreaker.Script.Game
                 position.Y = paddle.position.Y - collisionBox.Height - 2f;
                 color = Color.DarkGray;
             }
-
-            if (Playing.score % Playing.speedUpThreshold == 0 && Playing.score != 0 && Playing.score != prevScore) // speed up if score equals a certain value
+            
+            
+            if (Playing.brokenBricks % Playing.speedUpThreshold == 0 && Playing.brokenBricks != 0 && Playing.brokenBricks != prevValue) // speed up if score equals a certain value
             {
                 speed += Playing.speedIncrement;
                 direction.Y = speed * Math.Sign(direction.Y);
             }
-            prevScore = Playing.score;
+            prevValue = Playing.brokenBricks;
         }
         public void Draw(SpriteBatch window) 
         {

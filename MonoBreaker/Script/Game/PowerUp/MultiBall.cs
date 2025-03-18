@@ -34,6 +34,7 @@ public class MultiBall:Powerup
                 {
                     Playing.otherBalls.Add(new Ball(new Vector2(rng.NextInt64(8, Game1.trueScreenWidth - 8), rng.NextInt64(200, (long)Playing.player.position.Y - 10)), Playing.startingGameSpeed, false, 5));
                 }
+                Playing.score += 100;
                 Playing.powerUpSound.Play();
                 Kill();
             }

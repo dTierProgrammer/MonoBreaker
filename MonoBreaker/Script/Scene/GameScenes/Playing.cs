@@ -33,9 +33,10 @@ public static class Playing
     private static Texture2D testBullet;
 
     public static int score = 0;
+    public static int brokenBricks = 0;
     private static int prevScore;
     public static readonly int speedUpThreshold = BrickMap.RowLength;
-    private static readonly int addTryThreshold = 130;
+    private static readonly int addTryThreshold = 1000;
 
     public static float startingGameSpeed = 1.5f;
 
