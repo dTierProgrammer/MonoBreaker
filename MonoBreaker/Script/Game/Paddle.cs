@@ -39,6 +39,7 @@ namespace MonoBreaker.Script.Game
 
         private const float delay = 10;
         private float delayRemainder = delay;
+        private float timeLeftSuper = delay;
 
         private int score;
         public Paddle(Vector2 position, float moveSpeed) : base(position) 
@@ -83,13 +84,14 @@ namespace MonoBreaker.Script.Game
                 image = GetContent.GetTexture("Game/paddleSuper");
 
                 var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
-                delayRemainder -= timer;
+                timeLeftSuper -= timer;
 
-                if (delayRemainder <= 0)
+                if (timeLeftSuper <= 0)
                 {
                     powerDownSound.Play();
                     image = GetContent.GetTexture("Game/paddle");
                     isSuper = false;
+                    timeLeftSuper = delay;
                 }
             }
 

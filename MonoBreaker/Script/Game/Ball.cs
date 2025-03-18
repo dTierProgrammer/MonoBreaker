@@ -49,6 +49,8 @@ namespace MonoBreaker.Script.Game
 
         private const float delay = 10;
         private float delayRemainder = delay;
+        private float timeLeftSuper = delay;
+        private float timeLeftPierce = delay;
 
         public Ball(Vector2 position, float speed, bool isMainBall) : base(position) 
         {
@@ -190,14 +192,15 @@ namespace MonoBreaker.Script.Game
                 ballStrength = 2;
 
                 var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
-                delayRemainder -= timer;
+                timeLeftSuper -= timer;
 
-                if (delayRemainder <= 0)
+                if (timeLeftSuper <= 0)
                 {
                     ballDownSound.Play();
                     image = GetContent.GetTexture("Game/ball");
                     ballStrength = 1;
                     isSuper = false;
+                    timeLeftSuper = delay;
                 }
 
             }
@@ -214,18 +217,20 @@ namespace MonoBreaker.Script.Game
                     image = GetContent.GetTexture("Game/ball");
                     ballStrength = 1;
                     canPierce = false;
+                    delayRemainder = delay;
                 }
             }
 
             if (canPierce) 
             {
                 var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
-                delayRemainder -= timer;
+                timeLeftPierce -= timer;
 
-                if (delayRemainder <= 0)
+                if (timeLeftPierce <= 0)
                 {
                     ballDownSound.Play();
                     canPierce = false;
+                    timeLeftPierce = delay;
                 }
             }
             

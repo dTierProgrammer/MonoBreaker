@@ -1,6 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
+using MonoBreaker.Script.Game.PowerUp;
 using MonoBreaker.Script.Global;
 using MonoBreaker.Script.Scene.GameScenes;
 
@@ -17,6 +19,10 @@ namespace MonoBreaker.Script.Game
         private Color color = new Color(colorVal, colorVal, colorVal);
         private SoundEffect brickWeaken = GetContent.GetSound("brickBreak");
         private SoundEffect brickBreak = GetContent.GetSound("brickDestroy");
+
+        private Random rng = new Random();
+        private int chance;
+        
         public Brick(Texture2D image, Vector2 position, int toughness)
         {
             this.image = image;
@@ -44,8 +50,10 @@ namespace MonoBreaker.Script.Game
             {
                 brickBreak.Play();
                 Playing.brokenBricks++;
+                chance = rng.Next(1, 5);
+                if(chance == 2)
+                    _GeneratePowerup.RandomPowerup(new Vector2(Rect.X + 2, Rect.Y  + 2)); // make this called randomly
             }
-            
             isActive = false;
             Rect = Rectangle.Empty;
            

@@ -4,7 +4,6 @@ public enum _Powerups
 {
     ADDTRY,
     DEATHBOUNCE,
-    LOVELY,
     MULTIBALL,
     PADDLEEXTEND,
     PIERCING,

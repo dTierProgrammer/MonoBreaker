@@ -112,6 +112,7 @@ public static class Playing
             bullet.Update();
         }
         BrickMap.Update();
+        _ManagePowerups.Update();
     }
 
     public static void Draw(SpriteBatch spriteBatch)
@@ -129,6 +130,7 @@ public static class Playing
             bullet.Draw(spriteBatch);
         }
         BrickMap.Draw(spriteBatch);
+        _ManagePowerups.Draw(spriteBatch);
     }
 
     public static void DrawText(SpriteBatch spriteBatch)

@@ -51,6 +51,13 @@ public class Bullet
             }
             if (hasCollided && collisionBox.Intersects(_brick.Rect) )
             {
+                if (_brick.BrickHealth > 1)
+                {
+                    Playing.score += 10;
+                }else if (_brick.BrickHealth == 1)
+                {
+                    Playing.score += 100;
+                }
                 _brick.Weaken(1);
                 Kill();
                 hasCollided = false;
