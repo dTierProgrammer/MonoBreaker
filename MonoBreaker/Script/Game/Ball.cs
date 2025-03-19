@@ -28,6 +28,7 @@ namespace MonoBreaker.Script.Game
         private bool canPierce = false;
         private bool isSuper = false;
         private bool isLovely = false;
+        private bool canDeathBouce = false;
         
         private int ballStrength = 1;
         private int ballHealth = 1;

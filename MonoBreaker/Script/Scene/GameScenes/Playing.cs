@@ -93,7 +93,7 @@ public static class Playing
         }
         prevScore = score;
         
-        if(ball.collisionBox.Intersects(Playing.screenBounds[3]))
+        if(ball.collisionBox.Intersects(Playing.screenBounds[3]) && ball.BallHealth > 1)
         {
             foreach (Ball ball in otherBalls)
             {
