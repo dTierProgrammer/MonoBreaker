@@ -16,7 +16,7 @@ public class MultiBall:Powerup
     public static readonly Texture2D Img = GetContent.GetTexture($"Game/powerup/{name}");
     public static readonly Texture2D flairImg = GetContent.GetTexture($"Game/powerup/flair/{name}_flair");
 
-    private Random rng = new Random();
+    private static Random rng = new Random();
     private Vector2 spawnPos;
     long cap;
     public MultiBall(Texture2D image, Vector2 position, Texture2D flair): base(image, position, flair)
@@ -36,7 +36,7 @@ public class MultiBall:Powerup
             if (collisionBox.Intersects(Playing.player.collisionBox))
             {
                 cap = rng.NextInt64(5, 10);
-                for (int iteration = 0; iteration < rng.NextInt64(5, 10); iteration++)
+                for (int iteration = 0; iteration < cap; iteration++)
                 {
                     Playing.otherBalls.Add(new Ball(new Vector2(rng.NextInt64(8, Game1.trueScreenWidth - 8), rng.NextInt64(200, (long)Playing.player.position.Y - 10)), Playing.startingGameSpeed, false, 5));
                 }

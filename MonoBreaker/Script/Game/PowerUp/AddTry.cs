@@ -22,7 +22,7 @@ public class AddTry:Powerup
         isActive = true;
     }
 
-    public override void Update(GameTime gameTime)
+    public override void Update()
     {
         if (isActive) 
         {

@@ -12,6 +12,7 @@ using static System.Formats.Asn1.AsnWriter;
 using MonoBreaker.Script.Scene.GameScenes;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using MonoBreaker.Script.Game.PowerUp;
 
 namespace MonoBreaker.Script.Game
 {
@@ -180,6 +181,7 @@ namespace MonoBreaker.Script.Game
             {
                 ball.Kill();
             }
+            _ManagePowerups.KillPowerups();
             isActive = false;
             direction = new Vector2(0, -speed);
             ballHealth = 1;
@@ -210,7 +212,7 @@ namespace MonoBreaker.Script.Game
                 }
 
             }
-            if (isLovely) 
+            if (isLovely)
             {
                 image = GetContent.GetTexture("Test/test");
                 canPierce = true;

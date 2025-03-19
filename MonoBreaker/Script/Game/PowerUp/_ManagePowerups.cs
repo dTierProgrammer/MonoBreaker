@@ -20,12 +20,55 @@ public static class _ManagePowerups
     private static List<List<string>> allPowerups = new List<List<string>>();
 
     public static List<Flair> powerupFlairs = new List<Flair>();
+
+    public static void KillPowerups()
+    {
+        foreach (AddTry item in listAddTry)
+        {
+            item.Kill();
+        }
+
+        foreach (DeathBounce item in listDeathBounce)
+        {
+            item.Kill();
+        }
+
+        foreach (Lovely item in listLovely)
+        {
+            item.Kill();
+        }
+
+        foreach (MultiBall item in listMultiBall)
+        {
+            item.Kill();
+        }
+
+        foreach (PaddleExtend item in listPaddleExtend)
+        {
+            item.Kill();
+        }
+
+        foreach (Piercing item in listPiercing)
+        {
+            item.Kill();
+        }
+
+        foreach (Shooting item in listShooting)
+        {
+            item.Kill();
+        }
+
+        foreach (SuperBall item in listSuperBall)
+        {
+            item.Kill();
+        }
+    }
     
     public static void Update(GameTime gameTime) // holy shit code
     {
         foreach (AddTry item in listAddTry)
         {
-            item.Update(gameTime);
+            item.Update();
         }
 
         foreach (DeathBounce item in listDeathBounce)

@@ -38,7 +38,7 @@ public static class Playing
     public static readonly int speedUpThreshold = BrickMap.RowLength;
     private static readonly int addTryThreshold = 1000;
 
-    public static float startingGameSpeed = 1.5f;
+    public static float startingGameSpeed = 1.8f;
 
     public static float speedIncrement = .1f;
     public static float tries = 5;
