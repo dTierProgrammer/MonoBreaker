@@ -50,8 +50,8 @@ namespace MonoBreaker.Script.Game
             {
                 brickBreak.Play();
                 Playing.brokenBricks++;
-                chance = rng.Next(1, 7);
-                if(chance == 2)
+                chance = rng.Next(0, 101);
+                if(chance < 25) // 25 % chance
                     _GeneratePowerup.RandomPowerup(new Vector2(Rect.X + 2, Rect.Y  + 2)); // make this called randomly
             }
             isActive = false;
