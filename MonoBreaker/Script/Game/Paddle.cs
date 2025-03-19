@@ -31,6 +31,8 @@ namespace MonoBreaker.Script.Game
         private SoundEffect bulletShootSound = GetContent.GetSound("bulletshoot");
         private SoundEffect powerDownSound = GetContent.GetSound("down");
 
+        public static List<Bullet> bullets = new List<Bullet>();
+
         public bool isSuper = false;
         public bool canShoot = false;
         private int ammo = 0;
@@ -67,8 +69,8 @@ namespace MonoBreaker.Script.Game
             {
                 bulletShootSound.Play();
                 ammo -= 1;
-                Playing.bullets.Add(new Bullet(new Vector2(collisionBox.Left, collisionBox.Top - 3)));
-                Playing.bullets.Add(new Bullet(new Vector2(collisionBox.Right - 3, collisionBox.Top - 3)));
+                bullets.Add(new Bullet(new Vector2(collisionBox.Left, collisionBox.Top - 3)));
+                bullets.Add(new Bullet(new Vector2(collisionBox.Right - 3, collisionBox.Top - 3)));
             } 
         }
 
@@ -141,11 +143,20 @@ namespace MonoBreaker.Script.Game
                 speedUpSound.Play();
             }
             prevValue = Playing.brokenBricks;
+
+            foreach(Bullet bullet in bullets) 
+            {
+                bullet.Update();
+            }
         }
 
         public void Draw(SpriteBatch window)
         {
             window.Draw(this.image, collisionBox, Color.White);
+            foreach (Bullet bullet in bullets)
+            {
+                bullet.Draw(window);
+            }
         }
     }
 }

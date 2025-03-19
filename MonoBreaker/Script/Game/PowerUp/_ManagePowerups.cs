@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoBreaker.Script.Game.Base;
 
 namespace MonoBreaker.Script.Game.PowerUp;
 
@@ -15,12 +18,14 @@ public static class _ManagePowerups
     public static List<SuperBall> listSuperBall = new List<SuperBall>();
     
     private static List<List<string>> allPowerups = new List<List<string>>();
+
+    public static List<Flair> powerupFlairs = new List<Flair>();
     
-    public static void Update() // holy shit code
+    public static void Update(GameTime gameTime) // holy shit code
     {
         foreach (AddTry item in listAddTry)
         {
-            item.Update();
+            item.Update(gameTime);
         }
 
         foreach (DeathBounce item in listDeathBounce)
@@ -57,8 +62,13 @@ public static class _ManagePowerups
         {
             item.Update();
         }
+
+        foreach (Flair item in powerupFlairs) 
+        {
+            item.Update(gameTime);
+        }
     }
-    
+
     public static void Draw(SpriteBatch spriteBatch)
     {
         foreach (AddTry item in listAddTry)
@@ -97,6 +107,11 @@ public static class _ManagePowerups
         }
 
         foreach (SuperBall item in listSuperBall)
+        {
+            item.Draw(spriteBatch);
+        }
+
+        foreach (Flair item in powerupFlairs)
         {
             item.Draw(spriteBatch);
         }

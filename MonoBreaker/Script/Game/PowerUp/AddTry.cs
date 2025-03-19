@@ -3,46 +3,49 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using MonoBreaker.Script.Global;
 using MonoBreaker.Script.Scene.GameScenes;
+using MonoBreaker.Script.Game.Base;
+using System.Runtime.InteropServices.Marshalling;
+using System.Runtime.CompilerServices;
 
 namespace MonoBreaker.Script.Game.PowerUp;
 
-public class AddTry
+public class AddTry:Powerup
 {
-    private Texture2D image = GetContent.GetTexture("Game/powerup/1up");
-    private Vector2 position;
-    private bool isActive = true;
-    private Rectangle collisionBox;
-    
-    public AddTry(Vector2 position)
+    private static string name = "1up";
+    public static readonly Texture2D Img = GetContent.GetTexture($"Game/powerup/{name}");
+    public static readonly Texture2D flairImg = GetContent.GetTexture($"Game/powerup/flair/{name}_flair");
+    public AddTry(Texture2D image, Vector2 position, Texture2D flair):base(image, position, flair)
     {
         this.position = position;
-        collisionBox = new Rectangle((int)position.X, (int)position.Y, image.Width, image.Height);
+        this.image = image;
+        this.flair = flair;
+        isActive = true;
     }
 
-    public void Update()
+    public override void Update(GameTime gameTime)
     {
-        if (isActive)
-            collisionBox.Y += 2;
-        
-        if (collisionBox.Intersects(Playing.player.collisionBox))
+        if (isActive) 
         {
-            Playing.tries++;
-            Playing.score += 100;
-            collisionBox = Rectangle.Empty;
-            Playing.addTrySound.Play();
-            isActive = false;
-        }
+            position.Y += .5f;
+            if (collisionBox.Intersects(Playing.player.collisionBox))
+            {
+                Playing.tries++;
+                Playing.score += 100;
+                Playing.addTrySound.Play();
+                AnimateFlair();
+                Kill();
+            }
 
-        if (collisionBox.Intersects(Playing.screenBounds[3]))
-        {
-            collisionBox = Rectangle.Empty;
-            isActive = false;
+            if (collisionBox.Intersects(Playing.screenBounds[3]))
+            {
+                Kill();
+            }
         }
+        base.Update();
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch) 
     {
-        if(isActive)
-            spriteBatch.Draw(image, collisionBox, Color.White);
+        base.Draw(spriteBatch);
     }
 }

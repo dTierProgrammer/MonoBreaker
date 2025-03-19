@@ -17,15 +17,6 @@ namespace MonoBreaker.Script.Game.PowerUp
     {
         private static Array powerups = Enum.GetValues(typeof(_Powerups));
         private static Random rng = new Random();
-        
-        private static Texture2D multiballImg = GetContent.GetTexture("Game/powerup/multiball"); // it's because I'm stupid
-        private static Texture2D superballImg = GetContent.GetTexture("Game/powerup/superball");
-        private static Texture2D shootingImg = GetContent.GetTexture("Game/powerup/shooting");
-        private static Texture2D piercingImg = GetContent.GetTexture("Game/powerup/piercing");
-        private static Texture2D deathbounceImg = GetContent.GetTexture("Game/powerup/deathbounce");
-        private static Texture2D paddleextendImg = GetContent.GetTexture("Game/powerup/paddleextend");
-        private static Texture2D addtryImg = GetContent.GetTexture("Game/powerup/1up");
-        private static Texture2D loveImg = GetContent.GetTexture("Game/powerup/love");
 
         public static void RandomPowerup(Vector2 position)
         {
@@ -34,63 +25,65 @@ namespace MonoBreaker.Script.Game.PowerUp
             switch(nextPowerup)
             {
                 case _Powerups.ADDTRY:
-                    _ManagePowerups.listAddTry.Add(new AddTry(position));
+                    _ManagePowerups.listAddTry.Add(new AddTry(AddTry.Img, position, AddTry.flairImg));
                     break;
                 /*case _Powerups.LOVELY:
                     _ManagePowerups.listLovely.Add(new Lovely(loveImg, position));
                     break;*/
                 case _Powerups.PIERCING:
-                    _ManagePowerups.listPiercing.Add(new Piercing(piercingImg, position));
+                    _ManagePowerups.listPiercing.Add(new Piercing(Piercing.Img, position, Piercing.flairImg));
                     break;
                 case _Powerups.SHOOTING:
-                    _ManagePowerups.listShooting.Add(new Shooting(shootingImg, position));
+                    _ManagePowerups.listShooting.Add(new Shooting(Shooting.Img, position, Shooting.flairImg));
                     break;
                 case _Powerups.SUPERBALL:
-                    _ManagePowerups.listSuperBall.Add(new SuperBall(superballImg, position));
+                    _ManagePowerups.listSuperBall.Add(new SuperBall(SuperBall.Img, position, SuperBall.flairImg));
                     break;
                 case _Powerups.DEATHBOUNCE:
-                    _ManagePowerups.listDeathBounce.Add(new DeathBounce(position));
+                    _ManagePowerups.listDeathBounce.Add(new DeathBounce(DeathBounce.Img, position, DeathBounce.flairImg));
                     break;
                 case _Powerups.PADDLEEXTEND:
-                    _ManagePowerups.listPaddleExtend.Add(new PaddleExtend(paddleextendImg, position));
+                    _ManagePowerups.listPaddleExtend.Add(new PaddleExtend(PaddleExtend.Img, position, PaddleExtend.flairImg));
                     break;
                 case _Powerups.MULTIBALL:
-                    _ManagePowerups.listMultiBall.Add(new MultiBall(multiballImg, position));
+                    _ManagePowerups.listMultiBall.Add(new MultiBall(MultiBall.Img, position, MultiBall.flairImg));
                     break;
             }
         }
 
         public static void NewAddTry(Vector2 position)
         {
-            _ManagePowerups.listAddTry.Add(new AddTry(position));
+            _ManagePowerups.listAddTry.Add(new AddTry(AddTry.Img, position, AddTry.flairImg));
         }
+
         public static void NewLovely(Vector2 position)
         {
-            _ManagePowerups.listLovely.Add(new Lovely(loveImg, position));
+            _ManagePowerups.listLovely.Add(new Lovely(Lovely.Img, position, Lovely.flairImg));
         }
+        
         public static void NewPiercing(Vector2 position)
         {
-            _ManagePowerups.listPiercing.Add(new Piercing(piercingImg, position));
+            _ManagePowerups.listPiercing.Add(new Piercing(Piercing.Img, position, Piercing.flairImg));
         }
         public static void NewShooting(Vector2 position)
         {
-            _ManagePowerups.listShooting.Add(new Shooting(shootingImg, position));
+            _ManagePowerups.listShooting.Add(new Shooting(Shooting.Img, position, Shooting.flairImg));
         }
         public static void NewSuperBall(Vector2 position)
         {
-            _ManagePowerups.listSuperBall.Add(new SuperBall(superballImg, position));
+            _ManagePowerups.listSuperBall.Add(new SuperBall(SuperBall.Img, position, SuperBall.flairImg));
         }
         public static void NewDeathBounce(Vector2 position)
         {
-            _ManagePowerups.listDeathBounce.Add(new DeathBounce(position));
+            _ManagePowerups.listDeathBounce.Add(new DeathBounce(DeathBounce.Img, position, DeathBounce.flairImg));
         }
         public static void NewPaddleExtend(Vector2 position)
         {
-            _ManagePowerups.listPaddleExtend.Add(new PaddleExtend(paddleextendImg, position));
+            _ManagePowerups.listPaddleExtend.Add(new PaddleExtend(PaddleExtend.Img, position, PaddleExtend.flairImg));
         }
         public static void NewMultiBall(Vector2 position)
         {
-            _ManagePowerups.listMultiBall.Add(new MultiBall(multiballImg, position));
+            _ManagePowerups.listMultiBall.Add(new MultiBall(MultiBall.Img, position, MultiBall.flairImg));
         }
     }
 }

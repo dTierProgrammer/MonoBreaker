@@ -2,46 +2,42 @@
 using Microsoft.Xna.Framework.Graphics;
 using MonoBreaker.Script.Global;
 using MonoBreaker.Script.Scene.GameScenes;
+using MonoBreaker.Script.Game.Base;
 
 namespace MonoBreaker.Script.Game.PowerUp;
 
-public class DeathBounce
+public class DeathBounce:Powerup
 {
-    private Texture2D image = GetContent.GetTexture("Game/powerup/deathbounce");
-    private Vector2 position;
-    private bool isActive = true;
-    private Rectangle collisionBox;
-
-    public DeathBounce(Vector2 position)
+    private static string name = "deathbounce";
+    public static readonly Texture2D Img = GetContent.GetTexture($"Game/powerup/{name}");
+    public static readonly Texture2D flairImg = GetContent.GetTexture($"Game/powerup/flair/{name}_flair");
+    public DeathBounce(Texture2D image, Vector2 position, Texture2D flair):base(image, position, flair)
     {
+        this.image = image;
         this.position = position;
-        collisionBox =  new Rectangle((int)position.X, (int)position.Y, image.Width, image.Height);
+        this.flair = flair;
+        isActive = true;
     }
 
-    public void Update()
+    public override void Update()
     {
-        if (isActive)
-            collisionBox.Y += 2;
-        
-        if (collisionBox.Intersects(Playing.player.collisionBox))
+        if (isActive) 
         {
-            Playing.ball.BallHealth = 4;
-            Playing.score += 100;
-            collisionBox = Rectangle.Empty;
-            Playing.powerUpSound.Play();
-            isActive = false;
-        }
+            position.Y += .5f;
+            if (collisionBox.Intersects(Playing.player.collisionBox))
+            {
+                Playing.ball.BallHealth = 4;
+                Playing.score += 100;
+                Playing.powerUpSound.Play();
+                AnimateFlair();
+                Kill();
+            }
 
-        if (collisionBox.Intersects(Playing.screenBounds[3]))
-        {
-            collisionBox = Rectangle.Empty;
-            isActive = false;
+            if (collisionBox.Intersects(Playing.screenBounds[3]))
+            {
+                Kill();
+            }
         }
-    }
-    
-    public void Draw(SpriteBatch spriteBatch)
-    {
-        if(isActive)
-            spriteBatch.Draw(image, collisionBox, Color.White);
+        base.Update();
     }
 }

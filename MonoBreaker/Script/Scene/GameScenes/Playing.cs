@@ -11,6 +11,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Audio;
 using MonoBreaker.Script.Game.PowerUp;
 using System.Diagnostics;
+using MonoBreaker.Script.Game.Base;
 
 namespace MonoBreaker.Script.Scene.GameScenes;
 
@@ -23,7 +24,6 @@ public static class Playing
     public static Paddle player;
     public static  Ball ball;
     public static List<Ball>otherBalls = new List<Ball>();
-    public static List<Bullet> bullets = new List<Bullet>();
     public readonly static Rectangle[] screenBounds = new Rectangle[4];
 
     public static SoundEffect powerUpSound = GetContent.GetSound("powerUp");
@@ -84,6 +84,22 @@ public static class Playing
             ball.Launch();
         if (Keyboard.GetState().IsKeyDown(Keys.Space) & !priorKBState.IsKeyDown(Keys.Space) && ball.IsActive == true && player.canShoot)
             player.ShootBullet();
+        if (Keyboard.GetState().IsKeyDown(Keys.A) & !priorKBState.IsKeyDown(Keys.A))
+            _GeneratePowerup.NewAddTry(player.position);
+        if (Keyboard.GetState().IsKeyDown(Keys.S) & !priorKBState.IsKeyDown(Keys.S))
+            _GeneratePowerup.NewDeathBounce(player.position);
+        if (Keyboard.GetState().IsKeyDown(Keys.D) & !priorKBState.IsKeyDown(Keys.D))
+            _GeneratePowerup.NewMultiBall(player.position);
+        if (Keyboard.GetState().IsKeyDown(Keys.F) & !priorKBState.IsKeyDown(Keys.F))
+            _GeneratePowerup.NewPaddleExtend(player.position);
+        if (Keyboard.GetState().IsKeyDown(Keys.G) & !priorKBState.IsKeyDown(Keys.G))
+            _GeneratePowerup.NewPiercing(player.position);
+        if (Keyboard.GetState().IsKeyDown(Keys.H) & !priorKBState.IsKeyDown(Keys.H))
+            _GeneratePowerup.NewShooting(player.position);
+        if (Keyboard.GetState().IsKeyDown(Keys.J) & !priorKBState.IsKeyDown(Keys.J))
+            _GeneratePowerup.NewSuperBall(player.position);
+        if (Keyboard.GetState().IsKeyDown(Keys.K) & !priorKBState.IsKeyDown(Keys.K))
+            _GeneratePowerup.NewLovely(player.position);
         priorKBState = Keyboard.GetState();
         
         if (score % addTryThreshold == 0 && score != 0 && score != prevScore) // 1up after a certain amount of points is added to score
@@ -92,14 +108,6 @@ public static class Playing
             addTrySound.Play();
         }
         prevScore = score;
-        
-        if(ball.collisionBox.Intersects(Playing.screenBounds[3]) && ball.BallHealth > 1)
-        {
-            foreach (Ball ball in otherBalls)
-            {
-                ball.Kill();
-            }
-        }
 
         player.Update(gameTime);
         ball.Update(gameTime);
@@ -107,12 +115,8 @@ public static class Playing
         {
             ball.Update(gameTime);
         }
-        foreach (Bullet bullet in bullets)
-        {
-            bullet.Update();
-        }
         BrickMap.Update();
-        _ManagePowerups.Update();
+        _ManagePowerups.Update(gameTime);
     }
 
     public static void Draw(SpriteBatch spriteBatch)
@@ -124,10 +128,6 @@ public static class Playing
         foreach (Ball ball in otherBalls)
         {
             ball.Draw(spriteBatch);
-        }
-        foreach (Bullet bullet in bullets)
-        {
-            bullet.Draw(spriteBatch);
         }
         BrickMap.Draw(spriteBatch);
         _ManagePowerups.Draw(spriteBatch);

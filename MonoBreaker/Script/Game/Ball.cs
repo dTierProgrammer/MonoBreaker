@@ -176,8 +176,13 @@ namespace MonoBreaker.Script.Game
 
         public void Reset()
         {
+            foreach (Ball ball in Playing.otherBalls)
+            {
+                ball.Kill();
+            }
             isActive = false;
             direction = new Vector2(0, -speed);
+            ballHealth = 1;
         }
 
         public void Kill()
@@ -218,6 +223,7 @@ namespace MonoBreaker.Script.Game
                     image = GetContent.GetTexture("Game/ball");
                     ballStrength = 1;
                     canPierce = false;
+                    isLovely = false;
                     delayRemainder = delay;
                 }
             }
