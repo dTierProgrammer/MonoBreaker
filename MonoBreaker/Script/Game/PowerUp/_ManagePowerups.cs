@@ -16,8 +16,7 @@ public static class _ManagePowerups
     public static List<Piercing> listPiercing = new List<Piercing>();
     public static List<Shooting> listShooting = new List<Shooting>();
     public static List<SuperBall> listSuperBall = new List<SuperBall>();
-    
-    private static List<List<string>> allPowerups = new List<List<string>>();
+    public static List<TwinPaddle> listTwinPaddle = new List<TwinPaddle>();
 
     public static List<Flair> powerupFlairs = new List<Flair>();
 
@@ -62,6 +61,11 @@ public static class _ManagePowerups
         {
             item.Kill();
         }
+
+        foreach (TwinPaddle item in listTwinPaddle)
+        {
+            item.Kill();
+        }
     }
     
     public static void Update(GameTime gameTime) // holy shit code
@@ -102,6 +106,11 @@ public static class _ManagePowerups
         }
 
         foreach (SuperBall item in listSuperBall)
+        {
+            item.Update();
+        }
+
+        foreach (TwinPaddle item in listTwinPaddle)
         {
             item.Update();
         }
@@ -150,6 +159,11 @@ public static class _ManagePowerups
         }
 
         foreach (SuperBall item in listSuperBall)
+        {
+            item.Draw(spriteBatch);
+        }
+
+        foreach (TwinPaddle item in listTwinPaddle)
         {
             item.Draw(spriteBatch);
         }

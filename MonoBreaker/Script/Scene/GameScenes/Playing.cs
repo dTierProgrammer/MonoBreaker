@@ -125,7 +125,7 @@ public static class Playing
     public static void Draw(SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(playfield, Vector2.Zero, Color.White);
-        //spriteBatch.Draw(leftoverTriesCounter, new Vector2(6, 25), Color.White);
+        spriteBatch.Draw(leftoverTriesCounter, new Vector2(6, 25), Color.White);
         player.Draw(spriteBatch);
         ball.Draw(spriteBatch);
         foreach (Ball ball in otherBalls)
@@ -134,18 +134,20 @@ public static class Playing
         }
         BrickMap.Draw(spriteBatch);
         _ManagePowerups.Draw(spriteBatch);
-        spriteBatch.Draw(Game1.debug,Game1.centerDebug, Color.Yellow );
+        //spriteBatch.Draw(Game1.debug,Game1.centerDebug, Color.Yellow );
     }
 
     public static void DrawText(SpriteBatch spriteBatch)
     {
-        /*
+        
         spriteBatch.DrawString(Fonts.titleFont, $"Score: {score}\n" +
                                                  $"Round {round}\n" +
                                                  $"   x {tries}\n"
                                                  , new Vector2(25, 24), Color.White);
-                                                 */
+                                                 
+       /*
         spriteBatch.DrawString(Fonts.titleFont, $"Center Dist from Center: {player.distFromCenter}" +
                                                 $"\nOrigin Dist from Center: {player.collBoxOriginDistFromCenter}", new Vector2(25, 24), Color.Red);
+                                                */
     }
 }

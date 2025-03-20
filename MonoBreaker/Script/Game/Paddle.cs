@@ -36,15 +36,16 @@ namespace MonoBreaker.Script.Game
         public bool isSuper = false;
         public bool canShoot = false;
         private int ammo = 0;
-        public bool isTwinActive = true;
+        public bool isTwinActive = false;
         public Vector2 twinPosition;
         //public Rectangle twinCollisionBox;
-        
+        private int offset = 144;
         int prevValue;
 
         private const float delay = 10;
         private float delayRemainder = delay;
         private float timeLeftSuper = delay;
+        private float twinTimeLeft = delay;
 
         public float distFromCenter { get; private set; }
         public float collBoxOriginDistFromCenter { get; private set; }
@@ -77,13 +78,18 @@ namespace MonoBreaker.Script.Game
                 ammo -= 1;
                 bullets.Add(new Bullet(new Vector2(collisionBox.Left, collisionBox.Top - 3)));
                 bullets.Add(new Bullet(new Vector2(collisionBox.Right - 3, collisionBox.Top - 3)));
+                if (isTwinActive)
+                {
+                    bullets.Add(new Bullet(new Vector2(twinCollisionBox.Left, twinCollisionBox.Top - 3)));
+                    bullets.Add(new Bullet(new Vector2(twinCollisionBox.Right - 3, twinCollisionBox.Top - 3)));
+                }
             } 
         }
         
         
         public Rectangle twinCollisionBox
         {
-            get { return new Rectangle(-(int)distFromCenter + 144, (int)twinPosition.Y, image.Width, image.Height);}
+            get { return new Rectangle(-(int)distFromCenter + offset, (int)twinPosition.Y, image.Width, image.Height);}
         }
         
 
@@ -97,20 +103,33 @@ namespace MonoBreaker.Script.Game
             distFromCenter = collisionBox.Center.X - Playing.centerPt.X;
             collBoxOriginDistFromCenter = collisionBox.X - Playing.centerPt.X;
             
-            //twinCollisionBox.X = -(int)distFromCenter + 144; // my stupid hardcoded methods
-            if (isSuper) 
+            if (isSuper)
             {
                 image = GetContent.GetTexture("Game/paddleSuper");
-
                 var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 timeLeftSuper -= timer;
-
+                if(isTwinActive)
+                    offset = 136;
+                
                 if (timeLeftSuper <= 0)
                 {
+                    offset = 144;
                     powerDownSound.Play();
                     image = GetContent.GetTexture("Game/paddle");
                     isSuper = false;
                     timeLeftSuper = delay;
+                }
+            }
+
+            if (isTwinActive)
+            {
+                var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                twinTimeLeft -= timer;
+
+                if (twinTimeLeft <= 0)
+                {
+                    powerDownSound.Play();
+                    isTwinActive = false;
                 }
             }
 
@@ -170,7 +189,7 @@ namespace MonoBreaker.Script.Game
         public void Draw(SpriteBatch window)
         {
             if(isTwinActive)
-                window.Draw(this.image, twinCollisionBox, Color.Red);
+                window.Draw(this.image, twinCollisionBox, Color.DarkGray);
             window.Draw(this.image, collisionBox, Color.White);
             foreach (Bullet bullet in bullets)
             {

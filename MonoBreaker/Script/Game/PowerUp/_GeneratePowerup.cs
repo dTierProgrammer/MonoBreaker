@@ -48,6 +48,9 @@ namespace MonoBreaker.Script.Game.PowerUp
                 case _Powerups.MULTIBALL:
                     _ManagePowerups.listMultiBall.Add(new MultiBall(MultiBall.Img, position, MultiBall.flairImg));
                     break;
+                case _Powerups.TWINPADDLE:
+                    _ManagePowerups.listTwinPaddle.Add(new TwinPaddle(TwinPaddle.Img, position, TwinPaddle.flairImg));
+                    break;
             }
         }
 
@@ -84,6 +87,11 @@ namespace MonoBreaker.Script.Game.PowerUp
         public static void NewMultiBall(Vector2 position)
         {
             _ManagePowerups.listMultiBall.Add(new MultiBall(MultiBall.Img, position, MultiBall.flairImg));
+        }
+
+        public static void NewTwinPaddle(Vector2 position)
+        {
+            _ManagePowerups.listTwinPaddle.Add(new TwinPaddle(TwinPaddle.Img, position, TwinPaddle.flairImg));
         }
     }
 }

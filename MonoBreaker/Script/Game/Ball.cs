@@ -289,6 +289,21 @@ namespace MonoBreaker.Script.Game
                     }
                     
                 }
+                
+                if (collisionBox.Intersects(paddle.twinCollisionBox) && paddle.isTwinActive)
+                {// add back 'or equal to' if somehow nonfucntional
+                    if ((collisionBox.Right <= paddle.twinCollisionBox.Left) && (prevPosition.X <= paddle.twinCollisionBox.Right))
+                    {// right side collision
+                        position.X = paddle.twinCollisionBox.Right;
+                        BounceRight();
+                    }
+                    if ((collisionBox.Left >= paddle.twinCollisionBox.Right) && (prevPosition.X >= paddle.twinCollisionBox.Left))
+                    {// left side collision
+                        position.X = paddle.twinCollisionBox.Left - paddle.twinCollisionBox.Width;
+                        BounceLeft();
+                    }
+                    
+                }
 
                 foreach (Brick brick in BrickMap.listBricks) 
                 { // ball will only do collision calculations with one brick
@@ -405,6 +420,40 @@ namespace MonoBreaker.Script.Game
                     { // down (if the ball gets below the paddle)
                         BounceDown();
                         position.Y = paddle.collisionBox.Bottom;
+                    }
+                    paddleBounceSound.Play();
+                }
+                
+                if (collisionBox.Intersects(paddle.twinCollisionBox) && paddle.isTwinActive) 
+                {
+                    if (!useOldHandling)
+                    {
+                        if ((collisionBox.Top <= paddle.twinCollisionBox.Bottom) && (prevPosition.Y <= paddle.twinCollisionBox.Bottom))
+                        { // up (new handling // ball angle is determined by where on the paddle it collides)
+                            BounceUp();
+                            position.Y = paddle.twinCollisionBox.Top - collisionBox.Height;
+                            direction.X = (collisionBox.Center.X - paddle.twinCollisionBox.Center.X) / 10f;
+                            Math.Clamp(direction.X, -speed, speed);
+                        }
+                    }
+                    else
+                    {
+                        if ((collisionBox.Top <= paddle.twinCollisionBox.Bottom) &&
+                            (prevPosition.Y <= paddle.twinCollisionBox.Bottom))
+                        {
+                            BounceUp();
+                            position.Y = paddle.twinCollisionBox.Top - collisionBox.Height;
+                        }
+                        if (paddle.Velocity.X != 0)
+                        {// up (old handling // ball angle is set to the direction the paddle is moving, and it remains the same if paddle is stationary)
+                            direction.X = paddle.Velocity.X;
+                        }
+                    }
+                    
+                    if ((collisionBox.Bottom >= paddle.twinCollisionBox.Top) && (prevPosition.Y >= paddle.twinCollisionBox.Top))
+                    { // down (if the ball gets below the paddle)
+                        BounceDown();
+                        position.Y = paddle.twinCollisionBox.Bottom;
                     }
                     paddleBounceSound.Play();
                 }
