@@ -36,6 +36,9 @@ namespace MonoBreaker.Script.Game
         public bool isSuper = false;
         public bool canShoot = false;
         private int ammo = 0;
+        public bool isTwinActive = true;
+        public Vector2 twinPosition;
+        //public Rectangle twinCollisionBox;
         
         int prevValue;
 
@@ -43,18 +46,15 @@ namespace MonoBreaker.Script.Game
         private float delayRemainder = delay;
         private float timeLeftSuper = delay;
 
+        public float distFromCenter { get; private set; }
+        public float collBoxOriginDistFromCenter { get; private set; }
         private int score;
         public Paddle(Vector2 position, float moveSpeed) : base(position) 
         {
             image = GetContent.GetTexture("Game/paddle");
             this.position = position;
+            twinPosition = new Vector2(this.position.X, this.position.Y);
             maxVelocity = moveSpeed;
-        }
-
-        public int Ammo 
-        {
-            set { ammo = value; }
-            get { return ammo; }
         }
 
         public bool SuperPaddle 
@@ -62,7 +62,13 @@ namespace MonoBreaker.Script.Game
             set { isSuper = value; }
             get { return isSuper; }
         }
-
+        
+        public int Ammo 
+        {
+            set { ammo = value; }
+            get { return ammo; }
+        }
+        
         public void ShootBullet() 
         {
             if(ammo > 0 && canShoot) 
@@ -73,6 +79,13 @@ namespace MonoBreaker.Script.Game
                 bullets.Add(new Bullet(new Vector2(collisionBox.Right - 3, collisionBox.Top - 3)));
             } 
         }
+        
+        
+        public Rectangle twinCollisionBox
+        {
+            get { return new Rectangle(-(int)distFromCenter + 144, (int)twinPosition.Y, image.Width, image.Height);}
+        }
+        
 
         public Vector2 Velocity 
         {
@@ -81,6 +94,10 @@ namespace MonoBreaker.Script.Game
 
         public void Update(GameTime gameTime) 
         {
+            distFromCenter = collisionBox.Center.X - Playing.centerPt.X;
+            collBoxOriginDistFromCenter = collisionBox.X - Playing.centerPt.X;
+            
+            //twinCollisionBox.X = -(int)distFromCenter + 144; // my stupid hardcoded methods
             if (isSuper) 
             {
                 image = GetContent.GetTexture("Game/paddleSuper");
@@ -152,6 +169,8 @@ namespace MonoBreaker.Script.Game
 
         public void Draw(SpriteBatch window)
         {
+            if(isTwinActive)
+                window.Draw(this.image, twinCollisionBox, Color.Red);
             window.Draw(this.image, collisionBox, Color.White);
             foreach (Bullet bullet in bullets)
             {

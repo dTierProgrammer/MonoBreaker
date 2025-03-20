@@ -17,7 +17,8 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private RenderTarget2D scaledDisp;
-    private Texture2D debug;
+    public static Texture2D debug;
+    public static Rectangle centerDebug;
 
     public static int trueScreenWidth = 320; public static int trueScreenHeight = 240; // instance for all
     
@@ -39,6 +40,9 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
+        centerDebug = new Rectangle(160, 0, 1, trueScreenHeight);
+        
+        
         GetContent.Initialize(this);
         Playing.Initialize(this);
         base.Initialize();
@@ -49,7 +53,7 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         // TODO: use this.Content to load your game content here
-        debug = GetContent.GetTexture("Game/ballSuper");
+        debug = GetContent.GetTexture("Debug/debugRect");
         Playing.Load();
     }
 
@@ -110,7 +114,6 @@ public class Game1 : Game
                 break;
         }
         //_spriteBatch.Draw(debug, new Rectangle(1, 1, 16, 16), Color.Red);
-        
         _spriteBatch.End();
 
         GraphicsDevice.SetRenderTarget(null);
@@ -120,7 +123,7 @@ public class Game1 : Game
         _spriteBatch.End();
 
         _spriteBatch.Begin(samplerState: SamplerState.LinearWrap); // text
-
+        
         switch (SceneController.CurrentScene)
         {
             case Scene.TITLE:

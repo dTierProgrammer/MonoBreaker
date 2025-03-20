@@ -46,6 +46,9 @@ public static class Playing
 
     public static Random rng = new Random();
 
+    public readonly static Vector2 centerPt = new Vector2(160, 0);
+    private static float distFromCenter;
+    
     private static Game1 _game;
     
     public static void Initialize(Game1 game)
@@ -91,7 +94,7 @@ public static class Playing
         if (Keyboard.GetState().IsKeyDown(Keys.D) & !priorKBState.IsKeyDown(Keys.D))
             _GeneratePowerup.NewMultiBall(player.position);
         if (Keyboard.GetState().IsKeyDown(Keys.F) & !priorKBState.IsKeyDown(Keys.F))
-            _GeneratePowerup.NewPaddleExtend(player.position);
+            _GeneratePowerup.NewPaddleExtend(new Vector2(player.collisionBox.X, player.collisionBox.Y));
         if (Keyboard.GetState().IsKeyDown(Keys.G) & !priorKBState.IsKeyDown(Keys.G))
             _GeneratePowerup.NewPiercing(player.position);
         if (Keyboard.GetState().IsKeyDown(Keys.H) & !priorKBState.IsKeyDown(Keys.H))
@@ -122,7 +125,7 @@ public static class Playing
     public static void Draw(SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(playfield, Vector2.Zero, Color.White);
-        spriteBatch.Draw(leftoverTriesCounter, new Vector2(6, 25), Color.White);
+        //spriteBatch.Draw(leftoverTriesCounter, new Vector2(6, 25), Color.White);
         player.Draw(spriteBatch);
         ball.Draw(spriteBatch);
         foreach (Ball ball in otherBalls)
@@ -131,13 +134,18 @@ public static class Playing
         }
         BrickMap.Draw(spriteBatch);
         _ManagePowerups.Draw(spriteBatch);
+        spriteBatch.Draw(Game1.debug,Game1.centerDebug, Color.Yellow );
     }
 
     public static void DrawText(SpriteBatch spriteBatch)
     {
+        /*
         spriteBatch.DrawString(Fonts.titleFont, $"Score: {score}\n" +
                                                  $"Round {round}\n" +
                                                  $"   x {tries}\n"
                                                  , new Vector2(25, 24), Color.White);
+                                                 */
+        spriteBatch.DrawString(Fonts.titleFont, $"Center Dist from Center: {player.distFromCenter}" +
+                                                $"\nOrigin Dist from Center: {player.collBoxOriginDistFromCenter}", new Vector2(25, 24), Color.Red);
     }
 }
