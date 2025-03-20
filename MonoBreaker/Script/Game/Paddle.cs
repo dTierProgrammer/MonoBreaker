@@ -61,11 +61,13 @@ namespace MonoBreaker.Script.Game
             get { return isSuper; }
         }
         
+        /*
         public int Ammo 
         {
             set { ammo = value; }
             get { return ammo; }
         }
+        */
         
         public void ShootBullet() 
         {
@@ -96,12 +98,10 @@ namespace MonoBreaker.Script.Game
             
         }
         
-        
         public Rectangle twinCollisionBox
         {
             get { return new Rectangle(-(int)distFromCenter + offset, (int)twinPosition.Y, image.Width, image.Height);}
         }
-        
 
         public Vector2 Velocity 
         {
@@ -140,6 +140,7 @@ namespace MonoBreaker.Script.Game
                 {
                     powerDownSound.Play();
                     isTwinActive = false;
+                    twinTimeLeft = delay;
                 }
             }
 
@@ -147,7 +148,6 @@ namespace MonoBreaker.Script.Game
             {
                 if (ballGunIsActive)
                     ballGunIsActive = false;
-                
                 var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 gunTimeLeft -= timer;
 
@@ -155,6 +155,7 @@ namespace MonoBreaker.Script.Game
                 {
                     powerDownSound.Play();
                     gunIsActive = false;
+                    gunTimeLeft = delay;
                 }
             }
 
@@ -170,6 +171,7 @@ namespace MonoBreaker.Script.Game
                 {
                     powerDownSound.Play();
                     ballGunIsActive = false;
+                    ballGunTimeLeft = delay;
                 }
             }
             

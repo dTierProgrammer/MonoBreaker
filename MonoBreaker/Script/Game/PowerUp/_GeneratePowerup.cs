@@ -51,6 +51,9 @@ namespace MonoBreaker.Script.Game.PowerUp
                 case _Powerups.TWINPADDLE:
                     _ManagePowerups.listTwinPaddle.Add(new TwinPaddle(TwinPaddle.Img, position, TwinPaddle.flairImg));
                     break;
+                case _Powerups.BALLGUN:
+                    _ManagePowerups.listBallGun.Add(new BallGun(BallGun.Img, position, BallGun.flairImg));
+                    break;
             }
         }
 
@@ -58,12 +61,10 @@ namespace MonoBreaker.Script.Game.PowerUp
         {
             _ManagePowerups.listAddTry.Add(new AddTry(AddTry.Img, position, AddTry.flairImg));
         }
-
         public static void NewLovely(Vector2 position)
         {
             _ManagePowerups.listLovely.Add(new Lovely(Lovely.Img, position, Lovely.flairImg));
         }
-        
         public static void NewPiercing(Vector2 position)
         {
             _ManagePowerups.listPiercing.Add(new Piercing(Piercing.Img, position, Piercing.flairImg));
@@ -88,10 +89,13 @@ namespace MonoBreaker.Script.Game.PowerUp
         {
             _ManagePowerups.listMultiBall.Add(new MultiBall(MultiBall.Img, position, MultiBall.flairImg));
         }
-
         public static void NewTwinPaddle(Vector2 position)
         {
             _ManagePowerups.listTwinPaddle.Add(new TwinPaddle(TwinPaddle.Img, position, TwinPaddle.flairImg));
+        }
+        public static void NewBallGun(Vector2 position)
+        {
+            _ManagePowerups.listBallGun.Add(new BallGun(BallGun.Img, position, BallGun.flairImg));
         }
     }
 }

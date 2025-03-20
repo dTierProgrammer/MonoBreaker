@@ -9,5 +9,6 @@ public enum _Powerups
     PIERCING,
     SHOOTING,
     SUPERBALL,
-    TWINPADDLE
+    TWINPADDLE,
+    BALLGUN
 }
