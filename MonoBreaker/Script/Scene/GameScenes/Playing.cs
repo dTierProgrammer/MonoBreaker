@@ -106,6 +106,8 @@ public static class Playing
             _GeneratePowerup.NewLovely(player.position);
         if (Keyboard.GetState().IsKeyDown(Keys.L) & !priorKBState.IsKeyDown(Keys.L))
             _GeneratePowerup.NewTwinPaddle(player.position);
+        if (Keyboard.GetState().IsKeyDown(Keys.OemSemicolon) & !priorKBState.IsKeyDown(Keys.OemSemicolon))
+            _GeneratePowerup.NewBallGun(player.position);
         priorKBState = Keyboard.GetState();
         
         if (score % addTryThreshold == 0 && score != 0 && score != prevScore) // 1up after a certain amount of points is added to score

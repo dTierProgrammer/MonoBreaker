@@ -317,6 +317,30 @@
 /processorParam:TextureFormat=Color
 /build:Image/Game/powerup/flair/deathbounce_flair.png
 
+#begin Image/Game/powerup/flair/glueball_flair_alt.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Image/Game/powerup/flair/glueball_flair_alt.png
+
+#begin Image/Game/powerup/flair/glueball_flair.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Image/Game/powerup/flair/glueball_flair.png
+
 #begin Image/Game/powerup/flair/lovely_flair.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -389,18 +413,6 @@
 /processorParam:TextureFormat=Color
 /build:Image/Game/powerup/flair/shooting_flair.png
 
-#begin Image/Game/powerup/flair/stickypaddle_flair.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Image/Game/powerup/flair/stickypaddle_flair.png
-
 #begin Image/Game/powerup/flair/superball_flair.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -424,6 +436,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Image/Game/powerup/flair/twinpaddle_flair.png
+
+#begin Image/Game/powerup/glueball.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Image/Game/powerup/glueball.png
 
 #begin Image/Game/powerup/love.png
 /importer:TextureImporter
@@ -484,18 +508,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Image/Game/powerup/shooting.png
-
-#begin Image/Game/powerup/stickypaddle.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Image/Game/powerup/stickypaddle.png
 
 #begin Image/Game/powerup/superball.png
 /importer:TextureImporter

@@ -26,10 +26,10 @@ namespace MonoBreaker.Script.Game
         private bool useOldHandling = false;
         private bool isMainBall;
         
-        private bool canPierce = false;
-        private bool isSuper = false;
-        private bool isLovely = false;
-        private bool canDeathBouce = false;
+        private bool canPierce;
+        private bool isSuper;
+        private bool isLovely;
+        private bool canDeathBounce;
         
         private int ballStrength = 1;
         private int ballHealth = 1;
