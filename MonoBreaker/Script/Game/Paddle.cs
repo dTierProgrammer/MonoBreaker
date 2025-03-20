@@ -3,13 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoBreaker.Script.Game.Base;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Net.Mime;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Audio;
 using MonoBreaker.Script.Global;
 using Color = Microsoft.Xna.Framework.Color;
@@ -33,10 +26,12 @@ namespace MonoBreaker.Script.Game
 
         public static List<Bullet> bullets = new List<Bullet>();
 
-        public bool isSuper = false;
-        public bool canShoot = false;
-        private int ammo = 0;
-        public bool isTwinActive = false;
+        public bool isSuper;
+        public bool canShoot;
+        //private int ammo = 0;
+        public bool gunIsActive;
+        public bool ballGunIsActive;
+        public bool isTwinActive;
         public Vector2 twinPosition;
         //public Rectangle twinCollisionBox;
         private int offset = 144;
@@ -46,6 +41,8 @@ namespace MonoBreaker.Script.Game
         private float delayRemainder = delay;
         private float timeLeftSuper = delay;
         private float twinTimeLeft = delay;
+        private float gunTimeLeft = delay;
+        private float ballGunTimeLeft = delay;
 
         public float distFromCenter { get; private set; }
         public float collBoxOriginDistFromCenter { get; private set; }
@@ -72,10 +69,10 @@ namespace MonoBreaker.Script.Game
         
         public void ShootBullet() 
         {
-            if(ammo > 0 && canShoot) 
+            
+            if(gunIsActive && canShoot) 
             {
                 bulletShootSound.Play();
-                ammo -= 1;
                 bullets.Add(new Bullet(new Vector2(collisionBox.Left, collisionBox.Top - 3)));
                 bullets.Add(new Bullet(new Vector2(collisionBox.Right - 3, collisionBox.Top - 3)));
                 if (isTwinActive)
@@ -83,7 +80,20 @@ namespace MonoBreaker.Script.Game
                     bullets.Add(new Bullet(new Vector2(twinCollisionBox.Left, twinCollisionBox.Top - 3)));
                     bullets.Add(new Bullet(new Vector2(twinCollisionBox.Right - 3, twinCollisionBox.Top - 3)));
                 }
-            } 
+            }
+
+            if (ballGunIsActive && canShoot)
+            {
+                bulletShootSound.Play();
+                Playing.otherBalls.Add(new Ball(new Vector2(collisionBox.Left, collisionBox.Top - 3), Playing.startingGameSpeed, false,0));
+                Playing.otherBalls.Add(new Ball(new Vector2(collisionBox.Right - 3, collisionBox.Top - 3), Playing.startingGameSpeed, false, 0));
+                if (isTwinActive)
+                {
+                    Playing.otherBalls.Add(new Ball(new Vector2(twinCollisionBox.Left, twinCollisionBox.Top - 3), Playing.startingGameSpeed, false, 0));
+                    Playing.otherBalls.Add(new Ball(new Vector2(twinCollisionBox.Right - 3, twinCollisionBox.Top - 3), Playing.startingGameSpeed, false, 0));
+                }
+            }
+            
         }
         
         
@@ -133,6 +143,36 @@ namespace MonoBreaker.Script.Game
                 }
             }
 
+            if (gunIsActive)
+            {
+                if (ballGunIsActive)
+                    ballGunIsActive = false;
+                
+                var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                gunTimeLeft -= timer;
+
+                if (gunTimeLeft <= 0)
+                {
+                    powerDownSound.Play();
+                    gunIsActive = false;
+                }
+            }
+
+            if (ballGunIsActive)
+            {
+                if (gunIsActive)
+                    gunIsActive = false;
+                
+                var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                ballGunTimeLeft -= timer;
+
+                if (ballGunTimeLeft <= 0)
+                {
+                    powerDownSound.Play();
+                    ballGunIsActive = false;
+                }
+            }
+            
             if (isMoving[0]) // Right
             {
                 isMoving[1] = false;

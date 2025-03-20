@@ -87,6 +87,7 @@ public static class Playing
             ball.Launch();
         if (Keyboard.GetState().IsKeyDown(Keys.Space) & !priorKBState.IsKeyDown(Keys.Space) && ball.IsActive == true && player.canShoot)
             player.ShootBullet();
+        
         if (Keyboard.GetState().IsKeyDown(Keys.A) & !priorKBState.IsKeyDown(Keys.A))
             _GeneratePowerup.NewAddTry(player.position);
         if (Keyboard.GetState().IsKeyDown(Keys.S) & !priorKBState.IsKeyDown(Keys.S))
@@ -94,7 +95,7 @@ public static class Playing
         if (Keyboard.GetState().IsKeyDown(Keys.D) & !priorKBState.IsKeyDown(Keys.D))
             _GeneratePowerup.NewMultiBall(player.position);
         if (Keyboard.GetState().IsKeyDown(Keys.F) & !priorKBState.IsKeyDown(Keys.F))
-            _GeneratePowerup.NewPaddleExtend(new Vector2(player.collisionBox.X, player.collisionBox.Y));
+            _GeneratePowerup.NewPaddleExtend(player.position);
         if (Keyboard.GetState().IsKeyDown(Keys.G) & !priorKBState.IsKeyDown(Keys.G))
             _GeneratePowerup.NewPiercing(player.position);
         if (Keyboard.GetState().IsKeyDown(Keys.H) & !priorKBState.IsKeyDown(Keys.H))
@@ -103,6 +104,8 @@ public static class Playing
             _GeneratePowerup.NewSuperBall(player.position);
         if (Keyboard.GetState().IsKeyDown(Keys.K) & !priorKBState.IsKeyDown(Keys.K))
             _GeneratePowerup.NewLovely(player.position);
+        if (Keyboard.GetState().IsKeyDown(Keys.L) & !priorKBState.IsKeyDown(Keys.L))
+            _GeneratePowerup.NewTwinPaddle(player.position);
         priorKBState = Keyboard.GetState();
         
         if (score % addTryThreshold == 0 && score != 0 && score != prevScore) // 1up after a certain amount of points is added to score
