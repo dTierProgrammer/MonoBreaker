@@ -23,6 +23,7 @@ namespace MonoBreaker.Script.Game
         private SoundEffect speedUpSound = GetContent.GetSound("speedUp");
         private SoundEffect bulletShootSound = GetContent.GetSound("bulletshoot");
         private SoundEffect powerDownSound = GetContent.GetSound("down");
+        private Color color = Color.White;
 
         public static List<Bullet> bullets = new List<Bullet>();
 
@@ -146,6 +147,7 @@ namespace MonoBreaker.Script.Game
 
             if (gunIsActive)
             {
+                color = Color.Yellow;
                 if (ballGunIsActive)
                     ballGunIsActive = false;
                 var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -156,11 +158,13 @@ namespace MonoBreaker.Script.Game
                     powerDownSound.Play();
                     gunIsActive = false;
                     gunTimeLeft = delay;
+                    color = Color.White;
                 }
             }
 
             if (ballGunIsActive)
             {
+                color = Color.Magenta;
                 if (gunIsActive)
                     gunIsActive = false;
                 
@@ -172,22 +176,22 @@ namespace MonoBreaker.Script.Game
                     powerDownSound.Play();
                     ballGunIsActive = false;
                     ballGunTimeLeft = delay;
+                    color = Color.White;
                 }
             }
             
             if (isMoving[0]) // Right
             {
-                isMoving[1] = false;
                 velocity.X = (velocity.X + acceleration);
                 velocity.X = MathHelper.Clamp(velocity.X, -maxVelocity, maxVelocity);
             }
-            if (isMoving[1]) // Left
+            else if (isMoving[1]) // Left
             {
-                isMoving[0] = false;
+                //isMoving[0] = false;
                 velocity.X = (velocity.X - acceleration);
                 velocity.X = MathHelper.Clamp(velocity.X, -maxVelocity, maxVelocity);
             }
-            if (!isMoving[0] || !isMoving[1]) // neither
+            else if (!isMoving[0] || !isMoving[1]) // neither
             {
                 velocity.X += -Math.Sign(velocity.X) * friction;
                 if (Math.Abs(velocity.X) <= tolerance) 
@@ -206,9 +210,9 @@ namespace MonoBreaker.Script.Game
                 }
             }
 
-            if (collisionBox.Intersects(Playing.screenBounds[1])) // colide with right wall
+            if (collisionBox.Intersects(Playing.screenBounds[1])) // collide with right wall
             {
-                velocity.X = 0;
+                velocity.X = Math.Clamp(velocity.X, 0, 0);
                 if (position.X >= Playing.screenBounds[1].Left - this.image.Width) 
                 {
                     position.X = Playing.screenBounds[1].Left - this.image.Width;
@@ -232,7 +236,7 @@ namespace MonoBreaker.Script.Game
         {
             if(isTwinActive)
                 window.Draw(this.image, twinCollisionBox, Color.DarkGray);
-            window.Draw(this.image, collisionBox, Color.White);
+            window.Draw(this.image, collisionBox, color);
             foreach (Bullet bullet in bullets)
             {
                 bullet.Draw(window);

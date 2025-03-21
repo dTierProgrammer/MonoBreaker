@@ -30,6 +30,9 @@ namespace MonoBreaker.Script.Game
         private bool isSuper;
         private bool isLovely;
         private bool canDeathBounce;
+        private bool isGlueBall = true;
+        public bool isStuck { get; private set; }
+        private float stickPointX;
         
         private int ballStrength = 1;
         private int ballHealth = 1;
@@ -50,9 +53,11 @@ namespace MonoBreaker.Script.Game
         private bool hasCollided = false;
 
         private const float delay = 10;
+        private const float longDelay = 25;
         private float delayRemainder = delay;
         private float timeLeftSuper = delay;
         private float timeLeftPierce = delay;
+        private float timeLeftGlueBall = longDelay;
 
         public Ball(Vector2 position, float speed, bool isMainBall) : base(position) 
         {
@@ -136,6 +141,12 @@ namespace MonoBreaker.Script.Game
             get { return isLovely; }
         }
 
+        public bool GlueBall
+        {
+            set { isGlueBall = value; }
+            get { return isGlueBall; }
+        }
+
         public void ReverseDirectionX() 
         {
             direction.X *= -1;
@@ -168,11 +179,21 @@ namespace MonoBreaker.Script.Game
 
         public void Launch() 
         {
-            if(!isActive && isMainBall)
+            if (!isActive && isMainBall)
+            {
                 ballLaunchSound.Play();
-            isActive = true;
-            direction.X = paddle.Velocity.X;
-            color = Color.White;
+                isActive = true;
+                direction.X = paddle.Velocity.X;
+                color = Color.White;
+            }
+            if (isStuck && isMainBall)
+            {
+                isStuck = false;
+                ballLaunchSound.Play();
+                direction.Y = -speed;
+                direction.X = paddle.Velocity.X;
+                color = Color.White;
+            }
         }
 
         public void Reset()
@@ -242,6 +263,25 @@ namespace MonoBreaker.Script.Game
                     timeLeftPierce = delay;
                 }
             }
+
+            if (isGlueBall)
+            {
+                if (isStuck)
+                {
+                    direction = Vector2.Zero;
+                    /*
+                    if (position.X < paddle.collisionBox.Left)
+                    {
+                        position.X = paddle.collisionBox.Left + 1;
+                    }else if(position.X > paddle.collisionBox.Right)
+                    {
+                        position.X = paddle.collisionBox.Right - image.Width - 1;
+                    }
+                    */
+                    position.X = stickPointX += paddle.Velocity.X;
+                    position.Y = paddle.position.Y - collisionBox.Height - 2f;
+                }
+            }
             
             if (!isMainBall)
             {
@@ -254,7 +294,7 @@ namespace MonoBreaker.Script.Game
                 // X Start
                 position.X += direction.X;
 
-                if (collisionBox.Intersects(Playing.screenBounds[0])) // collision detections have to be done to the right
+                if (!isStuck && collisionBox.Intersects(Playing.screenBounds[0])) // collision detections have to be done to the right
                 {//right bound
                     if (prevPosition.X < Playing.screenBounds[0].Right) // appears to work
                     {
@@ -264,7 +304,7 @@ namespace MonoBreaker.Script.Game
                     bounceSound.Play();
                 }
 
-                if (collisionBox.Intersects(Playing.screenBounds[1])) // collision detections have to be done to the left
+                if (!isStuck && collisionBox.Intersects(Playing.screenBounds[1])) // collision detections have to be done to the left
                 {// left bound
                     
                     if (prevPosition.X > Playing.screenBounds[1].Left) // appears to work
@@ -396,10 +436,27 @@ namespace MonoBreaker.Script.Game
                     {
                         if ((collisionBox.Top <= paddle.collisionBox.Bottom) && (prevPosition.Y <= paddle.collisionBox.Bottom))
                         { // up (new handling // ball angle is determined by where on the paddle it collides)
-                            BounceUp();
-                            position.Y = paddle.collisionBox.Top - collisionBox.Height;
-                            direction.X = (collisionBox.Center.X - paddle.collisionBox.Center.X) / 10f;
-                            Math.Clamp(direction.X, -speed, speed);
+                            if (!isGlueBall)
+                            {
+                                BounceUp();
+                                position.Y = paddle.collisionBox.Top - collisionBox.Height;
+                                direction.X = (collisionBox.Center.X - paddle.collisionBox.Center.X) / 10f;
+                                Math.Clamp(direction.X, -speed, speed);
+                            }
+                            else
+                            {
+                                stickPointX = Math.Clamp(position.X, paddle.collisionBox.Left, paddle.collisionBox.Right - image.Width);
+                                //stickPointX = prevPosition.X;
+                                /*
+                                if (stickPointX < paddle.collisionBox.Left)
+                                    stickPointX = paddle.collisionBox.Left;
+                                else if (stickPointX > paddle.collisionBox.Right)
+                                    stickPointX = paddle.collisionBox.Right - image.Width;
+                                */
+                                //
+                                
+                                isStuck = true;
+                            }
                         }
                     }
                     else

@@ -37,7 +37,8 @@ public static class Playing
     private static int prevScore;
     public static readonly int speedUpThreshold = BrickMap.RowLength;
     private static readonly int addTryThreshold = 1000;
-
+    
+    public static bool showDebugInfo { get; private set; }
     public static float startingGameSpeed = 1.8f;
 
     public static float speedIncrement = .1f;
@@ -83,7 +84,8 @@ public static class Playing
         else
             player.isMoving[1] = false;
 
-        if (Keyboard.GetState().IsKeyDown(Keys.Space) && !priorKBState.IsKeyDown(Keys.Space) && ball.IsActive == false)
+        if (Keyboard.GetState().IsKeyDown(Keys.Space) && !priorKBState.IsKeyDown(Keys.Space) && ball.IsActive == false || 
+            Keyboard.GetState().IsKeyDown(Keys.Space) && !priorKBState.IsKeyDown(Keys.Space) && ball.GlueBall && ball.isStuck)
             ball.Launch();
         if (Keyboard.GetState().IsKeyDown(Keys.Space) & !priorKBState.IsKeyDown(Keys.Space) && ball.IsActive == true && player.canShoot)
             player.ShootBullet();
@@ -108,6 +110,12 @@ public static class Playing
             _GeneratePowerup.NewTwinPaddle(player.position);
         if (Keyboard.GetState().IsKeyDown(Keys.OemSemicolon) & !priorKBState.IsKeyDown(Keys.OemSemicolon))
             _GeneratePowerup.NewBallGun(player.position);
+        
+        if (Keyboard.GetState().IsKeyDown(Keys.Z) & !priorKBState.IsKeyDown(Keys.Z))
+            if (!showDebugInfo)
+                showDebugInfo = true;
+            else
+                showDebugInfo = false;
         priorKBState = Keyboard.GetState();
         
         if (score % addTryThreshold == 0 && score != 0 && score != prevScore) // 1up after a certain amount of points is added to score
@@ -130,7 +138,6 @@ public static class Playing
     public static void Draw(SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(playfield, Vector2.Zero, Color.White);
-        spriteBatch.Draw(leftoverTriesCounter, new Vector2(6, 25), Color.White);
         player.Draw(spriteBatch);
         ball.Draw(spriteBatch);
         foreach (Ball ball in otherBalls)
@@ -139,20 +146,28 @@ public static class Playing
         }
         BrickMap.Draw(spriteBatch);
         _ManagePowerups.Draw(spriteBatch);
-        //spriteBatch.Draw(Game1.debug,Game1.centerDebug, Color.Yellow );
+        if(showDebugInfo)
+            spriteBatch.Draw(Game1.debug,Game1.centerDebug, Color.Yellow );
+        if(!showDebugInfo)
+            spriteBatch.Draw(leftoverTriesCounter, new Vector2(6, 25), Color.White);
     }
 
     public static void DrawText(SpriteBatch spriteBatch)
     {
+        if (!showDebugInfo)
+        {
+            spriteBatch.DrawString(Fonts.titleFont, $"Score: {score}\n" +
+                                                    $"Round {round}\n" +
+                                                    $"   x {tries}\n"
+                , new Vector2(25, 24), Color.White);
+        }
         
-        spriteBatch.DrawString(Fonts.titleFont, $"Score: {score}\n" +
-                                                 $"Round {round}\n" +
-                                                 $"   x {tries}\n"
-                                                 , new Vector2(25, 24), Color.White);
-                                                 
-       /*
-        spriteBatch.DrawString(Fonts.titleFont, $"Center Dist from Center: {player.distFromCenter}" +
-                                                $"\nOrigin Dist from Center: {player.collBoxOriginDistFromCenter}", new Vector2(25, 24), Color.Red);
-                                                */
+        if (showDebugInfo)
+        {
+            spriteBatch.DrawString(Fonts.titleFont, $"Center Dist from Center: {player.distFromCenter}" +
+                                                    $"\nOrigin Dist from Center: {player.collBoxOriginDistFromCenter}" +
+                                                    $"\nX Velocity: {player.Velocity.X}" +
+                                                    $"\nXY Coords: {player.collisionBox.X}, {player.collisionBox.Y}", new Vector2(25, 18), Color.Red);
+        }
     }
 }
