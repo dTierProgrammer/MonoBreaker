@@ -10,5 +10,6 @@ public enum _Powerups
     SHOOTING,
     SUPERBALL,
     TWINPADDLE,
-    BALLGUN
+    BALLGUN,
+    GLUEBALL
 }

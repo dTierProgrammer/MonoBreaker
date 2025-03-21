@@ -39,7 +39,7 @@ public static class Playing
     private static readonly int addTryThreshold = 1000;
     
     public static bool showDebugInfo { get; private set; }
-    public static float startingGameSpeed = 1.8f;
+    public static float startingGameSpeed = 1.4f;
 
     public static float speedIncrement = .1f;
     public static float tries = 5;
@@ -85,31 +85,36 @@ public static class Playing
             player.isMoving[1] = false;
 
         if (Keyboard.GetState().IsKeyDown(Keys.Space) && !priorKBState.IsKeyDown(Keys.Space) && ball.IsActive == false || 
-            Keyboard.GetState().IsKeyDown(Keys.Space) && !priorKBState.IsKeyDown(Keys.Space) && ball.GlueBall && ball.isStuck)
+            Keyboard.GetState().IsKeyDown(Keys.Space) && !priorKBState.IsKeyDown(Keys.Space) && ball.isStuck)
             ball.Launch();
         if (Keyboard.GetState().IsKeyDown(Keys.Space) & !priorKBState.IsKeyDown(Keys.Space) && ball.IsActive == true && player.canShoot)
             player.ShootBullet();
         
-        if (Keyboard.GetState().IsKeyDown(Keys.A) & !priorKBState.IsKeyDown(Keys.A))
-            _GeneratePowerup.NewAddTry(player.position);
-        if (Keyboard.GetState().IsKeyDown(Keys.S) & !priorKBState.IsKeyDown(Keys.S))
-            _GeneratePowerup.NewDeathBounce(player.position);
-        if (Keyboard.GetState().IsKeyDown(Keys.D) & !priorKBState.IsKeyDown(Keys.D))
-            _GeneratePowerup.NewMultiBall(player.position);
-        if (Keyboard.GetState().IsKeyDown(Keys.F) & !priorKBState.IsKeyDown(Keys.F))
-            _GeneratePowerup.NewPaddleExtend(player.position);
-        if (Keyboard.GetState().IsKeyDown(Keys.G) & !priorKBState.IsKeyDown(Keys.G))
-            _GeneratePowerup.NewPiercing(player.position);
-        if (Keyboard.GetState().IsKeyDown(Keys.H) & !priorKBState.IsKeyDown(Keys.H))
-            _GeneratePowerup.NewShooting(player.position);
-        if (Keyboard.GetState().IsKeyDown(Keys.J) & !priorKBState.IsKeyDown(Keys.J))
-            _GeneratePowerup.NewSuperBall(player.position);
-        if (Keyboard.GetState().IsKeyDown(Keys.K) & !priorKBState.IsKeyDown(Keys.K))
-            _GeneratePowerup.NewLovely(player.position);
-        if (Keyboard.GetState().IsKeyDown(Keys.L) & !priorKBState.IsKeyDown(Keys.L))
-            _GeneratePowerup.NewTwinPaddle(player.position);
-        if (Keyboard.GetState().IsKeyDown(Keys.OemSemicolon) & !priorKBState.IsKeyDown(Keys.OemSemicolon))
-            _GeneratePowerup.NewBallGun(player.position);
+        if (showDebugInfo)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.A) & !priorKBState.IsKeyDown(Keys.A))
+                _GeneratePowerup.NewAddTry(player.position);
+            if (Keyboard.GetState().IsKeyDown(Keys.S) & !priorKBState.IsKeyDown(Keys.S))
+                _GeneratePowerup.NewDeathBounce(player.position);
+            if (Keyboard.GetState().IsKeyDown(Keys.D) & !priorKBState.IsKeyDown(Keys.D))
+                _GeneratePowerup.NewMultiBall(player.position);
+            if (Keyboard.GetState().IsKeyDown(Keys.F) & !priorKBState.IsKeyDown(Keys.F))
+                _GeneratePowerup.NewPaddleExtend(player.position);
+            if (Keyboard.GetState().IsKeyDown(Keys.G) & !priorKBState.IsKeyDown(Keys.G))
+                _GeneratePowerup.NewPiercing(player.position);
+            if (Keyboard.GetState().IsKeyDown(Keys.H) & !priorKBState.IsKeyDown(Keys.H))
+                _GeneratePowerup.NewShooting(player.position);
+            if (Keyboard.GetState().IsKeyDown(Keys.J) & !priorKBState.IsKeyDown(Keys.J))
+                _GeneratePowerup.NewSuperBall(player.position);
+            if (Keyboard.GetState().IsKeyDown(Keys.K) & !priorKBState.IsKeyDown(Keys.K))
+                _GeneratePowerup.NewLovely(player.position);
+            if (Keyboard.GetState().IsKeyDown(Keys.L) & !priorKBState.IsKeyDown(Keys.L))
+                _GeneratePowerup.NewTwinPaddle(player.position);
+            if (Keyboard.GetState().IsKeyDown(Keys.OemSemicolon) & !priorKBState.IsKeyDown(Keys.OemSemicolon))
+                _GeneratePowerup.NewBallGun(player.position);
+            if (Keyboard.GetState().IsKeyDown(Keys.OemQuotes) & !priorKBState.IsKeyDown(Keys.OemQuotes))
+                _GeneratePowerup.NewGlueBall(player.position);
+        }
         
         if (Keyboard.GetState().IsKeyDown(Keys.Z) & !priorKBState.IsKeyDown(Keys.Z))
             if (!showDebugInfo)
@@ -167,7 +172,8 @@ public static class Playing
             spriteBatch.DrawString(Fonts.titleFont, $"Center Dist from Center: {player.distFromCenter}" +
                                                     $"\nOrigin Dist from Center: {player.collBoxOriginDistFromCenter}" +
                                                     $"\nX Velocity: {player.Velocity.X}" +
-                                                    $"\nXY Coords: {player.collisionBox.X}, {player.collisionBox.Y}", new Vector2(25, 18), Color.Red);
+                                                    $"\nXY Coords: {player.collisionBox.X}, {player.collisionBox.Y}" +
+                                                    $"\nBallDist from Paddle Origin: {ball.stickPointX}", new Vector2(25, 18), Color.Red);
         }
     }
 }

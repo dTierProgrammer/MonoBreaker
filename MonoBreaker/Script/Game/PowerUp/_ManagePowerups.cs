@@ -18,6 +18,7 @@ public static class _ManagePowerups
     public static List<SuperBall> listSuperBall = new List<SuperBall>();
     public static List<TwinPaddle> listTwinPaddle = new List<TwinPaddle>();
     public static List<BallGun> listBallGun = new List<BallGun>();
+    public static List<GlueBall> listGlueBall = new List<GlueBall>();
 
     public static List<Flair> powerupFlairs = new List<Flair>();
 
@@ -72,6 +73,11 @@ public static class _ManagePowerups
         {
             item.Kill();
         }
+
+        foreach (GlueBall item in listGlueBall)
+        {
+            item.Kill();
+        }
     }
     
     public static void Update(GameTime gameTime) // holy shit code
@@ -121,6 +127,11 @@ public static class _ManagePowerups
             item.Update();
         }
         foreach (BallGun item in listBallGun)
+        {
+            item.Update();
+        }
+        
+        foreach (GlueBall item in listGlueBall)
         {
             item.Update();
         }
@@ -178,6 +189,10 @@ public static class _ManagePowerups
             item.Draw(spriteBatch);
         }
         foreach (BallGun item in listBallGun)
+        {
+            item.Draw(spriteBatch);
+        }
+        foreach (GlueBall item in listGlueBall)
         {
             item.Draw(spriteBatch);
         }

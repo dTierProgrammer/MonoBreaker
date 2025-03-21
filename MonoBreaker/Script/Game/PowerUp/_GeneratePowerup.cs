@@ -54,6 +54,9 @@ namespace MonoBreaker.Script.Game.PowerUp
                 case _Powerups.BALLGUN:
                     _ManagePowerups.listBallGun.Add(new BallGun(BallGun.Img, position, BallGun.flairImg));
                     break;
+                case _Powerups.GLUEBALL:
+                    _ManagePowerups.listGlueBall.Add(new GlueBall(GlueBall.Img, position, GlueBall.flairImg));
+                    break;
             }
         }
 
@@ -96,6 +99,10 @@ namespace MonoBreaker.Script.Game.PowerUp
         public static void NewBallGun(Vector2 position)
         {
             _ManagePowerups.listBallGun.Add(new BallGun(BallGun.Img, position, BallGun.flairImg));
+        }
+        public static void NewGlueBall(Vector2 position)
+        {
+            _ManagePowerups.listGlueBall.Add(new GlueBall(GlueBall.Img, position, GlueBall.flairImg));
         }
     }
 }

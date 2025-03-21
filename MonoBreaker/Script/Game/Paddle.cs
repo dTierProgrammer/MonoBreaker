@@ -113,6 +113,7 @@ namespace MonoBreaker.Script.Game
         {
             distFromCenter = collisionBox.Center.X - Playing.centerPt.X;
             collBoxOriginDistFromCenter = collisionBox.X - Playing.centerPt.X;
+            velocity.X = MathHelper.Clamp(velocity.X, -maxVelocity, maxVelocity);
             
             if (isSuper)
             {
@@ -127,6 +128,10 @@ namespace MonoBreaker.Script.Game
                     offset = 144;
                     powerDownSound.Play();
                     image = GetContent.GetTexture("Game/paddle");
+                    if (Playing.ball.isStuck)
+                    {
+                        Playing.ball.position.X -=(Playing.ball.position.X - (collisionBox.X + image.Width) - Playing.ball.image.Width);
+                    }
                     isSuper = false;
                     timeLeftSuper = delay;
                 }
@@ -182,16 +187,14 @@ namespace MonoBreaker.Script.Game
             
             if (isMoving[0]) // Right
             {
-                velocity.X = (velocity.X + acceleration);
-                velocity.X = MathHelper.Clamp(velocity.X, -maxVelocity, maxVelocity);
+                velocity.X += acceleration;
+                
             }
-            else if (isMoving[1]) // Left
+            if (isMoving[1]) // Left
             {
-                //isMoving[0] = false;
-                velocity.X = (velocity.X - acceleration);
-                velocity.X = MathHelper.Clamp(velocity.X, -maxVelocity, maxVelocity);
+                velocity.X -= acceleration;
             }
-            else if (!isMoving[0] || !isMoving[1]) // neither
+            else // neither
             {
                 velocity.X += -Math.Sign(velocity.X) * friction;
                 if (Math.Abs(velocity.X) <= tolerance) 
@@ -221,7 +224,7 @@ namespace MonoBreaker.Script.Game
             if (Playing.brokenBricks % Playing.speedUpThreshold == 0 && Playing.brokenBricks != 0 && Playing.brokenBricks != prevValue) // speed up if score reaches specific value
             {
                 maxVelocity += Playing.speedIncrement;
-                acceleration += Playing.speedIncrement;
+                acceleration += (Playing.speedIncrement * 2);
                 speedUpSound.Play();
             }
             prevValue = Playing.brokenBricks;
