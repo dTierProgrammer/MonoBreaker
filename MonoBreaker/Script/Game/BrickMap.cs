@@ -15,6 +15,20 @@ namespace MonoBreaker.Script.Game
         private static int offset = 6;
         private static int[,] map = // map of bricks
         {
+            /*
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
+            {2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 1},
+            {3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 1},
+            {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0},
+            {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0}
+            */
+            
+            
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
@@ -42,15 +56,15 @@ namespace MonoBreaker.Script.Game
                 {
                     if (map[column, row] == 1)
                     {
-                        listBricks.Add(new Brick(images[0], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 2));
+                        listBricks.Add(new Brick(images[0], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 4));
                     }
                     if (map[column, row] == 2)
                     {
-                        listBricks.Add(new Brick(images[1], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 2));
+                        listBricks.Add(new Brick(images[1], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 3));
                     }
                     if (map[column, row] == 3)
                     {
-                        listBricks.Add(new Brick(images[2], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 1));
+                        listBricks.Add(new Brick(images[2], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 2));
                     }
                     if (map[column, row] == 4)
                     {

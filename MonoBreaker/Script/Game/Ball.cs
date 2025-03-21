@@ -30,16 +30,16 @@ namespace MonoBreaker.Script.Game
         private bool isSuper;
         private bool isLovely;
         private bool canDeathBounce;
-        private bool isGlueBall = true;
+        private bool isGlueBall;
         public bool isStuck { get; private set; }
-        private float stickPointX;
+        public float stickPointX { get; private set; }
         
         private int ballStrength = 1;
         private int ballHealth = 1;
         
         public float speed;
         int prevValue;
-        private Color color = Color.DarkGray;
+        private Color color = Color.White;
         private readonly SoundEffect bounceSound = GetContent.GetSound("bounce");
         private readonly SoundEffect paddleBounceSound = GetContent.GetSound("paddleBounce");
         private readonly SoundEffect ballLossSound = GetContent.GetSound("ballLoss");
@@ -50,7 +50,7 @@ namespace MonoBreaker.Script.Game
         
         private Vector2 prevPosition;
         Brick _brick;
-        private bool hasCollided = false;
+        private bool hasCollided;
 
         private const float delay = 10;
         private const float longDelay = 25;
@@ -67,8 +67,11 @@ namespace MonoBreaker.Script.Game
             ballHealth = 1;
             
             this.isMainBall = isMainBall;
-            if(!isMainBall)
+            if (!isMainBall)
+            {
                 direction = new Vector2(Math.Clamp(rng.NextSingle(), -speed, speed), -speed);
+                color = Color.DarkGray;
+            }
             else
             {
                 direction = new Vector2(0, -speed);
@@ -83,8 +86,11 @@ namespace MonoBreaker.Script.Game
             this.ballHealth = ballHealth;
             
             this.isMainBall = isMainBall;
-            if(!isMainBall)
+            if (!isMainBall)
+            {
                 direction = new Vector2(Math.Clamp(rng.NextSingle(), -speed, speed), -speed);
+                color = Color.DarkGray;
+            }
             else
             {
                 direction = new Vector2(0, -speed);
@@ -98,8 +104,11 @@ namespace MonoBreaker.Script.Game
             this.ballHealth = ballHealth;
             
             this.isMainBall = isMainBall;
-            if(!isMainBall)
+            if (!isMainBall)
+            {
                 this.direction = direction;
+                color = Color.DarkGray;
+            }
             else
             {
                 direction = new Vector2(0, -speed);
@@ -266,21 +275,24 @@ namespace MonoBreaker.Script.Game
 
             if (isGlueBall)
             {
-                if (isStuck)
+                var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                timeLeftGlueBall -= timer;
+                color = Color.LightBlue;
+                if (timeLeftGlueBall <= 0)
                 {
-                    direction = Vector2.Zero;
-                    /*
-                    if (position.X < paddle.collisionBox.Left)
-                    {
-                        position.X = paddle.collisionBox.Left + 1;
-                    }else if(position.X > paddle.collisionBox.Right)
-                    {
-                        position.X = paddle.collisionBox.Right - image.Width - 1;
-                    }
-                    */
-                    position.X = stickPointX += paddle.Velocity.X;
-                    position.Y = paddle.position.Y - collisionBox.Height - 2f;
+                    ballDownSound.Play();
+                    isGlueBall = false;
+                    color = Color.White;
+                    timeLeftGlueBall = longDelay;
                 }
+            }
+            
+            if (isStuck)
+            {
+                direction = Vector2.Zero;
+                position.X = paddle.collisionBox.X + stickPointX;
+                position.X = MathHelper.Clamp(position.X, paddle.collisionBox.Left, paddle.collisionBox.Right - image.Width);
+                position.Y = paddle.collisionBox.Y - collisionBox.Height - 2f;
             }
             
             if (!isMainBall)
@@ -436,6 +448,7 @@ namespace MonoBreaker.Script.Game
                     {
                         if ((collisionBox.Top <= paddle.collisionBox.Bottom) && (prevPosition.Y <= paddle.collisionBox.Bottom))
                         { // up (new handling // ball angle is determined by where on the paddle it collides)
+                            stickPointX = prevPosition.X - paddle.collisionBox.X;
                             if (!isGlueBall)
                             {
                                 BounceUp();
@@ -445,16 +458,6 @@ namespace MonoBreaker.Script.Game
                             }
                             else
                             {
-                                stickPointX = Math.Clamp(position.X, paddle.collisionBox.Left, paddle.collisionBox.Right - image.Width);
-                                //stickPointX = prevPosition.X;
-                                /*
-                                if (stickPointX < paddle.collisionBox.Left)
-                                    stickPointX = paddle.collisionBox.Left;
-                                else if (stickPointX > paddle.collisionBox.Right)
-                                    stickPointX = paddle.collisionBox.Right - image.Width;
-                                */
-                                //
-                                
                                 isStuck = true;
                             }
                         }
