@@ -27,7 +27,10 @@ public class Shooting:Powerup
             if (collisionBox.Intersects(Playing.player.collisionBox))
             {
                 //Playing.player.Ammo = 35;
-                Playing.player.gunIsActive = true;
+                if (!Playing.player.gunIsActive)
+                    Playing.player.gunIsActive = true;
+                else
+                    Playing.player.gunTimeLeft += 5;
                 Playing.powerUpSound.Play();
                 AnimateFlair();
                 Kill();

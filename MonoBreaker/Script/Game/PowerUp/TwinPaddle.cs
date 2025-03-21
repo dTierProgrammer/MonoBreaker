@@ -28,7 +28,10 @@ public class TwinPaddle:Powerup
             if (collisionBox.Intersects(Playing.player.collisionBox))
             {
                 Playing.score += 100;
-                Playing.player.isTwinActive = true;
+                if (!Playing.player.isTwinActive)
+                    Playing.player.isTwinActive = true;
+                else
+                    Playing.player.twinTimeLeft += 5;
                 Playing.powerUpSound.Play();
                 AnimateFlair();
                 Kill();  

@@ -155,6 +155,25 @@ public static class Playing
             spriteBatch.Draw(Game1.debug,Game1.centerDebug, Color.Yellow );
         if(!showDebugInfo)
             spriteBatch.Draw(leftoverTriesCounter, new Vector2(6, 25), Color.White);
+        
+        if(ball.SuperBall)
+            spriteBatch.Draw(leftoverTriesCounter, new Vector2 (310, 6), Color.CornflowerBlue);
+        if(ball.Piercing)
+            spriteBatch.Draw(leftoverTriesCounter, new Vector2(310, 12), Color.Turquoise);
+        if(ball.BallHealth >= 2)
+            spriteBatch.Draw(leftoverTriesCounter, new Vector2(310, 18), Color.Magenta);
+        if(ball.Lovely)
+            spriteBatch.Draw(leftoverTriesCounter, new Vector2(310, 24), Color.Pink);
+        if(ball.GlueBall)
+            spriteBatch.Draw(leftoverTriesCounter, new Vector2(310, 30), Color.Gray);
+        if(player.isSuper)
+            spriteBatch.Draw(leftoverTriesCounter, new Vector2(310, 36), Color.Aqua);
+        if(player.isTwinActive)
+            spriteBatch.Draw(leftoverTriesCounter, new Vector2(310, 42), Color.Orange);
+        if(player.gunIsActive)
+            spriteBatch.Draw(leftoverTriesCounter, new Vector2(310, 48), Color.Yellow);
+        if(player.ballGunIsActive)
+            spriteBatch.Draw(leftoverTriesCounter, new Vector2(310, 54), Color.DarkMagenta);
     }
 
     public static void DrawText(SpriteBatch spriteBatch)

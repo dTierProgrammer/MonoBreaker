@@ -26,7 +26,10 @@ public class BallGun:Powerup
             position.Y += .5f;
             if (collisionBox.Intersects(Playing.player.collisionBox))
             {
-                Playing.player.ballGunIsActive = true;
+                if (!Playing.player.ballGunIsActive)
+                    Playing.player.ballGunIsActive = true;
+                else
+                    Playing.player.ballGunTimeLeft += 5;
                 Playing.score += 100;
                 Playing.powerUpSound.Play();
                 AnimateFlair();

@@ -55,9 +55,9 @@ namespace MonoBreaker.Script.Game
         private const float delay = 10;
         private const float longDelay = 25;
         private float delayRemainder = delay;
-        private float timeLeftSuper = delay;
-        private float timeLeftPierce = delay;
-        private float timeLeftGlueBall = longDelay;
+        public float timeLeftSuper = delay;
+        public float timeLeftPierce = delay;
+        public float timeLeftGlueBall = longDelay;
 
         public Ball(Vector2 position, float speed, bool isMainBall) : base(position) 
         {
@@ -189,11 +189,12 @@ namespace MonoBreaker.Script.Game
         public void Launch() 
         {
             if (!isActive && isMainBall)
-            {
+            { 
                 ballLaunchSound.Play();
                 isActive = true;
                 direction.X = paddle.Velocity.X;
                 color = Color.White;
+                paddle.canShoot = true;
             }
             if (isStuck && isMainBall)
             {
@@ -202,6 +203,7 @@ namespace MonoBreaker.Script.Game
                 direction.Y = -speed;
                 direction.X = paddle.Velocity.X;
                 color = Color.White;
+                paddle.canShoot = true;
             }
         }
 
@@ -293,6 +295,7 @@ namespace MonoBreaker.Script.Game
                 position.X = paddle.collisionBox.X + stickPointX;
                 position.X = MathHelper.Clamp(position.X, paddle.collisionBox.Left, paddle.collisionBox.Right - image.Width);
                 position.Y = paddle.collisionBox.Y - collisionBox.Height - 2f;
+                paddle.canShoot = false;
             }
             
             if (!isMainBall)
@@ -389,7 +392,7 @@ namespace MonoBreaker.Script.Game
                     {
                         Playing.score += 100;
                     }
-                    if (canPierce)
+                    if (canPierce && _brick.BrickHealth <= ballStrength)
                         _brick.Break();
                     else
                         _brick.Weaken(ballStrength);
@@ -563,6 +566,7 @@ namespace MonoBreaker.Script.Game
             {
                 position.X = paddle.collisionBox.Center.X - (collisionBox.Width / 2f);
                 position.Y = paddle.position.Y - collisionBox.Height - 2f;
+                paddle.canShoot = false;
                 color = Color.DarkGray;
             }
             

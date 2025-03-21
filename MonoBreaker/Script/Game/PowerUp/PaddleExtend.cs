@@ -28,7 +28,12 @@ public class PaddleExtend:Powerup
             {
                 Playing.score += 100;
                 Playing.powerUpSound.Play();
-                Playing.player.SuperPaddle = true;
+                if(!Playing.player.SuperPaddle)
+                    Playing.player.SuperPaddle = true;
+                else
+                {
+                    Playing.player.timeLeftSuper += 5;
+                }
                 AnimateFlair();
                 Kill();
             }

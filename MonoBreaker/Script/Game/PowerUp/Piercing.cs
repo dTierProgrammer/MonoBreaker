@@ -28,7 +28,10 @@ public class Piercing:Powerup
             {
                 Playing.score += 100;
                 Playing.powerUpSound.Play();
-                Playing.ball.Piercing = true;
+                if (!Playing.ball.Piercing)
+                    Playing.ball.Piercing = true;
+                else
+                    Playing.ball.timeLeftPierce += 3;
                 AnimateFlair();
                 Kill();
             }

@@ -4,6 +4,7 @@ using MonoBreaker.Script.Game.Base;
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Audio;
+using MonoBreaker.Script.Game.PowerUp;
 using MonoBreaker.Script.Global;
 using Color = Microsoft.Xna.Framework.Color;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
@@ -27,7 +28,7 @@ namespace MonoBreaker.Script.Game
 
         public static List<Bullet> bullets = new List<Bullet>();
 
-        public bool isSuper;
+        public bool isSuper; // get rid of these, use a simple powerup state variable
         public bool canShoot;
         //private int ammo = 0;
         public bool gunIsActive;
@@ -38,12 +39,14 @@ namespace MonoBreaker.Script.Game
         private int offset = 144;
         int prevValue;
 
+        
+
         private const float delay = 10;
-        private float delayRemainder = delay;
-        private float timeLeftSuper = delay;
-        private float twinTimeLeft = delay;
-        private float gunTimeLeft = delay;
-        private float ballGunTimeLeft = delay;
+        public float delayRemainder = delay;
+        public float timeLeftSuper = delay;
+        public float twinTimeLeft = delay;
+        public float gunTimeLeft = delay;
+        public float ballGunTimeLeft = delay;
 
         public float distFromCenter { get; private set; }
         public float collBoxOriginDistFromCenter { get; private set; }
@@ -224,7 +227,7 @@ namespace MonoBreaker.Script.Game
             if (Playing.brokenBricks % Playing.speedUpThreshold == 0 && Playing.brokenBricks != 0 && Playing.brokenBricks != prevValue) // speed up if score reaches specific value
             {
                 maxVelocity += Playing.speedIncrement;
-                acceleration += (Playing.speedIncrement * 2);
+                acceleration += (Playing.speedIncrement);
                 speedUpSound.Play();
             }
             prevValue = Playing.brokenBricks;

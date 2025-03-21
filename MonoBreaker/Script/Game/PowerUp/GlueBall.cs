@@ -25,7 +25,10 @@ public class GlueBall:Powerup
             position.Y += .5f;
             if (collisionBox.Intersects(Playing.player.collisionBox))
             {
-                Playing.ball.GlueBall = true;
+                if (!Playing.ball.GlueBall)
+                    Playing.ball.GlueBall = true;
+                else
+                    Playing.ball.timeLeftGlueBall += 10;
                 Playing.score += 100;
                 Playing.powerUpSound.Play();
                 AnimateFlair();

@@ -31,7 +31,7 @@ namespace MonoBreaker.Script.Game.PowerUp
                 if (collisionBox.Intersects(Playing.player.collisionBox))
                 {
                     Playing.ball.random.Play();
-                    //Playing.score += 1000;
+                    Playing.score += 5000;
                     Playing.ball.Lovely = true;
                     AnimateFlair();
                     Kill();

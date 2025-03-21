@@ -30,7 +30,12 @@ public class SuperBall:Powerup
             if (collisionBox.Intersects(Playing.player.collisionBox))
             {
                 Playing.score += 100;
-                Playing.ball.SuperBall = true;
+                if(!Playing.ball.SuperBall)
+                    Playing.ball.SuperBall = true;
+                else
+                {
+                    Playing.ball.timeLeftSuper += 5;
+                }
                 Playing.powerUpSound.Play();
                 AnimateFlair();
                 Kill();  
