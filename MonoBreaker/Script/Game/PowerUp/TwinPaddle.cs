@@ -20,28 +20,14 @@ public class TwinPaddle:Powerup
         isActive = true;
     }
 
-    public override void Update()
+    public override void Action()
     {
-        if (isActive) 
-        {
-            position.Y += .5f;
-            if (collisionBox.Intersects(Playing.player.collisionBox))
-            {
-                Playing.score += 100;
-                if (!Playing.player.isTwinActive)
-                    Playing.player.isTwinActive = true;
-                else
-                    Playing.player.twinTimeLeft += 5;
-                Playing.powerUpSound.Play();
-                AnimateFlair();
-                Kill();  
-            }
-
-            if (collisionBox.Intersects(Playing.screenBounds[3]))
-            {
-                Kill();
-            }
-        }
-        base.Update();
+        Playing.score += 100;
+        if (!Playing.player.isTwinActive)
+            Playing.player.isTwinActive = true;
+        else
+            Playing.player.twinTimeLeft += 5;
+        Playing.powerUpSound.Play();
+        base.Action();
     }
 }

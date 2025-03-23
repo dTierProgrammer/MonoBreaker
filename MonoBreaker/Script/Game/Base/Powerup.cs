@@ -15,12 +15,6 @@ public class Powerup
     public bool isActive{ set; get; }
 
     public Texture2D flair;
-    private Vector2 flairPosition;
-    public Rectangle flairRect;
-    public bool isFlairAnimated = false;
-
-    public const float flairTimeAnimated = .5f;
-    public float flairTimeLeft = flairTimeAnimated;
 
     public Powerup(Texture2D image, Vector2 position, Texture2D flair)
     {
@@ -41,6 +35,12 @@ public class Powerup
     {
         _ManagePowerups.powerupFlairs.Add(new Flair(flair, new Vector2(Playing.player.collisionBox.Center.X - (flair.Width / 2), Playing.player.position.Y - 15)));
     }
+
+    public virtual void Action() 
+    {
+        AnimateFlair();
+        Kill();
+    }
     
 
     public void Kill()
@@ -54,19 +54,25 @@ public class Powerup
         // to override
         collisionBox.X = (int)position.X;
         collisionBox.Y = (int)position.Y;
-    }
-    public virtual void Update(GameTime gameTime)
-    {
-        // to override
-        collisionBox.X = (int)position.X;
-        collisionBox.Y = (int)position.Y;
+
+        position.Y += .5f;
+        if (isActive)
+        {
+            if (collisionBox.Intersects(Playing.player.collisionBox))
+            {
+                Action();
+            }
+
+            if (collisionBox.Intersects(Playing.screenBounds[3]))
+            {
+                Kill();
+            }
+        }
     }
 
     public virtual void Draw(SpriteBatch spriteBatch)
     {
         if(isActive)
             spriteBatch.Draw(image, collisionBox, Color.White);
-        if (isFlairAnimated)
-            spriteBatch.Draw(flair, flairRect, Color.White);
     }
 }

@@ -247,7 +247,6 @@ namespace MonoBreaker.Script.Game
             if (isLovely)
             {
                 image = GetContent.GetTexture("Test/test");
-                canPierce = true;
 
                 var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 delayRemainder -= timer;
@@ -256,7 +255,6 @@ namespace MonoBreaker.Script.Game
                 {
                     image = GetContent.GetTexture("Game/ball");
                     ballStrength = 1;
-                    canPierce = false;
                     isLovely = false;
                     delayRemainder = delay;
                 }
@@ -392,7 +390,7 @@ namespace MonoBreaker.Script.Game
                     {
                         Playing.score += 100;
                     }
-                    if (canPierce && _brick.BrickHealth <= ballStrength)
+                    if (canPierce || isLovely)
                         _brick.Break();
                     else
                         _brick.Weaken(ballStrength);
@@ -552,7 +550,7 @@ namespace MonoBreaker.Script.Game
                         Playing.score += 100;
                     }
 
-                    if (canPierce)
+                    if (canPierce || isLovely)
                         _brick.Break();
                     else
                         _brick.Weaken(ballStrength);

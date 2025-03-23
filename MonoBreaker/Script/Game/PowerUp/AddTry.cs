@@ -22,30 +22,11 @@ public class AddTry:Powerup
         isActive = true;
     }
 
-    public override void Update()
+    public override void Action() 
     {
-        if (isActive) 
-        {
-            position.Y += .5f;
-            if (collisionBox.Intersects(Playing.player.collisionBox))
-            {
-                Playing.tries++;
-                Playing.score += 100;
-                Playing.addTrySound.Play();
-                AnimateFlair();
-                Kill();
-            }
-
-            if (collisionBox.Intersects(Playing.screenBounds[3]))
-            {
-                Kill();
-            }
-        }
-        base.Update();
-    }
-
-    public override void Draw(SpriteBatch spriteBatch) 
-    {
-        base.Draw(spriteBatch);
+        Playing.tries++;
+        Playing.score += 100;
+        Playing.addTrySound.Play();
+        base.Action();
     }
 }

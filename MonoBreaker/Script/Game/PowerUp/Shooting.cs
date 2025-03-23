@@ -19,28 +19,13 @@ public class Shooting:Powerup
         isActive = true;
     }
 
-    public override void Update() 
+    public override void Action() 
     {
-        if (isActive) 
-        {
-            position.Y += .5f;
-            if (collisionBox.Intersects(Playing.player.collisionBox))
-            {
-                //Playing.player.Ammo = 35;
-                if (!Playing.player.gunIsActive)
-                    Playing.player.gunIsActive = true;
-                else
-                    Playing.player.gunTimeLeft += 5;
-                Playing.powerUpSound.Play();
-                AnimateFlair();
-                Kill();
-            }
-
-            if (collisionBox.Intersects(Playing.screenBounds[3]))
-            {
-                Kill();
-            }
-        }
-        base.Update();
+        if (!Playing.player.gunIsActive)
+            Playing.player.gunIsActive = true;
+        else
+            Playing.player.gunTimeLeft += 5;
+        Playing.powerUpSound.Play();
+        base.Action();
     }
 }

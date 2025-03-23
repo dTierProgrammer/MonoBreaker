@@ -2,7 +2,7 @@
 
 public static class SceneController
 {
-    public static Scene CurrentScene = Scene.PLAYING;
+    public static Scene CurrentScene = Scene.TITLE;
 
     public static void GoToTitle()
     {

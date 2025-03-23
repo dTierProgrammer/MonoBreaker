@@ -27,29 +27,15 @@ public class MultiBall:Powerup
         isActive = true;
     }
 
-    public override void Update()
+    public override void Action() 
     {
-        spawnPos = new Vector2(Playing.player.position.X, Playing.player.position.Y);
-        if (isActive)
+        cap = rng.NextInt64(5, 10);
+        for (int iteration = 0; iteration < cap; iteration++)
         {
-            position.Y += .5f;
-            if (collisionBox.Intersects(Playing.player.collisionBox))
-            {
-                cap = rng.NextInt64(5, 10);
-                for (int iteration = 0; iteration < cap; iteration++)
-                {
-                    Playing.otherBalls.Add(new Ball(new Vector2(rng.NextInt64(8, Game1.trueScreenWidth - 8), rng.NextInt64(200, (long)Playing.player.position.Y - 10)), Playing.startingGameSpeed, false, 5));
-                }
-                Playing.score += 100;
-                Playing.powerUpSound.Play();
-                AnimateFlair();
-                Kill();
-            }
-            if (collisionBox.Intersects(Playing.screenBounds[3]))
-            {
-                Kill();
-            }
+            Playing.otherBalls.Add(new Ball(new Vector2(rng.NextInt64(8, Game1.trueScreenWidth - 8), rng.NextInt64(200, (long)Playing.player.position.Y - 10)), Playing.startingGameSpeed, false, 5));
         }
-        base.Update();
+        Playing.score += 100;
+        Playing.powerUpSound.Play();
+        base.Action();
     }
 }

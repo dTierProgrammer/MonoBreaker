@@ -18,28 +18,14 @@ public class GlueBall:Powerup
         this.flair = flair;
         isActive = true;
     }
-    public override void Update()
+    public override void Action() 
     {
-        if (isActive) 
-        {
-            position.Y += .5f;
-            if (collisionBox.Intersects(Playing.player.collisionBox))
-            {
-                if (!Playing.ball.GlueBall)
-                    Playing.ball.GlueBall = true;
-                else
-                    Playing.ball.timeLeftGlueBall += 10;
-                Playing.score += 100;
-                Playing.powerUpSound.Play();
-                AnimateFlair();
-                Kill();
-            }
-
-            if (collisionBox.Intersects(Playing.screenBounds[3]))
-            {
-                Kill();
-            }
-        }
-        base.Update();
+        if (!Playing.ball.GlueBall)
+            Playing.ball.GlueBall = true;
+        else
+            Playing.ball.timeLeftGlueBall += 10;
+        Playing.score += 100;
+        Playing.powerUpSound.Play();
+        base.Action();
     }
 }

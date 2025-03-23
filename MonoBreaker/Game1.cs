@@ -1,4 +1,4 @@
-﻿// TODO: ADD RANDOM POWERUP GENERATOR, FINISH SCENE MANAGEMENT
+﻿// TODO: FINISH SCENE MANAGEMENT
  
 
 using Microsoft.Xna.Framework;
@@ -55,6 +55,7 @@ public class Game1 : Game
         // TODO: use this.Content to load your game content here
         debug = GetContent.GetTexture("Debug/debugRect");
         Playing.Load();
+        Title.Load();
     }
 
     protected override void Update(GameTime gameTime)
@@ -71,6 +72,7 @@ public class Game1 : Game
         switch (SceneController.CurrentScene)
         {
             case Scene.TITLE:
+                Title.Update();
                 break;
             case Scene.MENU:
                 break;
@@ -100,6 +102,7 @@ public class Game1 : Game
         switch (SceneController.CurrentScene)
         {
             case Scene.TITLE:
+                Title.Draw(_spriteBatch);
                 break;
             case Scene.MENU:
                 break;
@@ -127,6 +130,7 @@ public class Game1 : Game
         switch (SceneController.CurrentScene)
         {
             case Scene.TITLE:
+                Title.DrawText();
                 break;
             case Scene.MENU:
                 break;

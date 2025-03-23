@@ -19,27 +19,14 @@ public class Piercing:Powerup
         isActive = true;
     }
 
-    public override void Update()
+    public override void Action() 
     {
-        if (isActive) 
-        {
-            position.Y += .5f;
-            if (collisionBox.Intersects(Playing.player.collisionBox))
-            {
-                Playing.score += 100;
-                Playing.powerUpSound.Play();
-                if (!Playing.ball.Piercing)
-                    Playing.ball.Piercing = true;
-                else
-                    Playing.ball.timeLeftPierce += 3;
-                AnimateFlair();
-                Kill();
-            }
-            if (collisionBox.Intersects(Playing.screenBounds[3]))
-            {
-                Kill();
-            }
-        }
-        base.Update();
+        Playing.score += 100;
+        Playing.powerUpSound.Play();
+        if (!Playing.ball.Piercing)
+            Playing.ball.Piercing = true;
+        else
+            Playing.ball.timeLeftPierce += 3;
+        base.Action();
     }
 }

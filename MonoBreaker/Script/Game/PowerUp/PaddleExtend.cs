@@ -19,29 +19,16 @@ public class PaddleExtend:Powerup
         isActive = true;
     }
 
-    public override void Update()
+    public override void Action() 
     {
-        if (isActive) 
+        Playing.score += 100;
+        Playing.powerUpSound.Play();
+        if (!Playing.player.SuperPaddle)
+            Playing.player.SuperPaddle = true;
+        else
         {
-            position.Y += .5f;
-            if (collisionBox.Intersects(Playing.player.collisionBox))
-            {
-                Playing.score += 100;
-                Playing.powerUpSound.Play();
-                if(!Playing.player.SuperPaddle)
-                    Playing.player.SuperPaddle = true;
-                else
-                {
-                    Playing.player.timeLeftSuper += 5;
-                }
-                AnimateFlair();
-                Kill();
-            }
-            if (collisionBox.Intersects(Playing.screenBounds[3]))
-            {
-                Kill();
-            }
+            Playing.player.timeLeftSuper += 5;
         }
-        base.Update();
+        base.Action();
     }
 }

@@ -19,25 +19,11 @@ public class DeathBounce:Powerup
         isActive = true;
     }
 
-    public override void Update()
+    public override void Action() 
     {
-        if (isActive) 
-        {
-            position.Y += .5f;
-            if (collisionBox.Intersects(Playing.player.collisionBox))
-            {
-                Playing.ball.BallHealth = 4;
-                Playing.score += 100;
-                Playing.powerUpSound.Play();
-                AnimateFlair();
-                Kill();
-            }
-
-            if (collisionBox.Intersects(Playing.screenBounds[3]))
-            {
-                Kill();
-            }
-        }
-        base.Update();
+        Playing.ball.BallHealth = 4;
+        Playing.score += 100;
+        Playing.powerUpSound.Play();
+        base.Action();
     }
 }

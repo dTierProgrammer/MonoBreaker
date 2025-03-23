@@ -11,11 +11,11 @@ using MonoBreaker.Script.Scene.GameScenes;
 
 namespace MonoBreaker.Script.Game.PowerUp
 {
-    public class Lovely:Powerup
+    public class Lovely : Powerup
     {
         public static readonly Texture2D Img = GetContent.GetTexture($"Game/powerup/love");
         public static readonly Texture2D flairImg = GetContent.GetTexture($"Game/powerup/flair/lovely_flair");
-        public Lovely(Texture2D image, Vector2 position, Texture2D flair): base(image, position, flair) 
+        public Lovely(Texture2D image, Vector2 position, Texture2D flair) : base(image, position, flair)
         {
             this.image = image;
             this.position = position;
@@ -23,25 +23,12 @@ namespace MonoBreaker.Script.Game.PowerUp
             isActive = true;
         }
 
-        public override void Update()
+        public override void Action()
         {
-            if (isActive) 
-            {
-                position.Y += .5f;
-                if (collisionBox.Intersects(Playing.player.collisionBox))
-                {
-                    Playing.ball.random.Play();
-                    Playing.score += 5000;
-                    Playing.ball.Lovely = true;
-                    AnimateFlair();
-                    Kill();
-                }
-                if (collisionBox.Intersects(Playing.screenBounds[3]))
-                {
-                    Kill();
-                }
-            }
-            base.Update();
+            Playing.ball.random.Play();
+            Playing.score += 5000;
+            Playing.ball.Lovely = true;
+            base.Action();
         }
     }
 }

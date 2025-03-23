@@ -22,30 +22,16 @@ public class SuperBall:Powerup
         isActive = true;
     }
 
-    public override void Update()
+    public override void Action() 
     {
-        if (isActive) 
+        Playing.score += 100;
+        if (!Playing.ball.SuperBall)
+            Playing.ball.SuperBall = true;
+        else
         {
-            position.Y += .5f;
-            if (collisionBox.Intersects(Playing.player.collisionBox))
-            {
-                Playing.score += 100;
-                if(!Playing.ball.SuperBall)
-                    Playing.ball.SuperBall = true;
-                else
-                {
-                    Playing.ball.timeLeftSuper += 5;
-                }
-                Playing.powerUpSound.Play();
-                AnimateFlair();
-                Kill();  
-            }
-
-            if (collisionBox.Intersects(Playing.screenBounds[3]))
-            {
-                Kill();
-            }
+            Playing.ball.timeLeftSuper += 5;
         }
-        base.Update();
+        Playing.powerUpSound.Play();
+        base.Action();
     }
 }
