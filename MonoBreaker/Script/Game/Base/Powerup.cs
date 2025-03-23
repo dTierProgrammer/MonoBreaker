@@ -61,6 +61,9 @@ public class Powerup
             if (collisionBox.Intersects(Playing.player.collisionBox))
             {
                 Action();
+            }else if (collisionBox.Intersects(Playing.player.twinCollisionBox) && Playing.player.isTwinActive)
+            {
+                Action();
             }
 
             if (collisionBox.Intersects(Playing.screenBounds[3]))

@@ -25,10 +25,6 @@ public class PaddleExtend:Powerup
         Playing.powerUpSound.Play();
         if (!Playing.player.SuperPaddle)
             Playing.player.SuperPaddle = true;
-        else
-        {
-            Playing.player.timeLeftSuper += 5;
-        }
         base.Action();
     }
 }

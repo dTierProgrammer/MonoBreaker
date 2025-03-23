@@ -293,6 +293,18 @@
 /processorParam:TextureFormat=Color
 /build:Image/Game/powerup/flair/1up_flair.png
 
+#begin Image/Game/powerup/flair/addpts.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Image/Game/powerup/flair/addpts.png
+
 #begin Image/Game/powerup/flair/ballshooting_flair.png
 /importer:TextureImporter
 /processor:TextureProcessor

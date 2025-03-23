@@ -32,6 +32,7 @@ namespace MonoBreaker.Script.Game
         private bool canDeathBounce;
         private bool isGlueBall;
         public bool isStuck { get; private set; }
+        public bool isStuckToTwin { get; private set; }
         public float stickPointX { get; private set; }
         
         private int ballStrength = 1;
@@ -205,6 +206,15 @@ namespace MonoBreaker.Script.Game
                 color = Color.White;
                 paddle.canShoot = true;
             }
+            if (isStuckToTwin && isMainBall)
+            {
+                isStuckToTwin = false;
+                ballLaunchSound.Play();
+                direction.Y = -speed;
+                direction.X = paddle.Velocity.X;
+                color = Color.White;
+                paddle.canShoot = true;
+            }
         }
 
         public void Reset()
@@ -278,12 +288,16 @@ namespace MonoBreaker.Script.Game
                 var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 timeLeftGlueBall -= timer;
                 color = Color.LightBlue;
+                
+                
+                
                 if (timeLeftGlueBall <= 0)
                 {
                     ballDownSound.Play();
                     isGlueBall = false;
                     color = Color.White;
                     timeLeftGlueBall = longDelay;
+                    
                 }
             }
             
@@ -294,6 +308,20 @@ namespace MonoBreaker.Script.Game
                 position.X = MathHelper.Clamp(position.X, paddle.collisionBox.Left, paddle.collisionBox.Right - image.Width);
                 position.Y = paddle.collisionBox.Y - collisionBox.Height - 2f;
                 paddle.canShoot = false;
+            }
+            
+            if (isStuckToTwin)
+            {
+                direction = Vector2.Zero;
+                position.X = paddle.twinCollisionBox.X + stickPointX;
+                position.X = MathHelper.Clamp(position.X, paddle.twinCollisionBox.Left, paddle.twinCollisionBox.Right - image.Width);
+                position.Y = paddle.collisionBox.Y - collisionBox.Height - 2f;
+                paddle.canShoot = false;
+                if (paddle.isTwinActive == false)
+                {
+                    Launch();
+                    isStuckToTwin = false;
+                }
             }
             
             if (!isMainBall)
@@ -307,7 +335,7 @@ namespace MonoBreaker.Script.Game
                 // X Start
                 position.X += direction.X;
 
-                if (!isStuck && collisionBox.Intersects(Playing.screenBounds[0])) // collision detections have to be done to the right
+                if ((!isStuck || !isStuckToTwin) && collisionBox.Intersects(Playing.screenBounds[0])) // collision detections have to be done to the right
                 {//right bound
                     if (prevPosition.X < Playing.screenBounds[0].Right) // appears to work
                     {
@@ -317,7 +345,7 @@ namespace MonoBreaker.Script.Game
                     bounceSound.Play();
                 }
 
-                if (!isStuck && collisionBox.Intersects(Playing.screenBounds[1])) // collision detections have to be done to the left
+                if ((!isStuck || !isStuckToTwin) && collisionBox.Intersects(Playing.screenBounds[1])) // collision detections have to be done to the left
                 {// left bound
                     
                     if (prevPosition.X > Playing.screenBounds[1].Left) // appears to work
@@ -491,10 +519,18 @@ namespace MonoBreaker.Script.Game
                     {
                         if ((collisionBox.Top <= paddle.twinCollisionBox.Bottom) && (prevPosition.Y <= paddle.twinCollisionBox.Bottom))
                         { // up (new handling // ball angle is determined by where on the paddle it collides)
-                            BounceUp();
-                            position.Y = paddle.twinCollisionBox.Top - collisionBox.Height;
-                            direction.X = (collisionBox.Center.X - paddle.twinCollisionBox.Center.X) / 10f;
-                            Math.Clamp(direction.X, -speed, speed);
+                            stickPointX = prevPosition.X - paddle.twinCollisionBox.X;
+                            if (!isGlueBall)
+                            {
+                                BounceUp();
+                                position.Y = paddle.twinCollisionBox.Top - collisionBox.Height;
+                                direction.X = (collisionBox.Center.X - paddle.twinCollisionBox.Center.X) / 10f;
+                                Math.Clamp(direction.X, -speed, speed);
+                            }
+                            else
+                            {
+                                isStuckToTwin = true;
+                            }
                         }
                     }
                     else

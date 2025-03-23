@@ -22,6 +22,8 @@ namespace MonoBreaker.Script.Game
 
         private Random rng = new Random();
         private int chance;
+        private int rollPowerup;
+        private int prevVal;
         
         public Brick(Texture2D image, Vector2 position, int toughness)
         {
@@ -40,7 +42,6 @@ namespace MonoBreaker.Script.Game
         public void Weaken(int diminishingValue)
         {
             strength -= diminishingValue;
-            color = Color.DarkGray;
             brickWeaken.Play();
         }
 
@@ -50,9 +51,9 @@ namespace MonoBreaker.Script.Game
             {
                 brickBreak.Play();
                 Playing.brokenBricks++;
-                chance = rng.Next(0, 101);
-                if(chance < 25) // 25 % chance
-                    _GeneratePowerup.RandomPowerup(new Vector2(Rect.X + 2, Rect.Y  + 2)); // make this called randomly
+                chance = rng.Next(1, 101);
+                if(chance < 15) // 10 % chance
+                    _GeneratePowerup.RollPowerup(new Vector2(Rect.X + 2, Rect.Y  + 2));
             }
             isActive = false;
             Rect = Rectangle.Empty;

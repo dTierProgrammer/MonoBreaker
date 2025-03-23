@@ -16,7 +16,13 @@ namespace MonoBreaker.Script.Game.PowerUp
     public static class _GeneratePowerup
     {
         private static Array powerups = Enum.GetValues(typeof(_Powerups));
+        private static Array commonPowerups = Enum.GetValues(typeof(_CommonPowerups));
+        private static Array uncommonPowerups = Enum.GetValues(typeof(_UncommonPowerups));
+        private static Array rarePowerups = Enum.GetValues(typeof(_RarePowerups));
+        private static Array veryrarePowerups = Enum.GetValues(typeof(_VeryRarePowerups));
+        private static int[] powerupGroupProbability = { 70, 90, 98, 100}; // lmao nigga this is wack
         private static Random rng = new Random();
+        private static int chance;
 
         public static void RandomPowerup(Vector2 position)
         {
@@ -57,6 +63,94 @@ namespace MonoBreaker.Script.Game.PowerUp
                 case _Powerups.GLUEBALL:
                     _ManagePowerups.listGlueBall.Add(new GlueBall(GlueBall.Img, position, GlueBall.flairImg));
                     break;
+            }
+        }
+
+        public static void CommonPowerup(Vector2 position)
+        {
+            _CommonPowerups nextPowerup = (_CommonPowerups)rng.Next(0, commonPowerups.Length);
+
+            switch (nextPowerup)
+            {
+                case _CommonPowerups.SUPERBALL:
+                    _ManagePowerups.listSuperBall.Add(new SuperBall(SuperBall.Img, position, SuperBall.flairImg));
+                    break;
+                case _CommonPowerups.TWINPADDLE:
+                    _ManagePowerups.listTwinPaddle.Add(new TwinPaddle(TwinPaddle.Img, position, TwinPaddle.flairImg));
+                    break;
+                case _CommonPowerups.PADDLEEXTEND:
+                    _ManagePowerups.listPaddleExtend.Add(new PaddleExtend(PaddleExtend.Img, position, PaddleExtend.flairImg));
+                    break;
+            }
+        }
+
+        public static void UncommonPowerup(Vector2 position)
+        {
+            _UncommonPowerups nextPowerup = (_UncommonPowerups)rng.Next(0, uncommonPowerups.Length);
+
+            switch (nextPowerup)
+            {
+                case _UncommonPowerups.SHOOTING:
+                    _ManagePowerups.listShooting.Add(new Shooting(Shooting.Img, position, Shooting.flairImg));
+                    break;
+                case _UncommonPowerups.MULTIBALL:
+                    _ManagePowerups.listMultiBall.Add(new MultiBall(MultiBall.Img, position, MultiBall.flairImg));
+                    break;
+                case _UncommonPowerups.DEATHBOUNCE:
+                    _ManagePowerups.listDeathBounce.Add(new DeathBounce(DeathBounce.Img, position, DeathBounce.flairImg));
+                    break;
+            }
+        }
+
+        public static void RarePowerup(Vector2 position)
+        {
+            _RarePowerups nextPowerup = (_RarePowerups)rng.Next(0, rarePowerups.Length);
+
+            switch (nextPowerup)
+            {
+                case _RarePowerups.BALLGUN:
+                    _ManagePowerups.listBallGun.Add(new BallGun(BallGun.Img, position, BallGun.flairImg));
+                    break;
+                case _RarePowerups.GLUEBALL:
+                    _ManagePowerups.listGlueBall.Add(new GlueBall(GlueBall.Img, position, GlueBall.flairImg));
+                    break;
+                case _RarePowerups.PIERCING:
+                    _ManagePowerups.listPiercing.Add(new Piercing(Piercing.Img, position, Piercing.flairImg));
+                    break;
+            }
+        }
+
+        public static void VeryRarePowerup(Vector2 position)
+        {
+            _VeryRarePowerups nextPowerup = (_VeryRarePowerups)rng.Next(0, veryrarePowerups.Length);
+
+            switch (nextPowerup)
+            {
+                case _VeryRarePowerups.ADDTRY:
+                    _ManagePowerups.listAddTry.Add(new AddTry(AddTry.Img, position, AddTry.flairImg));
+                    break;
+                case _VeryRarePowerups.LOVELY:
+                    _ManagePowerups.listLovely.Add(new Lovely(Lovely.Img, position, Lovely.flairImg));
+                    break;
+            }
+        }
+        
+        public static void RollPowerup(Vector2 position)
+        {
+            chance = rng.Next(1, 101);
+            Console.WriteLine(chance);
+            if (chance <= powerupGroupProbability[0]) // common
+            {
+                CommonPowerup(position);
+            }else if (chance > powerupGroupProbability[0] && chance <= powerupGroupProbability[1]) // uncommon
+            {
+                UncommonPowerup(position);
+            } else if (chance > powerupGroupProbability[1] && chance <= powerupGroupProbability[2]) // rare
+            {
+                RarePowerup(position);
+            } else if (chance > powerupGroupProbability[2] && chance <= powerupGroupProbability[3]) // very rare
+            {
+                VeryRarePowerup(position);
             }
         }
 

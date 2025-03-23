@@ -38,13 +38,11 @@ namespace MonoBreaker.Script.Game
         //public Rectangle twinCollisionBox;
         private int offset = 144;
         int prevValue;
+        private Vector2 initPos;
 
         
 
         private const float delay = 10;
-        public float delayRemainder = delay;
-        public float timeLeftSuper = delay;
-        public float twinTimeLeft = delay;
         public float gunTimeLeft = delay;
         public float ballGunTimeLeft = delay;
 
@@ -55,6 +53,7 @@ namespace MonoBreaker.Script.Game
         {
             image = GetContent.GetTexture("Game/paddle");
             this.position = position;
+            initPos = position;
             twinPosition = new Vector2(this.position.X, this.position.Y);
             maxVelocity = moveSpeed;
         }
@@ -112,6 +111,15 @@ namespace MonoBreaker.Script.Game
             get { return velocity; }
         }
 
+        public void ResetPowerups()
+        {
+            isTwinActive = false;
+            isTwinActive = false;
+            isSuper = false;
+            gunIsActive = false;
+            ballGunIsActive = false;
+        }
+
         public void Update(GameTime gameTime) 
         {
             distFromCenter = collisionBox.Center.X - Playing.centerPt.X;
@@ -121,36 +129,10 @@ namespace MonoBreaker.Script.Game
             if (isSuper)
             {
                 image = GetContent.GetTexture("Game/paddleSuper");
-                var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
-                timeLeftSuper -= timer;
                 if(isTwinActive)
                     offset = 136;
-                
-                if (timeLeftSuper <= 0)
-                {
+                else
                     offset = 144;
-                    powerDownSound.Play();
-                    image = GetContent.GetTexture("Game/paddle");
-                    if (Playing.ball.isStuck)
-                    {
-                        Playing.ball.position.X -=(Playing.ball.position.X - (collisionBox.X + image.Width) - Playing.ball.image.Width);
-                    }
-                    isSuper = false;
-                    timeLeftSuper = delay;
-                }
-            }
-
-            if (isTwinActive)
-            {
-                var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
-                twinTimeLeft -= timer;
-
-                if (twinTimeLeft <= 0)
-                {
-                    powerDownSound.Play();
-                    isTwinActive = false;
-                    twinTimeLeft = delay;
-                }
             }
 
             if (gunIsActive)

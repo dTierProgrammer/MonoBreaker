@@ -13,7 +13,8 @@ public static class SceneController
     {
         CurrentScene = Scene.PLAYING;
     }
-
+    
+    /*
     public static void PauseGame()
     {
         CurrentScene = Scene.PAUSE;
@@ -33,4 +34,5 @@ public static class SceneController
     {
         CurrentScene = Scene.GAMEOVER;
     }
+    */
 }
