@@ -248,7 +248,6 @@ namespace MonoBreaker.Script.Game
             isActive = false;
             direction = new Vector2(0, -speed);
             ballHealth = 1;
-            ballStrength = 1;
             timeLeftPierce = delay;
             ResetPowerups();
         }
@@ -263,6 +262,8 @@ namespace MonoBreaker.Script.Game
             timeLeftPierce = delay;
             isActive = false;
             direction = new Vector2(0, -speed);
+            isGlueBall = false;
+            color = Color.White;
             _ManagePowerups.KillPowerups();
         }
 

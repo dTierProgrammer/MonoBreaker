@@ -39,18 +39,61 @@ namespace MonoBreaker.Script.Game
               { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4}});
 
             maps.Add(new int[,] 
-            { {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-              {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-              {1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1},
-              {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
-              {2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-              {2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-              {3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 1},
-              {3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 1},
-              {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0},
-              {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0}});
+            {
+                {01, 01, 01, 01, 01, 01, 01, 01, 01, 01, 01, 01, 01, 01},
+                {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+                {16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 00},
+                {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+                {00, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12},
+                {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+                {08, 08, 08, 08, 08, 08, 08, 08, 08, 08, 08, 08, 08, 00},
+                {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+                {00, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04},
+                {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+                {08, 08, 08, 08, 08, 08, 08, 08, 08, 08, 08, 08, 08, 00},
+                {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+                {00, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12},
+                {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+                {16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 00},
+                {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+                {01, 01, 01, 01, 01, 01, 01, 01, 01, 01, 01, 01, 01, 01},
+            });
 
+            maps.Add(new int[,]
+            {
+                { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
+                { 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0 },
+                { 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0 },
+                { 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0 },
+                { 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0 },
+                { 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5 },
+                { 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5 },
+                { 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5 },
+                { 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5 },
+                { 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0 },
+                { 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0 },
+                { 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0 },
+                { 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0 },
+                { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
+            });
             
+            maps.Add(new int[,]
+            {
+                { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+                { 5, 0, 5, 0, 5, 0, 5, 5, 0, 5, 0, 5, 0, 5 },
+                { 5, 8, 5, 0, 5, 8, 5, 5, 8, 5, 0, 5, 8, 5 },
+                { 5, 8, 5, 0, 5, 8, 5, 5, 8, 5, 0, 5, 8, 5 },
+                { 5, 0, 5, 0, 5, 0, 5, 5, 0, 5, 0, 5, 0, 5 },
+                { 5, 0, 5, 0, 5, 0, 5, 5, 0, 5, 0, 5, 0, 5 },
+                { 5, 0, 5, 0, 0, 0, 5, 5, 0, 0, 0, 5, 0, 5 },
+                { 5, 0, 5, 0, 0, 0, 5, 5, 0, 0, 0, 5, 0, 5 },
+                { 5, 0, 5, 0, 5, 0, 5, 5, 0, 5, 0, 5, 0, 5 },
+                { 5, 0, 5, 0, 5, 0, 5, 5, 0, 5, 0, 5, 0, 5 },
+                { 5, 8, 5, 0, 5, 8, 5, 5, 8, 5, 0, 5, 8, 5 },
+                { 5, 8, 5, 0, 5, 8, 5, 5, 8, 5, 0, 5, 8, 5 },
+                { 5, 0, 5, 0, 5, 0, 5, 5, 0, 5, 0, 5, 0, 5 },
+                
+            });
         }
 
         public static void Initialize(Game1 game)
@@ -66,6 +109,7 @@ namespace MonoBreaker.Script.Game
             {
                 for (int row = 0; row < map.GetLength(1); row++)
                 {
+                    // group 1
                     if (map[column, row] == 1)
                     {
                         listBricks.Add(new Brick(images[0], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 1));
@@ -81,6 +125,63 @@ namespace MonoBreaker.Script.Game
                     if (map[column, row] == 4)
                     {
                         listBricks.Add(new Brick(images[3], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 1));
+                    }
+                    
+                    // group 2
+                    
+                    if (map[column, row] == 5)
+                    {
+                        listBricks.Add(new Brick(images[0], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 2));
+                    }
+                    if (map[column, row] == 6)
+                    {
+                        listBricks.Add(new Brick(images[1], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 2));
+                    }
+                    if (map[column, row] == 7)
+                    {
+                        listBricks.Add(new Brick(images[2], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 2));
+                    }
+                    if (map[column, row] == 8)
+                    {
+                        listBricks.Add(new Brick(images[3], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 2));
+                    }
+                    
+                    // group 3
+                    
+                    if (map[column, row] == 9)
+                    {
+                        listBricks.Add(new Brick(images[0], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 3));
+                    }
+                    if (map[column, row] == 10)
+                    {
+                        listBricks.Add(new Brick(images[1], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 3));
+                    }
+                    if (map[column, row] == 11)
+                    {
+                        listBricks.Add(new Brick(images[2], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 3));
+                    }
+                    if (map[column, row] == 12)
+                    {
+                        listBricks.Add(new Brick(images[3], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 3));
+                    }
+                    
+                    // group 4
+                    
+                    if (map[column, row] == 13)
+                    {
+                        listBricks.Add(new Brick(images[0], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 4));
+                    }
+                    if (map[column, row] == 14)
+                    {
+                        listBricks.Add(new Brick(images[1], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 4));
+                    }
+                    if (map[column, row] == 15)
+                    {
+                        listBricks.Add(new Brick(images[2], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 4));
+                    }
+                    if (map[column, row] == 16)
+                    {
+                        listBricks.Add(new Brick(images[3], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 4));
                     }
                 }
             }

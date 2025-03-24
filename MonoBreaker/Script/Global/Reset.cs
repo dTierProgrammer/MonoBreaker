@@ -21,8 +21,10 @@ namespace MonoBreaker.Script.Global
         {
             BrickMap.mapID = 0;
             Playing.score = 0;
-            Playing.round = 1;
+            Playing.round = 0;
             Playing.tries = 5;
+            Playing.ball.ResetSpeed();
+            Playing.player.ResetSpeed();
             Playing.ball.Reset();
             Playing.otherBalls.Clear();
             Playing.player.ResetAll();
@@ -33,7 +35,7 @@ namespace MonoBreaker.Script.Global
             Playing.player.maxVelocity = Playing.startingGameSpeed;
         }
 
-        public static void RoundReset() 
+        public static void RoundReset()
         {
             Playing.ball.RoundReset();
             Playing.player.RoundReset();
@@ -43,7 +45,7 @@ namespace MonoBreaker.Script.Global
             Playing.brokenBricks = 0;
         }
 
-        public static void SpeedReset() 
+        public static void SpeedReset()
         {
             Playing.ball.ResetSpeed();
             Playing.player.ResetSpeed();
