@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoBreaker.Script.Global;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO.MemoryMappedFiles;
 
 
 namespace MonoBreaker.Script.Game
@@ -13,34 +15,43 @@ namespace MonoBreaker.Script.Game
         private static int numOfBricks;
 
         private static int offset = 6;
-        private static int[,] map = // map of bricks
-        {
-            /*
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
-            {2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 1},
-            {3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 1},
-            {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0},
-            {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0}
-            */
-            
-            
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-            {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
-            {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4}
-        };
+        public static int mapID = 0;
+
+        public static List<int[,]> maps = new List<int[,]>();
+
+        private static int[,] map;
+
 
         private static Game1 _game;
         public static List<Brick> listBricks = new List<Brick>(); // every brick instance
+        public static List<Brick> inactiveBricks = new List<Brick>();
+
+        public static void InitializeMaps() 
+        {
+            maps.Add(new int[,]
+            { { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+              { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+              { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+              { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+              { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+              { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+              { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+              { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4}});
+
+            maps.Add(new int[,] 
+            { {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+              {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+              {1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1},
+              {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
+              {2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+              {2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+              {3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 1},
+              {3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 1},
+              {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0},
+              {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0}});
+
+            map = maps[mapID];
+        }
 
         public static void Initialize(Game1 game)
         {
@@ -56,15 +67,15 @@ namespace MonoBreaker.Script.Game
                 {
                     if (map[column, row] == 1)
                     {
-                        listBricks.Add(new Brick(images[0], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 4));
+                        listBricks.Add(new Brick(images[0], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 2));
                     }
                     if (map[column, row] == 2)
                     {
-                        listBricks.Add(new Brick(images[1], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 3));
+                        listBricks.Add(new Brick(images[1], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 2));
                     }
                     if (map[column, row] == 3)
                     {
-                        listBricks.Add(new Brick(images[2], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 2));
+                        listBricks.Add(new Brick(images[2], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 1));
                     }
                     if (map[column, row] == 4)
                     {
@@ -94,6 +105,7 @@ namespace MonoBreaker.Script.Game
 
         public static void Update() // iterate through brick list and call each brick's update function
         {
+            map = maps[mapID];
             foreach (Brick brick in listBricks)
             {
                 brick.Update();
@@ -106,6 +118,13 @@ namespace MonoBreaker.Script.Game
             {
                 brick.Reset();
             }
+        }
+
+        public static void HardReset() 
+        {
+            listBricks.Clear();
+            inactiveBricks.Clear();
+            Initialize(_game);
         }
 
         public static void Draw(SpriteBatch window) 

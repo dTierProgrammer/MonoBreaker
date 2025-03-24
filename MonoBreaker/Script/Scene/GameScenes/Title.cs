@@ -13,10 +13,11 @@ public static class Title
     private static Texture2D titleshadow;
     private static Texture2D titlebg;
     private static Texture2D caption;
+    private static Game1 _game;
 
-    public static void Initialize()
+    public static void Initialize(Game1 game)
     {
-        
+        _game = game;
     }
 
     public static void Load()
@@ -31,6 +32,8 @@ public static class Title
     {
         if (Keyboard.GetState().IsKeyDown(Keys.Enter))
                SceneController.StartGame();
+        //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            //_game.Exit();
     }
 
     public static void Draw(SpriteBatch spriteBatch)
@@ -40,10 +43,10 @@ public static class Title
         spriteBatch.Draw(titleshadow, new Rectangle(161, 91, titleshadow.Width / 2, titleshadow.Height / 2), null, Color.White, 0f, new Vector2(titleshadow.Width / 2, titleshadow.Height / 2), SpriteEffects.None, 0);
         spriteBatch.Draw(title, new Rectangle(160, 90, title.Width / 2, title.Height / 2), null, Color.White, 0f, new Vector2(title.Width / 2, title.Height / 2), SpriteEffects.None, 0);
         spriteBatch.Draw(caption, new Vector2(62, 76), Color.White);
-        string menuElementOne = "Press Enter to Play";
+        string menuElementOne = "ENTER - Start Game";
         spriteBatch.DrawString(Fonts.subTitleFont, menuElementOne,new Vector2(160, 120), Color.White, 0, new Vector2(Fonts.subTitleFont.MeasureString(menuElementOne).X / 2, 0), 1f, SpriteEffects.None, 0f);
-        string menuElementTwo = "Press Escape To Exit";
-        spriteBatch.DrawString(Fonts.subTitleFont, menuElementTwo, new Vector2(160, 135), Color.White, 0, new Vector2(Fonts.subTitleFont.MeasureString(menuElementTwo).X / 2, 0), 1f, SpriteEffects.None, 0f);
+        string menuElementTwo = "ESC - Exit";
+        //spriteBatch.DrawString(Fonts.subTitleFont, menuElementTwo, new Vector2(160, 135), Color.White, 0, new Vector2(Fonts.subTitleFont.MeasureString(menuElementTwo).X / 2, 0), 1f, SpriteEffects.None, 0f);
 
 
         spriteBatch.DrawString(Fonts.subTitleFont, "Version 1.0\n" +

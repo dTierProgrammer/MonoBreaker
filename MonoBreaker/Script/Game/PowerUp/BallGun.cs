@@ -21,11 +21,9 @@ public class BallGun:Powerup
 
     public override void Action() 
     {
+        Playing.score += 300;
         if (!Playing.player.ballGunIsActive)
             Playing.player.ballGunIsActive = true;
-        else
-            Playing.player.ballGunTimeLeft += 5;
-        Playing.score += 100;
         Playing.powerUpSound.Play();
         base.Action();
     }

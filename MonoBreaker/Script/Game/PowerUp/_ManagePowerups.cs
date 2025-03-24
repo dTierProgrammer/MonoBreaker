@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoBreaker.Script.Game.Base;
@@ -201,5 +202,19 @@ public static class _ManagePowerups
         {
             item.Draw(spriteBatch);
         }
+    }
+    public static void ClearLists() 
+    {
+        listAddTry.Clear();
+        listDeathBounce.Clear();
+        listLovely.Clear();
+        listMultiBall.Clear();
+        listPaddleExtend.Clear();
+        listPiercing.Clear();
+        listShooting.Clear();
+        listSuperBall.Clear();
+        listTwinPaddle.Clear();
+        listGlueBall.Clear();
+        powerupFlairs.Clear();
     }
 }

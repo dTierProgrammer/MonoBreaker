@@ -22,7 +22,7 @@ public class DeathBounce:Powerup
     public override void Action() 
     {
         Playing.ball.BallHealth = 4;
-        Playing.score += 100;
+        Playing.score += 200;
         Playing.powerUpSound.Play();
         base.Action();
     }

@@ -21,7 +21,7 @@ public class Piercing:Powerup
 
     public override void Action() 
     {
-        Playing.score += 100;
+        Playing.score += 300;
         Playing.powerUpSound.Play();
         if (!Playing.ball.Piercing)
             Playing.ball.Piercing = true;

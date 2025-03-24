@@ -21,6 +21,7 @@ public class Shooting:Powerup
 
     public override void Action() 
     {
+        Playing.score += 200;
         if (!Playing.player.gunIsActive)
             Playing.player.gunIsActive = true;
         else

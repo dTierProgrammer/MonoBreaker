@@ -24,6 +24,7 @@ namespace MonoBreaker.Script.Game
         private int chance;
         private int rollPowerup;
         private int prevVal;
+        public int initStrength;
         
         public Brick(Texture2D image, Vector2 position, int toughness)
         {
@@ -32,6 +33,7 @@ namespace MonoBreaker.Script.Game
             isActive = true;
             Rect = new Rectangle((int)this.position.X, (int)this.position.Y, this.image.Width, this.image.Height);
             strength = toughness;
+            initStrength = strength;
         }
 
         public int BrickHealth
@@ -49,6 +51,7 @@ namespace MonoBreaker.Script.Game
         {
             if (isActive)
             {
+                BrickMap.inactiveBricks.Add(this);
                 brickBreak.Play();
                 Playing.brokenBricks++;
                 chance = rng.Next(1, 101);
@@ -75,6 +78,7 @@ namespace MonoBreaker.Script.Game
                 isActive = true;
                 Rect = new Rectangle((int)this.position.X, (int)this.position.Y, this.image.Width, this.image.Height);
             }
+            strength = initStrength;
         }
 
         public void Draw(SpriteBatch window) 

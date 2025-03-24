@@ -449,6 +449,18 @@
 /processorParam:TextureFormat=Color
 /build:Image/Game/powerup/flair/twinpaddle_flair.png
 
+#begin Image/Game/powerup/Generic.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Image/Game/powerup/Generic.png
+
 #begin Image/Game/powerup/glueball.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -833,6 +845,12 @@
 /processorParam:Quality=Best
 /build:Sound/gameEnd.wav
 
+#begin Sound/gameover.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/gameover.wav
+
 #begin Sound/paddleBounce.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -856,6 +874,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sound/puyo.wav
+
+#begin Sound/roundclear.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/roundclear.wav
+
+#begin Sound/score.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/score.wav
 
 #begin Sound/select.wav
 /importer:WavImporter

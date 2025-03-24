@@ -25,7 +25,7 @@ public class AddTry:Powerup
     public override void Action() 
     {
         Playing.tries++;
-        Playing.score += 100;
+        Playing.score += 400;
         Playing.addTrySound.Play();
         base.Action();
     }

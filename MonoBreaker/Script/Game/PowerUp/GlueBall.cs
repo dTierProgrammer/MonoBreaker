@@ -23,7 +23,7 @@ public class GlueBall:Powerup
         if (!Playing.ball.GlueBall)
             Playing.ball.GlueBall = true;
         else
-            Playing.ball.timeLeftGlueBall += 10;
+            Playing.score += 300;
         Playing.score += 100;
         Playing.powerUpSound.Play();
         base.Action();

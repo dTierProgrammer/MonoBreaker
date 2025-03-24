@@ -45,6 +45,8 @@ public class Game1 : Game
         
         GetContent.Initialize(this);
         Playing.Initialize(this);
+        Title.Initialize(this);
+        Reset.Ininitialize(this);
         base.Initialize();
     }
 

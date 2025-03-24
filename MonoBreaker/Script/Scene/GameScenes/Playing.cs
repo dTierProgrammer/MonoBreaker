@@ -42,6 +42,8 @@ public static class Playing
 
     public static SoundEffect powerUpSound = GetContent.GetSound("powerUp");
     public static SoundEffect addTrySound = GetContent.GetSound("1up");
+    public static SoundEffect roundclearSound = GetContent.GetSound("roundclear");
+    public static SoundEffect gameoverSound = GetContent.GetSound("gameover");
 
     private static Texture2D leftoverTriesCounter;
 
@@ -49,13 +51,13 @@ public static class Playing
     public static int score = 0;
     public static int brokenBricks = 0;
     private static int prevScore;
-    public static readonly int speedUpThreshold = BrickMap.RowLength;
+    public static int speedUpThreshold;
     private static readonly int addTryThreshold = 1000;
     
     public static bool showDebugInfo { get; private set; }
     public static float startingGameSpeed = 1.4f;
 
-    public static float speedIncrement = .1f;
+    public static float speedIncrement = .05f;
     public static float tries = 5;
     public static float round = 1;
 
@@ -69,7 +71,9 @@ public static class Playing
     public static void Initialize(Game1 game)
     {
         _game = game;
+        BrickMap.InitializeMaps();
         BrickMap.Initialize(_game);
+        speedUpThreshold = BrickMap.RowLength;
 
         screenBounds[0] = new Rectangle(0, 0, 4, Game1.trueScreenHeight); // r
         screenBounds[1] = new Rectangle(Game1.trueScreenWidth - 4, 0, 4, Game1.trueScreenHeight); // l
@@ -136,6 +140,8 @@ public static class Playing
                         _GeneratePowerup.NewGlueBall(player.position);
                     if (Keyboard.GetState().IsKeyDown(Keys.R) & !priorKBState.IsKeyDown(Keys.R))
                         _GeneratePowerup.RollPowerup(player.position);
+                    if (Keyboard.GetState().IsKeyDown(Keys.N) & !priorKBState.IsKeyDown(Keys.N))
+                        currentState = GameState.ROUNDCOMPLETE;
                 }
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Z) & !priorKBState.IsKeyDown(Keys.Z))
@@ -163,7 +169,14 @@ public static class Playing
 
                 if(tries <=0) 
                 {
+                    gameoverSound.Play();
                     currentState = GameState.GAMEOVER;
+                }
+
+                if (BrickMap.inactiveBricks.Count == BrickMap.listBricks.Count) 
+                {
+                    roundclearSound.Play();
+                    currentState = GameState.ROUNDCOMPLETE;
                 }
 
                 BrickMap.Update();
@@ -172,8 +185,48 @@ public static class Playing
             case GameState.PAUSE:
                 if (Keyboard.GetState().IsKeyDown(Keys.Back) & !priorKBState.IsKeyDown(Keys.Back))
                     currentState = GameState.PLAY;
-                if(Keyboard.GetState().IsKeyDown(Keys.Escape) & !priorKBState.IsKeyDown(Keys.Escape))
+                if (Keyboard.GetState().IsKeyDown(Keys.Escape) & !priorKBState.IsKeyDown(Keys.Escape)) 
+                {
                     SceneController.GoToTitle();
+                    Reset.HardReset();
+                    currentState = GameState.PLAY;
+                }
+                    
+                break;
+            case GameState.ROUNDCOMPLETE:
+                if (Keyboard.GetState().IsKeyDown(Keys.Escape) & !priorKBState.IsKeyDown(Keys.Escape))
+                {
+                    SceneController.GoToTitle();
+                    Reset.HardReset();
+                    currentState = GameState.PLAY;
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.Enter) & !priorKBState.IsKeyDown(Keys.Enter))
+                {
+                    
+                    round++;
+                    if (round % 3 == 0 && BrickMap.mapID < BrickMap.maps.Count - 1)
+                        BrickMap.mapID++;
+                    /*
+                    if (BrickMap.mapID > BrickMap.maps.Count - 1)
+                        BrickMap.mapID = 0;
+                    */
+                    Reset.RoundReset();
+                    currentState = GameState.PLAY;
+                }
+                break;
+            case GameState.GAMEOVER:
+                if (Keyboard.GetState().IsKeyDown(Keys.Escape) & !priorKBState.IsKeyDown(Keys.Escape)) 
+                {
+                    SceneController.GoToTitle();
+                    Reset.HardReset();
+                    currentState = GameState.PLAY;
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.Enter) & !priorKBState.IsKeyDown(Keys.Enter)) 
+                {
+                    Reset.HardReset();
+                    currentState = GameState.PLAY;
+                }
+                    
                 break;
         }
         priorKBState = Keyboard.GetState();
@@ -219,9 +272,9 @@ public static class Playing
             case GameState.PAUSE:
                 spriteBatch.Draw(pauseOverlay, Vector2.Zero, Color.White);
                 spriteBatch.Draw(pauseText, new Rectangle(160, 90, pauseText.Width, pauseText.Height), null, Color.White, 0f, new Vector2(pauseText.Width / 2, pauseText.Height / 2), SpriteEffects.None, 0);
-                string p_menuElementOne = "Press Backspace to Resume";
+                string p_menuElementOne = "BACKSPACE - Resume";
                 spriteBatch.DrawString(Fonts.subTitleFont, p_menuElementOne, new Vector2(160, 120), Color.White, 0, new Vector2(Fonts.subTitleFont.MeasureString(p_menuElementOne).X / 2, 0), 1f, SpriteEffects.None, 0f);
-                string p_menuElementTwo = "Press Escape to Quit";
+                string p_menuElementTwo = "ESC - Quit";
                 spriteBatch.DrawString(Fonts.subTitleFont, p_menuElementTwo, new Vector2(160, 135), Color.White, 0, new Vector2(Fonts.subTitleFont.MeasureString(p_menuElementTwo).X / 2, 0), 1f, SpriteEffects.None, 0f);
                 string p_score = $"Score: {score}";
                 spriteBatch.DrawString(Fonts.subTitleFont, p_score, new Vector2(160, 150), Color.White, 0, new Vector2(Fonts.subTitleFont.MeasureString(p_score).X / 2, 0), 1f, SpriteEffects.None, 0f);
@@ -230,13 +283,22 @@ public static class Playing
                 break;
             case GameState.ROUNDCOMPLETE:
                 spriteBatch.Draw(pauseOverlay, Vector2.Zero, Color.White);
+                spriteBatch.Draw(roundclearText, new Rectangle(160, 90, roundclearText.Width, roundclearText.Height), null, Color.White, 0f, new Vector2(roundclearText.Width / 2, roundclearText.Height / 2), SpriteEffects.None, 0);
+                string rc_menuElementOne = $"ENTER - Round {round + 1}";
+                spriteBatch.DrawString(Fonts.subTitleFont, rc_menuElementOne, new Vector2(160, 120), Color.White, 0, new Vector2(Fonts.subTitleFont.MeasureString(rc_menuElementOne).X / 2, 0), 1f, SpriteEffects.None, 0f);
+                string rc_menuElementTwo = "ESC - Quit";
+                spriteBatch.DrawString(Fonts.subTitleFont, rc_menuElementTwo, new Vector2(160, 135), Color.White, 0, new Vector2(Fonts.subTitleFont.MeasureString(rc_menuElementTwo).X / 2, 0), 1f, SpriteEffects.None, 0f);
+                string rc_score = $"Score: {score}";
+                spriteBatch.DrawString(Fonts.subTitleFont, rc_score, new Vector2(160, 150), Color.White, 0, new Vector2(Fonts.subTitleFont.MeasureString(rc_score).X / 2, 0), 1f, SpriteEffects.None, 0f);
+                string rc_tries = $"Tries: {tries}";
+                spriteBatch.DrawString(Fonts.subTitleFont, rc_tries, new Vector2(160, 165), Color.White, 0, new Vector2(Fonts.subTitleFont.MeasureString(rc_tries).X / 2, 0), 1f, SpriteEffects.None, 0f);
                 break;
             case GameState.GAMEOVER:
                 spriteBatch.Draw(pauseOverlay, Vector2.Zero, Color.White);
                 spriteBatch.Draw(gameoverText, new Rectangle(158, 90, gameoverText.Width, gameoverText.Height), null, Color.White, 0f, new Vector2(gameoverText.Width / 2, gameoverText.Height / 2), SpriteEffects.None, 0);
-                string g_menuElementOne = "Press Enter to Retry";
+                string g_menuElementOne = "ENTER - Retry";
                 spriteBatch.DrawString(Fonts.subTitleFont, g_menuElementOne, new Vector2(160, 120), Color.White, 0, new Vector2(Fonts.subTitleFont.MeasureString(g_menuElementOne).X / 2, 0), 1f, SpriteEffects.None, 0f);
-                string g_menuElementTwo = "Press Escape to Quit";
+                string g_menuElementTwo = "ESC - Quit";
                 spriteBatch.DrawString(Fonts.subTitleFont, g_menuElementTwo, new Vector2(160, 135), Color.White, 0, new Vector2(Fonts.subTitleFont.MeasureString(g_menuElementTwo).X / 2, 0), 1f, SpriteEffects.None, 0f);
                 string g_score = $"Final Score: {score}";
                 spriteBatch.DrawString(Fonts.subTitleFont, g_score, new Vector2(160, 150), Color.White, 0, new Vector2(Fonts.subTitleFont.MeasureString(g_score).X / 2, 0), 1f, SpriteEffects.None, 0f);

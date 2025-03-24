@@ -27,10 +27,6 @@ public class SuperBall:Powerup
         Playing.score += 100;
         if (!Playing.ball.SuperBall)
             Playing.ball.SuperBall = true;
-        else
-        {
-            Playing.ball.timeLeftSuper += 5;
-        }
         Playing.powerUpSound.Play();
         base.Action();
     }

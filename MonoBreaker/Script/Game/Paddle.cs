@@ -114,10 +114,34 @@ namespace MonoBreaker.Script.Game
         public void ResetPowerups()
         {
             isTwinActive = false;
-            isTwinActive = false;
             isSuper = false;
             gunIsActive = false;
             ballGunIsActive = false;
+            gunTimeLeft = delay;
+            ballGunTimeLeft = delay;
+            image = GetContent.GetTexture("Game/paddle");
+            offset = 144;
+            color = Color.White;
+        }
+
+        public void RoundReset() 
+        {
+            gunIsActive = false;
+            ballGunIsActive = false;
+            gunTimeLeft = delay;
+            ballGunTimeLeft = delay;
+            color = Color.White;
+            position = initPos;
+            velocity.X = 0;
+        }
+
+        public void ResetAll() 
+        {
+            ResetPowerups();
+            bullets.Clear();
+            position = initPos;
+            maxVelocity = Playing.startingGameSpeed;
+            velocity.X = 0;
         }
 
         public void Update(GameTime gameTime) 

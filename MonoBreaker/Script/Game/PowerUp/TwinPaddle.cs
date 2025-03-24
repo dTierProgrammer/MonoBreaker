@@ -25,8 +25,6 @@ public class TwinPaddle:Powerup
         Playing.score += 100;
         if (!Playing.player.isTwinActive)
             Playing.player.isTwinActive = true;
-        else
-            Playing.score += 100;
         Playing.powerUpSound.Play();
         base.Action();
     }

@@ -217,6 +217,17 @@ namespace MonoBreaker.Script.Game
             }
         }
 
+        public void ResetPowerups() 
+        {
+            isSuper = false;
+            isGlueBall = false;
+            timeLeftPierce = delay;
+            canPierce = false;
+            ballStrength = 1;
+            image = GetContent.GetTexture("Game/ball");
+            color = Color.White;
+        }
+
         public void Reset()
         {
             foreach (Ball ball in Playing.otherBalls)
@@ -227,6 +238,28 @@ namespace MonoBreaker.Script.Game
             isActive = false;
             direction = new Vector2(0, -speed);
             ballHealth = 1;
+            ballStrength = 1;
+            timeLeftPierce = delay;
+            ResetPowerups();
+        }
+
+        public void RoundReset() 
+        {
+            foreach (Ball ball in Playing.otherBalls)
+            {
+                ball.Kill();
+            }
+            canPierce = false;
+            timeLeftPierce = delay;
+            isActive = false;
+            direction = new Vector2(0, -speed);
+            _ManagePowerups.KillPowerups();
+        }
+
+        public void ResetAll() 
+        {
+            Reset();
+            speed = Playing.startingGameSpeed;
         }
 
         public void Kill()
@@ -240,20 +273,8 @@ namespace MonoBreaker.Script.Game
             {
                 image = GetContent.GetTexture("Game/ballSuper");
                 ballStrength = 2;
-
-                var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
-                timeLeftSuper -= timer;
-
-                if (timeLeftSuper <= 0)
-                {
-                    ballDownSound.Play();
-                    image = GetContent.GetTexture("Game/ball");
-                    ballStrength = 1;
-                    isSuper = false;
-                    timeLeftSuper = delay;
-                }
-
             }
+
             if (isLovely)
             {
                 image = GetContent.GetTexture("Test/test");
@@ -285,20 +306,7 @@ namespace MonoBreaker.Script.Game
 
             if (isGlueBall)
             {
-                var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
-                timeLeftGlueBall -= timer;
                 color = Color.LightBlue;
-                
-                
-                
-                if (timeLeftGlueBall <= 0)
-                {
-                    ballDownSound.Play();
-                    isGlueBall = false;
-                    color = Color.White;
-                    timeLeftGlueBall = longDelay;
-                    
-                }
             }
             
             if (isStuck)
@@ -452,6 +460,7 @@ namespace MonoBreaker.Script.Game
                         {
                             ballLossSound.Play();
                             Playing.tries--;
+                            paddle.ResetPowerups();
                             Reset();
                         }
                     }

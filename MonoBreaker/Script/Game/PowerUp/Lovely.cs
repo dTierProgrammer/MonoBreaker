@@ -27,8 +27,17 @@ namespace MonoBreaker.Script.Game.PowerUp
         {
             Playing.ball.random.Play();
             Playing.score += 5000;
-            Playing.ball.Lovely = true;
-            base.Action();
+            if (!Playing.ball.Lovely) 
+            {
+                Playing.ball.Lovely = true;
+                Playing.score += 5000;
+            }
+            else 
+            {
+                Playing.score += 5000;
+            }
+
+                base.Action();
         }
     }
 }
