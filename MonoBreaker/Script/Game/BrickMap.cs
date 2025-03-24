@@ -50,12 +50,13 @@ namespace MonoBreaker.Script.Game
               {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0},
               {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0}});
 
-            map = maps[mapID];
+            
         }
 
         public static void Initialize(Game1 game)
         {
             _game = game;
+            map = maps[mapID];
             for (int index = 0; index < 4; index++) // load brick images (fake automation)
             {
                 images[index] = GetContent.GetTexture($"Game/brick_final_{index}");
@@ -67,11 +68,11 @@ namespace MonoBreaker.Script.Game
                 {
                     if (map[column, row] == 1)
                     {
-                        listBricks.Add(new Brick(images[0], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 2));
+                        listBricks.Add(new Brick(images[0], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 1));
                     }
                     if (map[column, row] == 2)
                     {
-                        listBricks.Add(new Brick(images[1], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 2));
+                        listBricks.Add(new Brick(images[1], new Vector2((row * images[0].Width + offset), column * images[0].Height + offset * 6), 1));
                     }
                     if (map[column, row] == 3)
                     {
@@ -121,6 +122,14 @@ namespace MonoBreaker.Script.Game
         }
 
         public static void HardReset() 
+        {
+            listBricks.Clear();
+            inactiveBricks.Clear();
+            mapID = 0;
+            Initialize(_game);
+        }
+
+        public static void RoundReset()
         {
             listBricks.Clear();
             inactiveBricks.Clear();

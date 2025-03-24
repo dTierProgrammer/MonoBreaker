@@ -19,6 +19,8 @@ namespace MonoBreaker.Script.Global
         }
         public static void HardReset() 
         {
+            //BrickMap.mapID = 0;
+            BrickMap.mapID = 0;
             Playing.score = 0;
             Playing.round = 1;
             Playing.tries = 5;
@@ -42,7 +44,7 @@ namespace MonoBreaker.Script.Global
             Playing.player.RoundReset();
             Playing.otherBalls.Clear();
             _ManagePowerups.ClearLists();
-            BrickMap.HardReset();
+            BrickMap.RoundReset();
             Playing.brokenBricks = 0;
             //BrickMap.listBricks.Clear();
             //Playing.Initialize(_game);

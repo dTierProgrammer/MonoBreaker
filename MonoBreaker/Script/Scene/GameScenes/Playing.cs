@@ -59,7 +59,7 @@ public static class Playing
 
     public static float speedIncrement = .05f;
     public static float tries = 5;
-    public static float round = 1;
+    public static float round = 0;
 
     public static Random rng = new Random();
 
@@ -71,9 +71,9 @@ public static class Playing
     public static void Initialize(Game1 game)
     {
         _game = game;
+        //BrickMap.mapID = 0;
         BrickMap.InitializeMaps();
         BrickMap.Initialize(_game);
-        speedUpThreshold = BrickMap.RowLength;
 
         screenBounds[0] = new Rectangle(0, 0, 4, Game1.trueScreenHeight); // r
         screenBounds[1] = new Rectangle(Game1.trueScreenWidth - 4, 0, 4, Game1.trueScreenHeight); // l
@@ -82,6 +82,7 @@ public static class Playing
 
         player = new Paddle(new Vector2(Game1.trueScreenWidth / 2f - 17f, Game1.trueScreenHeight - 16), startingGameSpeed);
         ball = new Ball(new Vector2(100, 100), startingGameSpeed, true);
+        speedUpThreshold = BrickMap.RowLength;
     }
 
     public static void Load()
@@ -204,12 +205,12 @@ public static class Playing
                 {
                     
                     round++;
-                    if (round % 3 == 0 && BrickMap.mapID < BrickMap.maps.Count - 1)
+                    if (round % 3 == 0 && round != 0 /*&& BrickMap.mapID < BrickMap.maps.Count - 1*/)
                         BrickMap.mapID++;
-                    /*
+                    
                     if (BrickMap.mapID > BrickMap.maps.Count - 1)
                         BrickMap.mapID = 0;
-                    */
+                    
                     Reset.RoundReset();
                     currentState = GameState.PLAY;
                 }
@@ -284,7 +285,7 @@ public static class Playing
             case GameState.ROUNDCOMPLETE:
                 spriteBatch.Draw(pauseOverlay, Vector2.Zero, Color.White);
                 spriteBatch.Draw(roundclearText, new Rectangle(160, 90, roundclearText.Width, roundclearText.Height), null, Color.White, 0f, new Vector2(roundclearText.Width / 2, roundclearText.Height / 2), SpriteEffects.None, 0);
-                string rc_menuElementOne = $"ENTER - Round {round + 1}";
+                string rc_menuElementOne = $"ENTER - Round {round + 2}";
                 spriteBatch.DrawString(Fonts.subTitleFont, rc_menuElementOne, new Vector2(160, 120), Color.White, 0, new Vector2(Fonts.subTitleFont.MeasureString(rc_menuElementOne).X / 2, 0), 1f, SpriteEffects.None, 0f);
                 string rc_menuElementTwo = "ESC - Quit";
                 spriteBatch.DrawString(Fonts.subTitleFont, rc_menuElementTwo, new Vector2(160, 135), Color.White, 0, new Vector2(Fonts.subTitleFont.MeasureString(rc_menuElementTwo).X / 2, 0), 1f, SpriteEffects.None, 0f);
@@ -302,7 +303,7 @@ public static class Playing
                 spriteBatch.DrawString(Fonts.subTitleFont, g_menuElementTwo, new Vector2(160, 135), Color.White, 0, new Vector2(Fonts.subTitleFont.MeasureString(g_menuElementTwo).X / 2, 0), 1f, SpriteEffects.None, 0f);
                 string g_score = $"Final Score: {score}";
                 spriteBatch.DrawString(Fonts.subTitleFont, g_score, new Vector2(160, 150), Color.White, 0, new Vector2(Fonts.subTitleFont.MeasureString(g_score).X / 2, 0), 1f, SpriteEffects.None, 0f);
-                string g_round = $"Out at: Round {round}";
+                string g_round = $"Out at: Round {round + 1}";
                 spriteBatch.DrawString(Fonts.subTitleFont, g_round, new Vector2(160, 165), Color.White, 0, new Vector2(Fonts.subTitleFont.MeasureString(g_round).X / 2, 0), 1f, SpriteEffects.None, 0f);
                 break;
         }
@@ -316,7 +317,7 @@ public static class Playing
                 if (!showDebugInfo)
                 {
                     spriteBatch.DrawString(Fonts.titleFont, $"Score: {score}\n" +
-                                                            $"Round {round}\n" +
+                                                            $"Round {round + 1}\n" +
                                                             $"   x {tries}\n"
                         , new Vector2(25, 24), Color.White);
                 }

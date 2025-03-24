@@ -4,6 +4,7 @@ using MonoBreaker.Script.Global;
 using MonoBreaker.Script.Font;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
+using MonoBreaker.Script.Game;
 
 namespace MonoBreaker.Script.Scene.GameScenes;
 
@@ -30,8 +31,12 @@ public static class Title
 
     public static void Update()
     {
-        if (Keyboard.GetState().IsKeyDown(Keys.Enter))
-               SceneController.StartGame();
+        if (Keyboard.GetState().IsKeyDown(Keys.Enter)) 
+        {
+            SceneController.StartGame();
+            
+        }
+               
         //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             //_game.Exit();
     }

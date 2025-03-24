@@ -9,6 +9,7 @@ using MonoBreaker.Script.Game;
 using MonoBreaker.Script.Global;
 using MonoBreaker.Script.Scene;
 using MonoBreaker.Script.Scene.GameScenes;
+using System.Xml.Linq;
 
 namespace MonoBreaker;
 
@@ -44,9 +45,9 @@ public class Game1 : Game
         
         
         GetContent.Initialize(this);
-        Playing.Initialize(this);
         Title.Initialize(this);
         Reset.Ininitialize(this);
+        Playing.Initialize(this);
         base.Initialize();
     }
 
@@ -56,8 +57,8 @@ public class Game1 : Game
 
         // TODO: use this.Content to load your game content here
         debug = GetContent.GetTexture("Debug/debugRect");
-        Playing.Load();
         Title.Load();
+        Playing.Load();
     }
 
     protected override void Update(GameTime gameTime)
