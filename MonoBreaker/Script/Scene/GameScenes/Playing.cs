@@ -205,8 +205,11 @@ public static class Playing
                 {
                     
                     round++;
-                    if (round % 3 == 0 && round != 0 /*&& BrickMap.mapID < BrickMap.maps.Count - 1*/)
+                    if (round % 3 == 0 && round != 0 /*&& BrickMap.mapID < BrickMap.maps.Count - 1*/) 
+                    {
+                        Reset.SpeedReset();
                         BrickMap.mapID++;
+                    }
                     
                     if (BrickMap.mapID > BrickMap.maps.Count - 1)
                         BrickMap.mapID = 0;

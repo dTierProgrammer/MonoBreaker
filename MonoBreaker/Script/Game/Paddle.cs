@@ -39,6 +39,7 @@ namespace MonoBreaker.Script.Game
         private int offset = 144;
         int prevValue;
         private Vector2 initPos;
+        private float initSpeed;
 
         
 
@@ -54,6 +55,7 @@ namespace MonoBreaker.Script.Game
             image = GetContent.GetTexture("Game/paddle");
             this.position = position;
             initPos = position;
+            initSpeed = moveSpeed;
             twinPosition = new Vector2(this.position.X, this.position.Y);
             maxVelocity = moveSpeed;
         }
@@ -109,6 +111,12 @@ namespace MonoBreaker.Script.Game
         public Vector2 Velocity 
         {
             get { return velocity; }
+        }
+
+        public void ResetSpeed() 
+        {
+            maxVelocity = initSpeed;
+            acceleration = .35f;
         }
 
         public void ResetPowerups()

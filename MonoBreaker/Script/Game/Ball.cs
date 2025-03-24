@@ -60,11 +60,14 @@ namespace MonoBreaker.Script.Game
         public float timeLeftPierce = delay;
         public float timeLeftGlueBall = longDelay;
 
+        private float initSpeed;
+
         public Ball(Vector2 position, float speed, bool isMainBall) : base(position) 
         {
             image = GetContent.GetTexture("Game/ball");
             this.position = position;
             this.speed = speed;
+            initSpeed = speed;
             ballHealth = 1;
             
             this.isMainBall = isMainBall;
@@ -84,6 +87,7 @@ namespace MonoBreaker.Script.Game
             image = GetContent.GetTexture("Game/ball");
             this.position = position;
             this.speed = speed;
+            initSpeed = speed;
             this.ballHealth = ballHealth;
             
             this.isMainBall = isMainBall;
@@ -102,6 +106,7 @@ namespace MonoBreaker.Script.Game
             image = GetContent.GetTexture("Game/ball");
             this.position = position;
             this.speed = speed;
+            initSpeed = speed;
             this.ballHealth = ballHealth;
             
             this.isMainBall = isMainBall;
@@ -215,6 +220,11 @@ namespace MonoBreaker.Script.Game
                 color = Color.White;
                 paddle.canShoot = true;
             }
+        }
+
+        public void ResetSpeed() 
+        {
+            speed = initSpeed;
         }
 
         public void ResetPowerups() 

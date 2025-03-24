@@ -19,7 +19,6 @@ namespace MonoBreaker.Script.Global
         }
         public static void HardReset() 
         {
-            //BrickMap.mapID = 0;
             BrickMap.mapID = 0;
             Playing.score = 0;
             Playing.round = 1;
@@ -32,10 +31,6 @@ namespace MonoBreaker.Script.Global
             Playing.brokenBricks = 0;
             Playing.ball.speed = Playing.startingGameSpeed;
             Playing.player.maxVelocity = Playing.startingGameSpeed;
-            //BrickMap.listBricks.Clear();
-            //Playing.Initialize(_game); // most likely will crash the game (it doesn't :o )
-            //BrickMap.Initialize(_game); // most likely will crash the game
-            //BrickMap.ResetMap();
         }
 
         public static void RoundReset() 
@@ -46,8 +41,12 @@ namespace MonoBreaker.Script.Global
             _ManagePowerups.ClearLists();
             BrickMap.RoundReset();
             Playing.brokenBricks = 0;
-            //BrickMap.listBricks.Clear();
-            //Playing.Initialize(_game);
+        }
+
+        public static void SpeedReset() 
+        {
+            Playing.ball.ResetSpeed();
+            Playing.player.ResetSpeed();
         }
     }
 }
